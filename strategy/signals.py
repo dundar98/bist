@@ -1,21 +1,21 @@
 """
-Signal Generation Module.
+Trading Strategy Signals.
 
-Converts model probabilities into trading signals.
+Converts model probabilities into actionable trading signals (BUY/SELL/HOLD).
 """
 
 import logging
-from dataclasses import dataclass
 from enum import Enum
-from typing import Optional
+from dataclasses import dataclass
+from typing import Optional, List, Dict, Any
 
 import numpy as np
+import pandas as pd
 
 logger = logging.getLogger(__name__)
 
 
-class Signal(Enum):
-    """Trading signal types."""
+class SignalType(Enum):
     BUY = "buy"
     SELL = "sell"
     HOLD = "hold"
@@ -23,207 +23,185 @@ class Signal(Enum):
 
 @dataclass
 class SignalResult:
-    """Result of signal generation."""
-    signal: Signal
-    probability: float
+    signal: SignalType
     confidence: float
     reason: str
-    
-    def to_dict(self) -> dict:
-        return {
-            'signal': self.signal.value,
-            'probability': self.probability,
-            'confidence': self.confidence,
-            'reason': self.reason,
-        }
+    metadata: Dict[str, Any] = None
 
 
 class SignalGenerator:
     """
-    Generates trading signals from model probabilities.
+    Generates trading signals from probability predictions.
     
-    Applies thresholds and additional filters to convert
-    raw probabilities into actionable signals.
+    Features:
+    - Configurable thresholds
+    - Dynamic thresholds based on volatility
+    - Trend filtering
     """
     
     def __init__(
         self,
         entry_threshold: float = 0.65,
         exit_threshold: float = 0.35,
-        min_confidence_gap: float = 0.1,
+        use_dynamic_threshold: bool = False,
+        min_volatility: float = 0.0,
+        max_volatility: float = 1.0,
     ):
         """
         Initialize signal generator.
         
         Args:
-            entry_threshold: Min probability for BUY signal
-            exit_threshold: Max probability for SELL signal
-            min_confidence_gap: Minimum gap from threshold for high confidence
+            entry_threshold: Base probability threshold for BUY
+            exit_threshold: Base probability threshold for SELL
+            use_dynamic_threshold: Adjust thresholds based on volatility
+            min_volatility: Min volatility to trade
+            max_volatility: Max volatility to trade
         """
-        self.entry_threshold = entry_threshold
-        self.exit_threshold = exit_threshold
-        self.min_confidence_gap = min_confidence_gap
-    
+        self.base_entry_threshold = entry_threshold
+        self.base_exit_threshold = exit_threshold
+        self.use_dynamic_threshold = use_dynamic_threshold
+        self.min_volatility = min_volatility
+        self.max_volatility = max_volatility
+        
     def generate(
         self,
         probability: float,
         current_position: Optional[str] = None,
+        volatility: Optional[float] = None,
+        trend_strength: Optional[float] = None,
     ) -> SignalResult:
         """
-        Generate a trading signal from probability.
+        Generate signal.
         
         Args:
-            probability: Model output probability [0, 1]
-            current_position: 'long', 'short', or None
+            probability: distinct model probability (0-1)
+            current_position: 'long' or None
+            volatility: current volatility (e.g. normalized ATR or std dev)
+            trend_strength: trend indicator (0-1)
             
         Returns:
-            SignalResult with signal and reasoning
+            SignalResult
         """
-        # Validate probability
-        probability = np.clip(probability, 0, 1)
+        # Determine effective thresholds
+        entry_threshold = self.base_entry_threshold
+        exit_threshold = self.base_exit_threshold
         
-        # Calculate confidence (distance from neutral 0.5)
-        confidence = abs(probability - 0.5) * 2
+        meta = {
+            "base_entry": self.base_entry_threshold,
+            "effective_entry": entry_threshold,
+            "volatility": volatility
+        }
         
-        # No position: look for entry
-        if current_position is None:
-            if probability >= self.entry_threshold:
-                gap = probability - self.entry_threshold
+        # Dynamic Threshold Adjustment
+        if self.use_dynamic_threshold and volatility is not None:
+            # If volatility is high, require higher confidence to enter
+            # If volatility is low, we can be more aggressive
+            
+            # Simple scaling: volatility 0.5 -> threshold + 0.05
+            # volatility 0.1 -> threshold - 0.05
+            adjustment = (volatility - 0.3) * 0.2  # Assumes vol centered around 0.3
+            entry_threshold = np.clip(entry_threshold + adjustment, 0.55, 0.90)
+            meta["effective_entry"] = entry_threshold
+            meta["threshold_adj"] = adjustment
+            
+            # Check volatility bounds
+            if volatility < self.min_volatility:
+                return SignalResult(SignalType.HOLD, 0.0, "Volatility too low", meta)
+            if volatility > self.max_volatility:
+                return SignalResult(SignalType.HOLD, 0.0, "Volatility too high", meta)
+        
+        # Generate Signal
+        if probability >= entry_threshold:
+            if current_position != 'long':
                 return SignalResult(
-                    signal=Signal.BUY,
-                    probability=probability,
-                    confidence=gap / (1 - self.entry_threshold),
-                    reason=f"Probability {probability:.3f} >= entry threshold {self.entry_threshold}"
+                    SignalType.BUY,
+                    probability,
+                    f"Strong bullish signal ({probability:.1%}) > {entry_threshold:.1%}",
+                    meta
                 )
             else:
+                return SignalResult(SignalType.HOLD, probability, "Already long", meta)
+                
+        elif probability <= exit_threshold:
+            if current_position == 'long':
                 return SignalResult(
-                    signal=Signal.HOLD,
-                    probability=probability,
-                    confidence=confidence,
-                    reason=f"Probability {probability:.3f} < entry threshold {self.entry_threshold}"
-                )
-        
-        # Has long position: look for exit
-        elif current_position == 'long':
-            if probability <= self.exit_threshold:
-                return SignalResult(
-                    signal=Signal.SELL,
-                    probability=probability,
-                    confidence=(self.exit_threshold - probability) / self.exit_threshold,
-                    reason=f"Probability {probability:.3f} <= exit threshold {self.exit_threshold}"
+                    SignalType.SELL,
+                    probability,
+                    f"Bearish signal ({probability:.1%}) < {exit_threshold:.1%}",
+                    meta
                 )
             else:
-                return SignalResult(
-                    signal=Signal.HOLD,
-                    probability=probability,
-                    confidence=confidence,
-                    reason=f"Probability {probability:.3f} > exit threshold, holding"
-                )
+                return SignalResult(SignalType.HOLD, probability, "Bearish but no position", meta)
         
-        return SignalResult(
-            signal=Signal.HOLD,
-            probability=probability,
-            confidence=confidence,
-            reason="No action for current state"
-        )
+        return SignalResult(SignalType.HOLD, probability, "Indecisive signal", meta)
 
 
-class EnsembleSignalGenerator:
+class TrailingStop:
     """
-    Generates signals from multiple model predictions.
+    Trailing Stop Loss Logic.
     
-    Requires agreement between multiple models for higher confidence.
+    Tracks high-water mark of price and signals exit if price drops
+    by a certain percentage or ATR multiple.
     """
     
     def __init__(
         self,
-        entry_threshold: float = 0.65,
-        exit_threshold: float = 0.35,
-        min_agreement: float = 0.6,
+        pct_stop: float = 0.05,  # 5% trailing stop
+        use_atr: bool = False,
+        atr_multiplier: float = 3.0,
     ):
-        """
-        Initialize ensemble signal generator.
+        self.pct_stop = pct_stop
+        self.use_atr = use_atr
+        self.atr_multiplier = atr_multiplier
         
-        Args:
-            entry_threshold: Entry probability threshold
-            exit_threshold: Exit probability threshold
-            min_agreement: Minimum fraction of models that must agree
-        """
-        self.entry_threshold = entry_threshold
-        self.exit_threshold = exit_threshold
-        self.min_agreement = min_agreement
-    
-    def generate(
+        # State
+        self.high_water_mark = -float('inf')
+        self.entry_price = 0.0
+        self.active = False
+        self.stop_price = 0.0
+        
+    def reset(self):
+        """Reset state."""
+        self.high_water_mark = -float('inf')
+        self.entry_price = 0.0
+        self.active = False
+        self.stop_price = 0.0
+        
+    def update(
         self,
-        probabilities: list,
-        current_position: Optional[str] = None,
-    ) -> SignalResult:
+        current_price: float,
+        atr: float = 0.0
+    ) -> bool:
         """
-        Generate signal from multiple model predictions.
+        Update with current price.
         
-        Args:
-            probabilities: List of probabilities from different models
-            current_position: Current position state
-            
         Returns:
-            SignalResult based on consensus
+            True if stop loss is triggered.
         """
-        if not probabilities:
-            return SignalResult(
-                signal=Signal.HOLD,
-                probability=0.5,
-                confidence=0,
-                reason="No predictions provided"
-            )
+        if not self.active:
+            # Activate on first update (entry)
+            self.active = True
+            self.entry_price = current_price
+            self.high_water_mark = current_price
+            self._update_stop_price(current_price, atr)
+            return False
         
-        # Calculate consensus
-        avg_prob = np.mean(probabilities)
+        # Update high water mark
+        if current_price > self.high_water_mark:
+            self.high_water_mark = current_price
+            self._update_stop_price(current_price, atr)
+            
+        # Check stop
+        if current_price < self.stop_price:
+            return True
+            
+        return False
         
-        # Count agreements
-        buy_votes = sum(1 for p in probabilities if p >= self.entry_threshold)
-        sell_votes = sum(1 for p in probabilities if p <= self.exit_threshold)
-        
-        n_models = len(probabilities)
-        buy_agreement = buy_votes / n_models
-        sell_agreement = sell_votes / n_models
-        
-        # No position: look for entry
-        if current_position is None:
-            if buy_agreement >= self.min_agreement:
-                return SignalResult(
-                    signal=Signal.BUY,
-                    probability=avg_prob,
-                    confidence=buy_agreement,
-                    reason=f"Ensemble BUY: {buy_votes}/{n_models} models agree, avg prob {avg_prob:.3f}"
-                )
-            else:
-                return SignalResult(
-                    signal=Signal.HOLD,
-                    probability=avg_prob,
-                    confidence=1 - buy_agreement,
-                    reason=f"Ensemble HOLD: Only {buy_votes}/{n_models} models for BUY"
-                )
-        
-        # Has position: look for exit
-        elif current_position == 'long':
-            if sell_agreement >= self.min_agreement:
-                return SignalResult(
-                    signal=Signal.SELL,
-                    probability=avg_prob,
-                    confidence=sell_agreement,
-                    reason=f"Ensemble SELL: {sell_votes}/{n_models} models agree, avg prob {avg_prob:.3f}"
-                )
-            else:
-                return SignalResult(
-                    signal=Signal.HOLD,
-                    probability=avg_prob,
-                    confidence=1 - sell_agreement,
-                    reason=f"Ensemble HOLD: Only {sell_votes}/{n_models} models for SELL"
-                )
-        
-        return SignalResult(
-            signal=Signal.HOLD,
-            probability=avg_prob,
-            confidence=0.5,
-            reason="No action for current state"
-        )
+    def _update_stop_price(self, price: float, atr: float):
+        """Calculate new stop price."""
+        if self.use_atr and atr > 0:
+            dist = atr * self.atr_multiplier
+            self.stop_price = price - dist
+        else:
+            dist = price * self.pct_stop
+            self.stop_price = price - dist

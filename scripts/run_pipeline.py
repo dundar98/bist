@@ -182,12 +182,15 @@ def run_demo_pipeline(config: SystemConfig, output_dir: Path):
     logger.info(f"  Test:  {len(test_df)} samples")
     
     # Create PyTorch datasets
+    is_multitask = config.model.model_type == "multitask"
+    
     train_dataset = TradingDataset(
         data=train_df,
         feature_columns=feature_columns,
         lookback=config.features.lookback_window,
         label_threshold=config.labels.threshold_pct,
         label_horizon=config.labels.horizon_bars,
+        return_volatility=is_multitask,
     )
     
     val_dataset = TradingDataset(
@@ -196,6 +199,7 @@ def run_demo_pipeline(config: SystemConfig, output_dir: Path):
         lookback=config.features.lookback_window,
         label_threshold=config.labels.threshold_pct,
         label_horizon=config.labels.horizon_bars,
+        return_volatility=is_multitask,
     )
     
     test_dataset = TradingDataset(
@@ -204,6 +208,7 @@ def run_demo_pipeline(config: SystemConfig, output_dir: Path):
         lookback=config.features.lookback_window,
         label_threshold=config.labels.threshold_pct,
         label_horizon=config.labels.horizon_bars,
+        return_volatility=is_multitask,
     )
     
     logger.info(f"  Train dataset: {len(train_dataset)} sequences")
@@ -227,6 +232,7 @@ def run_demo_pipeline(config: SystemConfig, output_dir: Path):
         hidden_size=config.model.hidden_size,
         num_layers=config.model.num_layers,
         dropout=config.model.dropout,
+        backbone_type="lstm" if config.model.model_type == "multitask" else None,
     )
     
     logger.info(f"  Model type: {model.model_type}")
@@ -267,6 +273,12 @@ def run_demo_pipeline(config: SystemConfig, output_dir: Path):
         x = torch.from_numpy(test_features[i:i+1]).to(config.training.device)
         with torch.no_grad():
             pred = trained_model(x)
+            
+        if isinstance(pred, tuple):
+            # Multitask returns (direction, volatility)
+            # We use direction probability for backtest
+            pred = pred[0]
+            
         all_preds.append(pred.item())
     
     predictions = np.array(all_preds)

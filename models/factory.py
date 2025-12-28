@@ -9,6 +9,8 @@ from typing import Dict, Type, Any
 
 from .base import BaseModel
 from .lstm_model import LSTMModel, GRUModel, CNNLSTMModel
+from .transformer_model import TransformerModel
+from .multitask_model import MultiTaskModel
 
 
 # Registry of available model types
@@ -16,6 +18,8 @@ MODEL_REGISTRY: Dict[str, Type[BaseModel]] = {
     "lstm": LSTMModel,
     "gru": GRUModel,
     "cnn_lstm": CNNLSTMModel,
+    "transformer": TransformerModel,
+    "multitask": MultiTaskModel,
 }
 
 

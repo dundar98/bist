@@ -1,11 +1,12 @@
 """Strategy module for the BIST100 trading system."""
 
 from .signals import (
-    Signal,
+    SignalType,
     SignalResult,
     SignalGenerator,
-    EnsembleSignalGenerator,
+    TrailingStop,
 )
+from .portfolio import PortfolioOptimizer
 from .position import (
     PositionSize,
     PositionSizer,
@@ -29,10 +30,12 @@ from .rules import (
 
 __all__ = [
     # Signals
-    "Signal",
+    "SignalType",
     "SignalResult",
     "SignalGenerator",
-    "EnsembleSignalGenerator",
+    "TrailingStop",
+    # Portfolio
+    "PortfolioOptimizer",
     # Position sizing
     "PositionSize",
     "PositionSizer",

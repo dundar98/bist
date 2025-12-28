@@ -488,12 +488,22 @@ def train_model(
     Returns:
         Tuple of (trained_model, history, test_metrics)
     """
-    trainer = Trainer(
-        model=model,
-        device=device,
-        learning_rate=learning_rate,
-        checkpoint_dir=checkpoint_dir,
-    )
+    # Support for Multi-Task Model
+    if model.model_type == 'multitask':
+        from .multitask_trainer import MultiTaskTrainer
+        trainer = MultiTaskTrainer(
+            model=model,
+            device=device,
+            learning_rate=learning_rate,
+            checkpoint_dir=checkpoint_dir,
+        )
+    else:
+        trainer = Trainer(
+            model=model,
+            device=device,
+            learning_rate=learning_rate,
+            checkpoint_dir=checkpoint_dir,
+        )
     
     # Get class weights from training data
     if hasattr(train_loader.dataset, 'get_class_weights'):

@@ -31,6 +31,8 @@ class TradingDataset(Dataset):
         lookback: int = 60,
         label_threshold: float = 0.02,
         label_horizon: int = 5,
+        target_col: str = 'target',
+        return_volatility: bool = False,
         transform=None,
     ):
         """
@@ -47,6 +49,8 @@ class TradingDataset(Dataset):
         self.lookback = lookback
         self.label_threshold = label_threshold
         self.label_horizon = label_horizon
+        self.target_col = target_col
+        self.return_volatility = return_volatility
         self.transform = transform
         self.feature_columns = feature_columns
         
@@ -57,7 +61,7 @@ class TradingDataset(Dataset):
         data = self._generate_labels(data.copy())
         
         # Extract features and labels
-        self.features, self.labels, self.timestamps, self.symbol_ids = self._prepare_data(data)
+        self.features, self.labels, self.volatilities, self.timestamps, self.symbol_ids = self._prepare_data(data)
         
         logger.info(
             f"Created dataset with {len(self)} samples, "
@@ -87,6 +91,15 @@ class TradingDataset(Dataset):
         
         df['label'] = labels
         
+        # Generate volatility target (standard deviation of future returns)
+        # We calculate log returns for volatility
+        log_returns = np.log(df['close'] / df['close'].shift(1))
+        # Rolling std of future returns (shift back to align with current time)
+        # We want volatility of t+1 to t+horizon
+        indexer = pd.api.indexers.FixedForwardWindowIndexer(window_size=self.label_horizon)
+        volatility = log_returns.rolling(window=indexer).std()
+        df['volatility_target'] = volatility.fillna(0)
+        
         # Mark last horizon rows as invalid (no future data)
         df['valid_label'] = True
         df.loc[df.index[-self.label_horizon:], 'valid_label'] = False
@@ -96,15 +109,16 @@ class TradingDataset(Dataset):
     def _prepare_data(
         self, 
         df: pd.DataFrame
-    ) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+    ) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
         """
         Prepare sequences from DataFrame.
         
         Returns:
             features: Array of shape (n_samples, lookback, n_features)
             labels: Array of shape (n_samples,)
-            timestamps: Array of timestamps for each sample
-            symbol_ids: Array of symbol IDs for each sample
+            volatilities: Array of shape (n_samples,)
+            timestamps: Array of timestamps
+            symbol_ids: Array of symbol IDs
         """
         # Filter valid rows (have labels and enough history)
         df = df.copy()
@@ -124,6 +138,7 @@ class TradingDataset(Dataset):
         # Extract feature matrix
         feature_data = df[self.feature_columns].values.astype(np.float32)
         label_data = df['label'].values.astype(np.float32)
+        vol_data = df['volatility_target'].values.astype(np.float32)
         
         # Handle timestamps
         if 'timestamp' in df.columns:
@@ -145,21 +160,26 @@ class TradingDataset(Dataset):
         features = np.zeros((n_samples, self.lookback, n_features), dtype=np.float32)
         labels = np.zeros(n_samples, dtype=np.float32)
         timestamps = np.empty(n_samples, dtype=object)
+        features = np.zeros((n_samples, self.lookback, n_features), dtype=np.float32)
+        labels = np.zeros(n_samples, dtype=np.float32)
+        volatilities = np.zeros(n_samples, dtype=np.float32)
+        timestamps = np.empty(n_samples, dtype=object)
         symbol_ids = np.zeros(n_samples, dtype=np.int32)
         
         for i in range(n_samples):
             features[i] = feature_data[i:i + self.lookback]
             labels[i] = label_data[i + self.lookback - 1]
+            volatilities[i] = vol_data[i + self.lookback - 1]
             timestamps[i] = timestamp_data[i + self.lookback - 1]
             symbol_ids[i] = symbol_data[i + self.lookback - 1]
         
-        return features, labels, timestamps, symbol_ids
+        return features, labels, volatilities, timestamps, symbol_ids
     
     def __len__(self) -> int:
         """Return number of samples."""
         return len(self.labels)
     
-    def __getitem__(self, idx: int) -> Tuple[torch.Tensor, torch.Tensor]:
+    def __getitem__(self, idx: int):
         """
         Get a single sample.
         
@@ -167,7 +187,8 @@ class TradingDataset(Dataset):
             idx: Sample index
             
         Returns:
-            Tuple of (features, label) as tensors
+            If return_volatility is False: (features, label)
+            If return_volatility is True: (features, label, volatility)
         """
         features = torch.from_numpy(self.features[idx])
         label = torch.tensor([self.labels[idx]], dtype=torch.float32)
@@ -175,6 +196,13 @@ class TradingDataset(Dataset):
         if self.transform:
             features = self.transform(features)
         
+        if self.transform:
+            features = self.transform(features)
+        
+        if self.return_volatility:
+            volatility = torch.tensor([self.volatilities[idx]], dtype=torch.float32)
+            return features, label, volatility
+            
         return features, label
     
     def get_class_weights(self) -> torch.Tensor:

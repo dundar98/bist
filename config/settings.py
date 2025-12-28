@@ -72,7 +72,7 @@ class ModelConfig:
     """Neural network architecture settings."""
     
     # Model type
-    model_type: str = "lstm"  # "lstm", "gru", "cnn", "transformer"
+    model_type: str = "multitask"  # "lstm", "gru", "cnn", "transformer", "multitask"
     
     # Architecture
     hidden_size: int = 128
