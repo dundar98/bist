@@ -259,7 +259,12 @@ class DailyScanner:
         x = x.to(self.device)
         
         with torch.no_grad():
-            prob = self.model(x).item()
+            output = self.model(x)
+            # Handle Multi-Task output (direction, volatility)
+            if isinstance(output, tuple):
+                prob = output[0].item()
+            else:
+                prob = output.item()
         
         # Generate signal
         signal_result = self.signal_generator.generate(prob, current_position=None)
@@ -402,8 +407,8 @@ def generate_dashboard_json(result: DailyScanResult, output_path: str = "docs/da
         "exit_threshold": conf.backtest.exit_threshold,
         "stop_loss": conf.backtest.stop_loss_pct,
         "take_profit": conf.backtest.take_profit_pct,
-        "max_position_size": conf.risk.max_position_size,
-        "max_drawdown": conf.risk.max_drawdown,
+        "max_risk_per_trade": conf.risk.max_risk_per_trade,
+        "max_drawdown": conf.risk.max_daily_drawdown,
     }
     
     data = {
