@@ -57,11 +57,28 @@ def main():
         logger.error(f"Model not found at {model_path}. Please train first.")
         sys.exit(1)
         
+    import pandas as pd
+    from data import prepare_features
+    
+    # Dynamically determine feature columns and input size
+    # We create a dummy dataframe to see what prepare_features returns
+    dummy_data = pd.DataFrame({
+        'open': [10.0] * 100,
+        'high': [11.0] * 100,
+        'low': [9.0] * 100,
+        'close': [10.5] * 100,
+        'volume': [1000] * 100
+    })
+    dummy_features, _ = prepare_features(dummy_data, normalize=True)
+    feature_columns = dummy_features.columns.tolist() # Use all generated columns
+    input_size = len(feature_columns)
+    logger.info(f"Computed input size: {input_size} (Features: {len(feature_columns)})")
+    
     # Load Model
     logger.info("Loading model...")
     model = create_model(
         config.model.model_type,
-        input_size=1, 
+        input_size=input_size, 
         hidden_size=config.model.hidden_size,
         num_layers=config.model.num_layers
     )
@@ -72,7 +89,7 @@ def main():
     # Init Scanner
     scanner = DailyScanner(
         model=model,
-        feature_columns=["open", "high", "low", "close", "volume"],
+        feature_columns=feature_columns,
         lookback=config.features.lookback_window,
         entry_threshold=config.backtest.entry_threshold,
         data_source=args.data_source

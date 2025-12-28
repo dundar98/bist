@@ -400,8 +400,8 @@ def generate_dashboard_json(result: DailyScanResult, output_path: str = "docs/da
         "model_type": conf.model.model_type,
         "entry_threshold": conf.backtest.entry_threshold,
         "exit_threshold": conf.backtest.exit_threshold,
-        "stop_loss": conf.backtest.stop_loss,
-        "take_profit": conf.backtest.take_profit,
+        "stop_loss": conf.backtest.stop_loss_pct,
+        "take_profit": conf.backtest.take_profit_pct,
         "max_position_size": conf.risk.max_position_size,
         "max_drawdown": conf.risk.max_drawdown,
     }
