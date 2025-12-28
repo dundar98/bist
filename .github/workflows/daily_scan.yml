@@ -1,0 +1,101 @@
+# GitHub Actions Workflow: BIST100 Daily Signal Scanner
+# Her gün Türkiye saati 09:00'da çalışır ve e-posta gönderir
+
+name: BIST100 Daily Scan
+
+on:
+  # Her gün 06:00 UTC = 09:00 Türkiye saati
+  schedule:
+    - cron: '0 6 * * 1-5'  # Pazartesi-Cuma
+  
+  # Manuel çalıştırma için
+  workflow_dispatch:
+    inputs:
+      send_email:
+        description: 'E-posta gönder'
+        required: true
+        default: 'true'
+        type: choice
+        options:
+          - 'true'
+          - 'false'
+
+env:
+  PYTHON_VERSION: '3.11'
+
+jobs:
+  daily-scan:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: 🐍 Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+      
+      - name: 📦 Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      
+      - name: 🧠 Check for trained model
+        id: check_model
+        run: |
+          if [ -f "output/model.pt" ]; then
+            echo "model_exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "model_exists=false" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: 🏋️ Train model (if not exists)
+        if: steps.check_model.outputs.model_exists == 'false'
+        run: |
+          python scripts/run_pipeline.py --mode demo --epochs 20
+      
+      - name: 📊 Run daily scan
+        env:
+          BIST_EMAIL_SENDER: ${{ secrets.BIST_EMAIL_SENDER }}
+          BIST_EMAIL_PASSWORD: ${{ secrets.BIST_EMAIL_PASSWORD }}
+          BIST_EMAIL_RECIPIENTS: ${{ secrets.BIST_EMAIL_RECIPIENTS }}
+        run: |
+          # Determine if we should send email
+          SEND_EMAIL="${{ github.event.inputs.send_email || 'true' }}"
+          
+          if [ "$SEND_EMAIL" = "true" ] && [ -n "$BIST_EMAIL_SENDER" ]; then
+            echo "📧 E-posta ile sinyal raporu gönderiliyor..."
+            python scripts/run_daily_scan.py \
+              --email \
+              --sender-email "$BIST_EMAIL_SENDER" \
+              --sender-password "$BIST_EMAIL_PASSWORD" \
+              --email-to "$BIST_EMAIL_RECIPIENTS" \
+              --data-source yfinance \
+              --output-dir output/scans
+          else
+            echo "📊 Sadece rapor oluşturuluyor..."
+            python scripts/run_daily_scan.py \
+              --data-source yfinance \
+              --output-dir output/scans
+          fi
+      
+      - name: 📁 Upload scan results
+        uses: actions/upload-artifact@v4
+        with:
+          name: scan-results-${{ github.run_id }}
+          path: output/scans/
+          retention-days: 30
+      
+      - name: 📝 Summary
+        run: |
+          echo "## 📊 BIST100 Günlük Tarama Tamamlandı" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Tarih:** $(date '+%Y-%m-%d %H:%M:%S')" >> $GITHUB_STEP_SUMMARY
+          echo "- **E-posta:** ${{ github.event.inputs.send_email || 'true' }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [ -f "output/scans/scan_$(date '+%Y-%m-%d').txt" ]; then
+            echo "### Rapor Özeti" >> $GITHUB_STEP_SUMMARY
+            head -30 "output/scans/scan_$(date '+%Y-%m-%d').txt" >> $GITHUB_STEP_SUMMARY
+          fi
