@@ -170,94 +170,169 @@ class EmailNotifier:
         buy_count: int,
         sell_count: int,
     ) -> str:
-        """Create HTML version of report."""
-        # Convert text to HTML-safe
-        html_content = text_report.replace("\n", "<br>")
-        html_content = html_content.replace("🟢", "<span style='color: green;'>🟢</span>")
-        html_content = html_content.replace("🔴", "<span style='color: red;'>🔴</span>")
-        html_content = html_content.replace("✅", "<span style='color: green;'>✅</span>")
-        html_content = html_content.replace("❌", "<span style='color: red;'>❌</span>")
-        html_content = html_content.replace("🔥", "<span style='color: orange;'>🔥</span>")
+        """Create HTML version of report with accessible design."""
+        from datetime import date
         
-        return f"""
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <meta charset="utf-8">
-            <style>
-                body {{
-                    font-family: 'Consolas', 'Monaco', monospace;
-                    background-color: #1a1a2e;
-                    color: #eee;
-                    padding: 20px;
-                    line-height: 1.6;
-                }}
-                .header {{
-                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                    padding: 20px;
-                    border-radius: 10px;
-                    margin-bottom: 20px;
-                    text-align: center;
-                }}
-                .summary {{
-                    display: flex;
-                    justify-content: space-around;
-                    margin: 20px 0;
-                }}
-                .stat {{
-                    text-align: center;
-                    padding: 15px;
-                    background: #16213e;
-                    border-radius: 8px;
-                    min-width: 100px;
-                }}
-                .stat-value {{
-                    font-size: 24px;
-                    font-weight: bold;
-                }}
-                .buy {{ color: #00ff88; }}
-                .sell {{ color: #ff4444; }}
-                .content {{
-                    background: #16213e;
-                    padding: 20px;
-                    border-radius: 10px;
-                    white-space: pre-wrap;
-                }}
-                .footer {{
-                    margin-top: 20px;
-                    text-align: center;
-                    color: #888;
-                    font-size: 12px;
-                }}
-            </style>
-        </head>
-        <body>
-            <div class="header">
-                <h1>📊 BIST100 Trading Sinyalleri</h1>
-            </div>
+        # Parse the text report to extract signals
+        lines = text_report.split('\n')
+        
+        # Find buy signals section
+        buy_signals_html = ""
+        sell_signals_html = ""
+        in_buy_section = False
+        in_sell_section = False
+        
+        for line in lines:
+            if "EN GÜÇLÜ AL SİNYALLERİ" in line:
+                in_buy_section = True
+                in_sell_section = False
+                continue
+            elif "SAT SİNYALLERİ" in line:
+                in_buy_section = False
+                in_sell_section = True
+                continue
+            elif "hisse taranamadı" in line or "DİKKAT" in line:
+                in_buy_section = False
+                in_sell_section = False
+                continue
             
-            <div class="summary">
-                <div class="stat">
-                    <div class="stat-value buy">{buy_count}</div>
-                    <div>AL Sinyali</div>
-                </div>
-                <div class="stat">
-                    <div class="stat-value sell">{sell_count}</div>
-                    <div>SAT Sinyali</div>
-                </div>
-            </div>
+            if in_buy_section and ('THYAO' in line or 'GARAN' in line or 'AKBNK' in line or 'Olasılık' in line):
+                if '|' in line:
+                    # Parse: 🔥 THYAO  | Olasılık: 78.5% | Fiyat: 245.30 TL | RSI: 42
+                    parts = line.split('|')
+                    if len(parts) >= 3:
+                        symbol = parts[0].replace('🔥', '').replace('✅', '').strip()
+                        prob = parts[1].replace('Olasılık:', '').strip()
+                        price = parts[2].replace('Fiyat:', '').strip()
+                        rsi = parts[3].replace('RSI:', '').strip() if len(parts) > 3 else '-'
+                        
+                        buy_signals_html += f'''
+                        <tr>
+                            <td style="padding: 12px; border-bottom: 1px solid #e0e0e0; font-weight: bold; color: #1a73e8;">{symbol}</td>
+                            <td style="padding: 12px; border-bottom: 1px solid #e0e0e0; color: #0d652d; font-weight: bold;">{prob}</td>
+                            <td style="padding: 12px; border-bottom: 1px solid #e0e0e0;">{price}</td>
+                            <td style="padding: 12px; border-bottom: 1px solid #e0e0e0;">{rsi}</td>
+                        </tr>'''
             
-            <div class="content">
-                {html_content}
-            </div>
+            if in_sell_section and '|' in line:
+                parts = line.split('|')
+                if len(parts) >= 2:
+                    symbol = parts[0].replace('❌', '').strip()
+                    prob = parts[1].replace('Olasılık:', '').strip()
+                    price = parts[2].replace('Fiyat:', '').strip() if len(parts) > 2 else '-'
+                    
+                    sell_signals_html += f'''
+                    <tr>
+                        <td style="padding: 12px; border-bottom: 1px solid #e0e0e0; font-weight: bold; color: #d32f2f;">{symbol}</td>
+                        <td style="padding: 12px; border-bottom: 1px solid #e0e0e0; color: #d32f2f;">{prob}</td>
+                        <td style="padding: 12px; border-bottom: 1px solid #e0e0e0;">{price}</td>
+                    </tr>'''
+        
+        # Build buy signals table
+        buy_table = ""
+        if buy_signals_html:
+            buy_table = f'''
+            <div style="margin: 20px 0;">
+                <h2 style="color: #0d652d; font-size: 18px; margin-bottom: 15px; border-left: 4px solid #0d652d; padding-left: 10px;">
+                    ✅ AL SİNYALLERİ
+                </h2>
+                <table style="width: 100%; border-collapse: collapse; background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                    <thead>
+                        <tr style="background: #e8f5e9;">
+                            <th style="padding: 12px; text-align: left; font-weight: 600; color: #333;">Hisse</th>
+                            <th style="padding: 12px; text-align: left; font-weight: 600; color: #333;">Olasılık</th>
+                            <th style="padding: 12px; text-align: left; font-weight: 600; color: #333;">Fiyat</th>
+                            <th style="padding: 12px; text-align: left; font-weight: 600; color: #333;">RSI</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {buy_signals_html}
+                    </tbody>
+                </table>
+            </div>'''
+        
+        # Build sell signals table
+        sell_table = ""
+        if sell_signals_html:
+            sell_table = f'''
+            <div style="margin: 20px 0;">
+                <h2 style="color: #d32f2f; font-size: 18px; margin-bottom: 15px; border-left: 4px solid #d32f2f; padding-left: 10px;">
+                    ❌ SAT SİNYALLERİ
+                </h2>
+                <table style="width: 100%; border-collapse: collapse; background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                    <thead>
+                        <tr style="background: #ffebee;">
+                            <th style="padding: 12px; text-align: left; font-weight: 600; color: #333;">Hisse</th>
+                            <th style="padding: 12px; text-align: left; font-weight: 600; color: #333;">Olasılık</th>
+                            <th style="padding: 12px; text-align: left; font-weight: 600; color: #333;">Fiyat</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {sell_signals_html}
+                    </tbody>
+                </table>
+            </div>'''
+        
+        return f'''<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light">
+    <meta name="supported-color-schemes" content="light">
+</head>
+<body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: #f5f5f5; color: #333;">
+    <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
+        <!-- Header -->
+        <div style="background: linear-gradient(135deg, #1a73e8 0%, #0d47a1 100%); padding: 25px; border-radius: 12px 12px 0 0; text-align: center;">
+            <h1 style="margin: 0; color: #fff; font-size: 24px; font-weight: 600;">
+                📊 BIST100 Günlük Sinyal Raporu
+            </h1>
+            <p style="margin: 10px 0 0 0; color: rgba(255,255,255,0.9); font-size: 14px;">
+                {date.today().strftime('%d %B %Y')}
+            </p>
+        </div>
+        
+        <!-- Summary Cards -->
+        <div style="background: #fff; padding: 20px; border-bottom: 1px solid #e0e0e0;">
+            <table style="width: 100%;" cellpadding="0" cellspacing="0">
+                <tr>
+                    <td style="width: 50%; text-align: center; padding: 15px;">
+                        <div style="background: #e8f5e9; border-radius: 8px; padding: 20px;">
+                            <div style="font-size: 36px; font-weight: bold; color: #0d652d;">{buy_count}</div>
+                            <div style="font-size: 14px; color: #333; margin-top: 5px;">AL Sinyali</div>
+                        </div>
+                    </td>
+                    <td style="width: 50%; text-align: center; padding: 15px;">
+                        <div style="background: #ffebee; border-radius: 8px; padding: 20px;">
+                            <div style="font-size: 36px; font-weight: bold; color: #d32f2f;">{sell_count}</div>
+                            <div style="font-size: 14px; color: #333; margin-top: 5px;">SAT Sinyali</div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        
+        <!-- Signal Tables -->
+        <div style="background: #fff; padding: 20px;">
+            {buy_table}
+            {sell_table}
             
-            <div class="footer">
-                Bu e-posta otomatik olarak BIST100 Trading System tarafından gönderilmiştir.<br>
-                ⚠️ Yatırım tavsiyesi değildir.
-            </div>
-        </body>
-        </html>
-        """
+            {f'<p style="color: #666; font-size: 14px; text-align: center; margin-top: 20px;">📈 Bugün {buy_count + sell_count} aktif sinyal tespit edildi.</p>' if buy_count + sell_count > 0 else '<p style="color: #666; font-size: 14px; text-align: center; margin-top: 20px;">ℹ️ Bugün güçlü sinyal tespit edilmedi.</p>'}
+        </div>
+        
+        <!-- Footer -->
+        <div style="background: #fafafa; padding: 20px; border-radius: 0 0 12px 12px; text-align: center; border-top: 1px solid #e0e0e0;">
+            <p style="margin: 0 0 10px 0; color: #666; font-size: 12px;">
+                ⚠️ <strong>UYARI:</strong> Bu sinyaller yatırım tavsiyesi değildir.
+            </p>
+            <p style="margin: 0; color: #999; font-size: 11px;">
+                BIST100 Deep Learning Trading System tarafından otomatik olarak oluşturulmuştur.
+            </p>
+        </div>
+    </div>
+</body>
+</html>'''
 
 
 def create_email_config_from_env() -> EmailConfig:
