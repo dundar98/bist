@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BIST100 AI Trading Dashboard</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="dark-mode">
+    <div class="glass-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <i class="fa-solid fa-robot"></i>
+                <span>BIST AI</span>
+            </div>
+            
+            <nav>
+                <a href="#" class="active"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
+                <a href="#signals"><i class="fa-solid fa-bell"></i> Sinyaller</a>
+                <a href="#portfolio"><i class="fa-solid fa-briefcase"></i> Portföy</a>
+                <a href="#settings"><i class="fa-solid fa-cog"></i> Ayarlar</a>
+            </nav>
+            
+            <div class="status-box">
+                <div class="status-indicator online"></div>
+                <div class="status-text">
+                    <span class="label">Sistem Durumu</span>
+                    <span class="value">Çevrimiçi</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header>
+                <div class="header-left">
+                    <h1>Piyasa Genel Bakış</h1>
+                    <p id="last-update">Son Güncelleme: Yükleniyor...</p>
+                </div>
+                <div class="header-right">
+                    <button id="refresh-btn"><i class="fa-solid fa-sync"></i></button>
+                    <div class="user-profile">
+                        <img src="https://ui-avatars.com/api/?name=Admin&background=0D8ABC&color=fff" alt="User">
+                    </div>
+                </div>
+            </header>
+
+            <!-- Stats Cards -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="icon-box blue">
+                        <i class="fa-solid fa-search"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Taranan</h3>
+                        <p id="total-scanned">-</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="icon-box green">
+                        <i class="fa-solid fa-arrow-trend-up"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>AL Sinyali</h3>
+                        <p id="buy-count">-</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="icon-box red">
+                        <i class="fa-solid fa-arrow-trend-down"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>SAT Sinyali</h3>
+                        <p id="sell-count">-</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="icon-box purple">
+                        <i class="fa-solid fa-bolt"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Volatilite</h3>
+                        <p id="market-volatility">-</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Dashboard Grid -->
+            <div class="dashboard-grid">
+                <!-- Top Opportunities -->
+                <div class="card wide-card">
+                    <div class="card-header">
+                        <h2>🚀 En Güçlü Fırsatlar</h2>
+                        <span class="badge">AI Seçimi</span>
+                    </div>
+                    <div class="table-responsive">
+                        <table id="signals-table">
+                            <thead>
+                                <tr>
+                                    <th>Sembol</th>
+                                    <th>Fiyat</th>
+                                    <th>Sinyal</th>
+                                    <th>Güven</th>
+                                    <th>RSI</th>
+                                    <th>Durum</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- JS will populate this -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Market Mood Chart -->
+                <div class="card chart-card">
+                    <div class="card-header">
+                        <h2>📊 Piyasa Modu</h2>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="marketChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Details Section -->
+            <div class="card details-card">
+                <div class="card-header">
+                    <h2>📝 Sinyal Detayları</h2>
+                </div>
+                <div id="signal-details" class="details-grid">
+                    <!-- JS will populate cards here -->
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

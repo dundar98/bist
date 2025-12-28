@@ -23,6 +23,7 @@ sys.path.insert(0, str(PROJECT_ROOT))
 from data import BIST100Validator, get_data_loader, prepare_features
 from models import BaseModel
 from strategy.signals import SignalGenerator, SignalType, SignalResult
+from analysis import NewsSentimentAnalyzer
 
 logger = logging.getLogger(__name__)
 
@@ -38,7 +39,10 @@ class StockSignal:
     change_1d: float  # 1-day price change %
     rsi: float
     volatility: float
-    reason: str
+    rsi: float
+    volatility: float
+    sentiment_score: float = 0.0 # New
+    reason: str = ""
     timestamp: datetime = field(default_factory=datetime.now)
     
     @property
@@ -59,6 +63,7 @@ class StockSignal:
             'signal': self.signal,
             'confidence': self.confidence,
             'current_price': self.current_price,
+            'sentiment_score': self.sentiment_score, # New
             'change_1d': self.change_1d,
             'rsi': self.rsi,
             'volatility': self.volatility,
@@ -134,6 +139,8 @@ class DailyScanner:
             entry_threshold=entry_threshold,
             exit_threshold=exit_threshold,
         )
+        
+        self.sentiment_analyzer = NewsSentimentAnalyzer() # New
         
         self.validator = BIST100Validator()
         self.data_loader = get_data_loader(data_source)
@@ -266,6 +273,15 @@ class DailyScanner:
         rsi = df_features['rsi'].iloc[-1] if 'rsi' in df_features.columns else 50
         volatility = df_features['volatility'].iloc[-1] if 'volatility' in df_features.columns else 0
         
+        # Get Sentiment
+        try:
+            sentiment = self.sentiment_analyzer.get_stock_sentiment(symbol)
+        except Exception:
+            sentiment = 0.0
+            
+        # Adjust signal based on sentiment? (Optional logic)
+        # For now just recording it
+        
         return StockSignal(
             symbol=symbol,
             probability=prob,
@@ -275,6 +291,7 @@ class DailyScanner:
             change_1d=change_1d,
             rsi=rsi,
             volatility=volatility,
+            sentiment_score=sentiment,
             reason=signal_result.reason,
         )
 
@@ -346,3 +363,40 @@ def generate_signal_report(result: DailyScanResult) -> str:
     lines.append("=" * 60)
     
     return "\n".join(lines)
+
+
+def generate_dashboard_json(result: DailyScanResult, output_path: str = "docs/dashboard_data.json"):
+    """
+    Generate JSON data for the web dashboard.
+    """
+    import json
+    
+    # Calculate average volatility
+    all_signals = result.buy_signals + result.sell_signals + result.hold_signals
+    avg_vol = np.mean([s.volatility for s in all_signals]) if all_signals else 0
+    
+    vol_status = "Normal"
+    if avg_vol > 0.03: vol_status = "Yüksek ⚠️"
+    elif avg_vol < 0.01: vol_status = "Düşük 💤"
+    
+    data = {
+        "scan_date": str(result.scan_date),
+        "total_scanned": result.total_scanned,
+        "buy_count": len(result.buy_signals),
+        "sell_count": len(result.sell_signals),
+        "hold_count": len(result.hold_signals),
+        "error_count": len(result.errors),
+        "market_volatility": vol_status,
+        "buy_signals": [s.to_dict() for s in result.buy_signals],
+        "sell_signals": [s.to_dict() for s in result.sell_signals],
+        # Don't send all hold signals to keep JSON light
+        "hold_signals": [], 
+    }
+    
+    # Ensure directory exists
+    Path(output_path).parent.mkdir(exist_ok=True, parents=True)
+    
+    with open(output_path, 'w', encoding='utf-8') as f:
+        json.dump(data, f, indent=2, ensure_ascii=False)
+    
+    logger.info(f"Dashboard data saved to {output_path}")
