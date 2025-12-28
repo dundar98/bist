@@ -21,7 +21,7 @@ from training import Trainer
 from models import create_model
 from notifications import DailyScanner, generate_signal_report
 from notifications.scanner import generate_dashboard_json
-from notifications.email_service import EmailNotifier
+from notifications.email_service import EmailNotifier, EmailConfig
 
 logger = logging.getLogger(__name__)
 
@@ -132,10 +132,14 @@ def main():
         if sender_email and sender_password and recipient:
             logger.info(f"Sending email to {recipient}...")
             try:
-                notifier = EmailNotifier(
+                # Create config object
+                email_config = EmailConfig(
                     sender_email=sender_email,
-                    sender_password=sender_password
+                    sender_password=sender_password,
+                    recipient_emails=[r.strip() for r in recipient.split(',')]
                 )
+                
+                notifier = EmailNotifier(email_config)
                 
                 dashboard_link = f"https://{os.getenv('GITHUB_REPOSITORY_OWNER', 'dundar98')}.github.io/bist"
                 
