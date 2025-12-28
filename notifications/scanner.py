@@ -22,7 +22,7 @@ sys.path.insert(0, str(PROJECT_ROOT))
 
 from data import BIST100Validator, get_data_loader, prepare_features
 from models import BaseModel
-from strategy.signals import SignalGenerator, Signal
+from strategy.signals import SignalGenerator, SignalType, SignalResult
 
 logger = logging.getLogger(__name__)
 
@@ -44,11 +44,11 @@ class StockSignal:
     @property
     def priority(self) -> int:
         """Higher priority = more actionable signal."""
-        if self.signal == 'BUY' and self.probability > 0.75:
+        if self.signal == SignalType.BUY.value and self.probability > 0.75:
             return 3
-        elif self.signal == 'BUY':
+        elif self.signal == SignalType.BUY.value:
             return 2
-        elif self.signal == 'SELL':
+        elif self.signal == SignalType.SELL.value:
             return 1
         return 0
     
@@ -192,9 +192,9 @@ class DailyScanner:
             try:
                 signal = self._scan_symbol(symbol, start_date, end_date)
                 
-                if signal.signal == 'BUY':
+                if signal.signal == SignalType.BUY.value:
                     buy_signals.append(signal)
-                elif signal.signal == 'SELL':
+                elif signal.signal == SignalType.SELL.value:
                     sell_signals.append(signal)
                 else:
                     hold_signals.append(signal)
