@@ -71,24 +71,23 @@ jobs:
           BIST_EMAIL_PASSWORD: ${{ secrets.BIST_EMAIL_PASSWORD }}
           BIST_EMAIL_RECIPIENTS: ${{ secrets.BIST_EMAIL_RECIPIENTS }}
         run: |
-          # Determine if we should send email
-          SEND_EMAIL="${{ github.event.inputs.send_email || 'true' }}"
-          
-          if [ "$SEND_EMAIL" = "true" ] && [ -n "$BIST_EMAIL_SENDER" ]; then
-            echo "📧 E-posta ile sinyal raporu gönderiliyor..."
-            python scripts/run_daily_scan.py \
-              --email \
-              --sender-email "$BIST_EMAIL_SENDER" \
-              --sender-password "$BIST_EMAIL_PASSWORD" \
-              --email-to "$BIST_EMAIL_RECIPIENTS" \
-              --data-source yfinance \
-              --output-dir output/scans
-          else
-            echo "📊 Sadece rapor oluşturuluyor..."
-            python scripts/run_daily_scan.py \
-              --data-source yfinance \
-              --output-dir output/scans
+          # Determine args
+          EMAIL_FLAG=""
+          if [ "${{ github.event.inputs.send_email || 'true' }}" = "true" ]; then
+            EMAIL_FLAG="--email"
           fi
+          
+          echo "🚀 Starting Daily Scan..."
+          echo "Email Flag: $EMAIL_FLAG"
+          
+          # Run python script (let it handle credential validation)
+          python scripts/run_daily_scan.py \
+            $EMAIL_FLAG \
+            --sender-email "$BIST_EMAIL_SENDER" \
+            --sender-password "$BIST_EMAIL_PASSWORD" \
+            --email-to "$BIST_EMAIL_RECIPIENTS" \
+            --data-source yfinance \
+            --output-dir output/scans
       
       - name: 📁 Upload scan results
         uses: actions/upload-artifact@v4

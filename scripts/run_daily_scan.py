@@ -124,6 +124,10 @@ def main():
     sender_password = args.sender_password or os.getenv("BIST_EMAIL_PASSWORD") or os.getenv("EMAIL_PASSWORD")
     recipient = args.email_to or os.getenv("BIST_EMAIL_RECIPIENTS") or os.getenv("EMAIL_RECIPIENT")
     
+    # Debug logging
+    logger.info(f"Email Request - Flag: {should_send_email}")
+    logger.info(f"Credentials Present - Sender: {bool(sender_email)}, Pass: {bool(sender_password)}, To: {bool(recipient)}")
+    
     if should_send_email or (sender_email and sender_password and recipient):
         if sender_email and sender_password and recipient:
             logger.info(f"Sending email to {recipient}...")
