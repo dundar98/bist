@@ -46,7 +46,8 @@ htmlcov/
 Thumbs.db
 
 # Project specific
-output/
+output/*
+!output/model.pt
 *.log
 logs/
 

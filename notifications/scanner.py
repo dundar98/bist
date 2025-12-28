@@ -141,7 +141,7 @@ class DailyScanner:
     def scan_all(
         self,
         symbols: Optional[List[str]] = None,
-        lookback_days: int = 120,
+        lookback_days: int = 180,  # Increased for more robust data
     ) -> DailyScanResult:
         """
         Scan all BIST100 stocks.
@@ -173,6 +173,13 @@ class DailyScanner:
         
         end_date = date.today()
         start_date = end_date - timedelta(days=lookback_days)
+        
+        # Log weekend warning
+        if end_date.weekday() >= 5:  # Saturday or Sunday
+            logger.warning(
+                f"⚠️ Bugün hafta sonu ({end_date.strftime('%A')}). "
+                "Son işlem günü verileri kullanılacak."
+            )
         
         buy_signals = []
         sell_signals = []
