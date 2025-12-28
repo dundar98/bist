@@ -94,6 +94,17 @@ jobs:
           path: output/scans/
           retention-days: 30
       
+      - name: 🚀 Commit dashboard updates
+        run: |
+          git config --global user.name "GitHub Actions Bot"
+          git config --global user.email "actions@github.com"
+          
+          # Add dashboard data
+          git add docs/dashboard_data.json
+          
+          # Commit if changes exist
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Update dashboard data [skip ci]" && git push)
+      
       - name: 📝 Summary
         run: |
           echo "## 📊 BIST100 Günlük Tarama Tamamlandı" >> $GITHUB_STEP_SUMMARY
