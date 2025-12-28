@@ -21,9 +21,18 @@ body {
     background-color: var(--bg-dark);
     color: var(--text-primary);
     min-height: 100vh;
-    background-image: 
+    background-image:
         radial-gradient(circle at 10% 20%, rgba(59, 130, 246, 0.15) 0%, transparent 20%),
         radial-gradient(circle at 90% 80%, rgba(139, 92, 246, 0.15) 0%, transparent 20%);
+    transition: background-color 0.3s ease;
+}
+
+body.light-mode {
+    --bg-dark: #f1f5f9;
+    --bg-card: rgba(255, 255, 255, 0.8);
+    --text-primary: #0f172a;
+    --text-secondary: #64748b;
+    --glass-border: rgba(0, 0, 0, 0.1);
 }
 
 .glass-container {
@@ -70,7 +79,8 @@ body {
     gap: 0.75rem;
 }
 
-.sidebar nav a:hover, .sidebar nav a.active {
+.sidebar nav a:hover,
+.sidebar nav a.active {
     background: rgba(59, 130, 246, 0.1);
     color: var(--accent-blue);
 }
@@ -82,6 +92,71 @@ body {
     display: flex;
     align-items: center;
     gap: 0.75rem;
+}
+
+.theme-toggle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+/* Toggle Switch */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 20px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 2px;
+    bottom: 2px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+input:checked+.slider {
+    background-color: var(--accent-blue);
+}
+
+input:checked+.slider:before {
+    -webkit-transform: translateX(20px);
+    -ms-transform: translateX(20px);
+    transform: translateX(20px);
+}
+
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
 }
 
 .status-indicator {
@@ -182,10 +257,25 @@ header p {
     font-size: 1.25rem;
 }
 
-.blue { background: rgba(59, 130, 246, 0.2); color: var(--accent-blue); }
-.green { background: rgba(16, 185, 129, 0.2); color: var(--accent-green); }
-.red { background: rgba(239, 68, 68, 0.2); color: var(--accent-red); }
-.purple { background: rgba(139, 92, 246, 0.2); color: var(--accent-purple); }
+.blue {
+    background: rgba(59, 130, 246, 0.2);
+    color: var(--accent-blue);
+}
+
+.green {
+    background: rgba(16, 185, 129, 0.2);
+    color: var(--accent-green);
+}
+
+.red {
+    background: rgba(239, 68, 68, 0.2);
+    color: var(--accent-red);
+}
+
+.purple {
+    background: rgba(139, 92, 246, 0.2);
+    color: var(--accent-purple);
+}
 
 .stat-info h3 {
     font-size: 0.9rem;
@@ -256,8 +346,23 @@ td {
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.signal-buy { color: var(--accent-green); font-weight: 600; }
-.signal-sell { color: var(--accent-red); font-weight: 600; }
+.signal-buy {
+    color: var(--accent-green);
+    font-weight: 600;
+}
+
+.signal-sell {
+    color: var(--accent-red);
+    font-weight: 600;
+}
+
+.pnl-pos {
+    color: var(--accent-green);
+}
+
+.pnl-neg {
+    color: var(--accent-red);
+}
 
 /* Chart */
 .chart-container {
@@ -279,8 +384,13 @@ td {
     border-left: 3px solid var(--text-secondary);
 }
 
-.detail-item.buy { border-color: var(--accent-green); }
-.detail-item.sell { border-color: var(--accent-red); }
+.detail-item.buy {
+    border-color: var(--accent-green);
+}
+
+.detail-item.sell {
+    border-color: var(--accent-red);
+}
 
 .detail-header {
     display: flex;
@@ -297,6 +407,31 @@ td {
     color: var(--text-secondary);
 }
 
+/* Settings Grid */
+.settings-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.setting-item {
+    background: rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--glass-border);
+}
+
+.setting-label {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.25rem;
+}
+
+.setting-value {
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
 /* Responsive */
 @media (max-width: 1024px) {
     .dashboard-grid {
@@ -308,7 +443,7 @@ td {
     .glass-container {
         flex-direction: column;
     }
-    
+
     .sidebar {
         width: 100%;
         padding: 1rem;
@@ -316,11 +451,13 @@ td {
         justify-content: space-between;
         align-items: center;
     }
-    
-    .sidebar nav, .status-box {
+
+    .sidebar nav,
+    .status-box,
+    .theme-toggle {
         display: none;
     }
-    
+
     .logo {
         margin-bottom: 0;
     }

@@ -379,6 +379,33 @@ def generate_dashboard_json(result: DailyScanResult, output_path: str = "docs/da
     if avg_vol > 0.03: vol_status = "Yüksek ⚠️"
     elif avg_vol < 0.01: vol_status = "Düşük 💤"
     
+    # Mock Portfolio Data (Since we don't have a live broker connection yet)
+    # In a real scenario, this would come from a broker API or a local database
+    portfolio = {
+        "total_equity": 100000.0,
+        "cash": 45000.0,
+        "daily_pnl": 1250.0,
+        "daily_pnl_pct": 1.25,
+        "holdings": [
+            {"symbol": "THYAO", "quantity": 100, "avg_price": 275.0, "current_price": 285.5, "pnl": 1050.0, "pnl_pct": 3.8},
+            {"symbol": "AKBNK", "quantity": 500, "avg_price": 40.0, "current_price": 42.1, "pnl": 1050.0, "pnl_pct": 5.25},
+            {"symbol": "ASELS", "quantity": 200, "avg_price": 55.0, "current_price": 54.5, "pnl": -100.0, "pnl_pct": -0.9},
+        ]
+    }
+    
+    # System Config
+    from config import get_config
+    conf = get_config()
+    config_data = {
+        "model_type": conf.model.model_type,
+        "entry_threshold": conf.backtest.entry_threshold,
+        "exit_threshold": conf.backtest.exit_threshold,
+        "stop_loss": conf.backtest.stop_loss,
+        "take_profit": conf.backtest.take_profit,
+        "max_position_size": conf.risk.max_position_size,
+        "max_drawdown": conf.risk.max_drawdown,
+    }
+    
     data = {
         "scan_date": str(result.scan_date),
         "total_scanned": result.total_scanned,
@@ -389,8 +416,9 @@ def generate_dashboard_json(result: DailyScanResult, output_path: str = "docs/da
         "market_volatility": vol_status,
         "buy_signals": [s.to_dict() for s in result.buy_signals],
         "sell_signals": [s.to_dict() for s in result.sell_signals],
-        # Don't send all hold signals to keep JSON light
         "hold_signals": [], 
+        "portfolio": portfolio,
+        "config": config_data
     }
     
     # Ensure directory exists
