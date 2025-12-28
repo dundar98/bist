@@ -1,10 +1,24 @@
-torch>=2.0.0
+# Core ML - CPU only version (much smaller for GitHub Actions)
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch
+
+# Data processing
 pandas>=1.5.0
 numpy>=1.23.0
 scikit-learn>=1.2.0
+
+# Technical analysis
 ta>=0.10.0
+
+# Data fetching
 yfinance>=0.2.0
+
+# Visualization (optional for CI)
 matplotlib>=3.7.0
 seaborn>=0.12.0
+
+# Testing
 pytest>=7.0.0
+
+# Progress bar
 tqdm>=4.65.0
