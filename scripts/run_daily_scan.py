@@ -143,10 +143,14 @@ def main():
                 
                 dashboard_link = f"https://{os.getenv('GITHUB_REPOSITORY_OWNER', 'dundar98')}.github.io/bist"
                 
-                notifier.send_daily_report(
-                    recipient=recipient,
-                    result=result,
-                    dashboard_link=dashboard_link
+                # Append dashboard link to report
+                email_body = text_report + f"\n\n📊 Web Dashboard: {dashboard_link}"
+                
+                notifier.send_signal_report(
+                    report_text=email_body,
+                    scan_date=str(result.scan_date),
+                    buy_count=len(result.buy_signals),
+                    sell_count=len(result.sell_signals)
                 )
                 logger.info("Email sent successfully.")
             except Exception as e:
