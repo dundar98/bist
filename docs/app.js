@@ -11,6 +11,15 @@ document.addEventListener('DOMContentLoaded', () => {
     // Data
     fetchData();
 
+    // Vade Selection
+    document.querySelectorAll('.vade-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.vade-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            fetchData(); // In real app, we might pass vade param, but for now we refresh state
+        });
+    });
+
     document.getElementById('refresh-btn').addEventListener('click', fetchData);
 });
 
@@ -118,9 +127,12 @@ function updateDashboard(data) {
                     ${(signal.probability * 100).toFixed(0)}%
                 </div>
             </td>
+            <td class="target-col">${signal.target_price ? signal.target_price.toFixed(2) + ' ₺' : '-'}</td>
+            <td class="horizon-col">${signal.horizon_days ? signal.horizon_days + ' Gün' : '-'}</td>
             <td>${signal.rsi.toFixed(0)}</td>
              <td>
                 ${getSentimentBadge(signal.sentiment_score)}
+                <div style="font-size: 0.7rem; color: var(--text-secondary);">${signal.history_info || ''}</div>
             </td>
             <td><span class="badge">Aktif</span></td>
         `;

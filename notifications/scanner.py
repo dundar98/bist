@@ -24,6 +24,7 @@ from data import BIST100Validator, get_data_loader, prepare_features
 from models import BaseModel
 from strategy.signals import SignalGenerator, SignalType, SignalResult
 from analysis import NewsSentimentAnalyzer
+from utils.signal_history import SignalHistoryTracker
 
 logger = logging.getLogger(__name__)
 
@@ -39,20 +40,21 @@ class StockSignal:
     change_1d: float  # 1-day price change %
     rsi: float
     volatility: float
-    rsi: float
-    volatility: float
-    sentiment_score: float = 0.0 # New
+    sentiment_score: float = 0.0
+    target_price: float = 0.0
+    horizon_days: int = 0
+    history_info: str = ""
     reason: str = ""
     timestamp: datetime = field(default_factory=datetime.now)
     
     @property
     def priority(self) -> int:
         """Higher priority = more actionable signal."""
-        if self.signal == SignalType.BUY.value and self.probability > 0.75:
+        if self.signal.lower() == SignalType.BUY.value and self.probability > 0.75:
             return 3
-        elif self.signal == SignalType.BUY.value:
+        elif self.signal.lower() == SignalType.BUY.value:
             return 2
-        elif self.signal == SignalType.SELL.value:
+        elif self.signal.lower() == SignalType.SELL.value:
             return 1
         return 0
     
@@ -63,10 +65,13 @@ class StockSignal:
             'signal': self.signal,
             'confidence': self.confidence,
             'current_price': self.current_price,
-            'sentiment_score': self.sentiment_score, # New
+            'sentiment_score': self.sentiment_score,
             'change_1d': self.change_1d,
             'rsi': self.rsi,
             'volatility': self.volatility,
+            'target_price': self.target_price,
+            'horizon_days': self.horizon_days,
+            'history_info': self.history_info,
             'reason': self.reason,
             'timestamp': str(self.timestamp),
         }
@@ -81,6 +86,7 @@ class DailyScanResult:
     hold_signals: List[StockSignal]
     errors: List[str]
     scan_duration: float
+    mode: str = "UZUN"
     
     @property
     def total_scanned(self) -> int:
@@ -109,110 +115,97 @@ class DailyScanner:
     
     def __init__(
         self,
-        model: BaseModel,
-        feature_columns: List[str],
-        lookback: int = 60,
-        entry_threshold: float = 0.65,
-        exit_threshold: float = 0.35,
-        data_source: str = "yfinance",
+        model_path: str,
+        config: any,
         device: str = "cpu",
+        history_file: str = "output/signal_history.json"
     ):
         """
         Initialize daily scanner.
-        
-        Args:
-            model: Trained model for predictions
-            feature_columns: Feature column names
-            lookback: Sequence length for model
-            entry_threshold: Buy signal threshold
-            exit_threshold: Sell signal threshold
-            data_source: Data source ('yfinance' or 'synthetic')
-            device: Device for inference
         """
-        self.model = model.to(device)
-        self.model.eval()
-        self.feature_columns = feature_columns
-        self.lookback = lookback
+        self.config = config
         self.device = device
+        self.validator = BIST100Validator()
+        logger.info(f"Validator initialized with {len(self.validator.get_all_symbols())} symbols.")
+        self.history_tracker = SignalHistoryTracker(history_file)
         
+        # Load model
+        self.model = torch.load(model_path, map_location=self.device, weights_only=False)
+        self.model.eval()
+        
+        # Metadata from model or config
+        self.feature_columns = getattr(self.model, 'feature_columns', None)
+        self.lookback = getattr(self.model, 'lookback', 60)
+        
+        # Initialize signal generator
         self.signal_generator = SignalGenerator(
-            entry_threshold=entry_threshold,
-            exit_threshold=exit_threshold,
+            entry_threshold=self.config.backtest.entry_threshold,
+            exit_threshold=self.config.backtest.exit_threshold,
+            use_dynamic_threshold=True
         )
         
-        self.sentiment_analyzer = NewsSentimentAnalyzer() # New
-        
-        self.validator = BIST100Validator()
-        self.data_loader = get_data_loader(data_source)
+        self.sentiment_analyzer = NewsSentimentAnalyzer()
     
     def scan_all(
         self,
         symbols: Optional[List[str]] = None,
-        lookback_days: int = 180,  # Increased for more robust data
         limit: Optional[int] = 30,
+        mode: str = "UZUN",
+        lookback_days: int = 180
     ) -> DailyScanResult:
         """
-        Scan all BIST100 stocks.
-        
-        Args:
-            symbols: Optional list of symbols (default: all BIST100)
-            lookback_days: Days of history to load
-            limit: Max number of stocks to scan (None for all)
-            
-        Returns:
-            DailyScanResult with all signals
+        Scan symbols and generate signals based on mode.
         """
         import time
         start_time = time.time()
+
+        intervals = {"KISA": "15m", "ORTA": "1h", "UZUN": "1d"}
+        interval = intervals.get(mode, "1d")
         
-        # Get symbols
         if symbols is None:
-            # Get all valid BIST100 symbols
             symbols = self.validator.get_all_symbols()
-            
-            # Apply limit if specified
             if limit is not None:
                 symbols = symbols[:limit]
         
-        # Validate symbols
-        symbols = self.validator.filter_valid_symbols(symbols)
+        # Determine Horizons and TP Multipliers
+        tp_mults = {"KISA": 0.02, "ORTA": 0.07, "UZUN": 0.15}
+        horizons = {"KISA": 2, "ORTA": 10, "UZUN": 60}
+        
+        tp_mult = tp_mults.get(mode, 0.10)
+        horizon = horizons.get(mode, 30)
+        
+        results = []
+        errors = []
+        
+        loader = get_data_loader(source="yfinance")
+        
+        logger.info(f"Starting {mode} scan ({interval}) for {len(symbols)} symbols...")
         
         end_date = date.today()
         start_date = end_date - timedelta(days=lookback_days)
         
-        # Log weekend warning
-        if end_date.weekday() >= 5:  # Saturday or Sunday
-            logger.warning(
-                f"⚠️ Bugün hafta sonu ({end_date.strftime('%A')}). "
-                "Son işlem günü verileri kullanılacak."
-            )
-        
-        buy_signals = []
-        sell_signals = []
-        hold_signals = []
-        errors = []
-        
-        logger.info(f"Starting daily scan for {len(symbols)} symbols...")
-        
         for symbol in symbols:
             try:
-                signal = self._scan_symbol(symbol, start_date, end_date)
+                df = loader.load(symbol, start_date=start_date, end_date=date.today(), interval=interval)
+                signal = self._scan_symbol(symbol, df)
                 
-                signal_type_lower = signal.signal.lower()
-                if signal_type_lower == SignalType.BUY.value:
-                    buy_signals.append(signal)
-                elif signal_type_lower == SignalType.SELL.value:
-                    sell_signals.append(signal)
-                else:
-                    hold_signals.append(signal)
-                    
+                if signal.signal.lower() == SignalType.BUY.value:
+                    signal.target_price = signal.current_price * (1 + tp_mult)
+                    signal.horizon_days = horizon
+                    signal.history_info = self.history_tracker.get_signal_performance(symbol, signal.current_price) or ""
+                    self.history_tracker.save_signal(symbol, signal.signal, signal.current_price, signal.probability, mode)
+
+                results.append(signal)
             except Exception as e:
-                error_msg = f"{symbol}: {str(e)}"
-                errors.append(error_msg)
-                logger.warning(f"Error scanning {symbol}: {e}")
+                logger.error(f"Error scanning {symbol}: {e}")
+                errors.append(f"{symbol}: {str(e)}")
         
         duration = time.time() - start_time
         
+        buy_signals = [s for s in results if s.signal.lower() == SignalType.BUY.value]
+        sell_signals = [s for s in results if s.signal.lower() == SignalType.SELL.value]
+        hold_signals = [s for s in results if s.signal.lower() == SignalType.HOLD.value]
+
         result = DailyScanResult(
             scan_date=end_date,
             buy_signals=buy_signals,
@@ -220,12 +213,7 @@ class DailyScanner:
             hold_signals=hold_signals,
             errors=errors,
             scan_duration=duration,
-        )
-        
-        logger.info(
-            f"Scan complete: {result.total_scanned} stocks, "
-            f"{len(buy_signals)} BUY, {len(sell_signals)} SELL, "
-            f"{len(errors)} errors, {duration:.1f}s"
+            mode=mode
         )
         
         return result
@@ -233,20 +221,22 @@ class DailyScanner:
     def _scan_symbol(
         self,
         symbol: str,
-        start_date: date,
-        end_date: date,
+        df: pd.DataFrame
     ) -> StockSignal:
-        """Scan a single symbol and generate signal."""
-        # Load data
-        df = self.data_loader.load(symbol, start_date, end_date)
+        """
+        Scan a single symbol and generate prediction.
+        """
+        if len(df) < self.lookback:
+            raise ValueError(f"Not enough data: {len(df)} < {self.lookback}")
         
-        if len(df) < self.lookback + 10:
-            raise ValueError(f"Insufficient data: {len(df)} bars")
-        
-        # Generate features
-        df_features, _ = prepare_features(df, normalize=True)
+        df_features, feature_names = prepare_features(df, normalize=True)
         df_features = df_features.dropna()
         
+        # Dynamic feature column discovery if missing from model metadata
+        if self.feature_columns is None:
+            self.feature_columns = feature_names
+            logger.info(f"Dynamically discovered {len(self.feature_columns)} feature columns for scanner.")
+            
         if len(df_features) < self.lookback:
             raise ValueError(f"Insufficient features after NaN drop")
         
@@ -254,39 +244,27 @@ class DailyScanner:
         latest_features = df_features[self.feature_columns].values[-self.lookback:]
         latest_features = np.nan_to_num(latest_features, nan=0.0)
         
-        # Predict
         x = torch.from_numpy(latest_features.astype(np.float32)).unsqueeze(0)
         x = x.to(self.device)
         
         with torch.no_grad():
             output = self.model(x)
-            # Handle Multi-Task output (direction, volatility)
-            if isinstance(output, tuple):
-                prob = output[0].item()
-            else:
-                prob = output.item()
+            prob = output[0].item() if isinstance(output, tuple) else output.item()
         
-        # Generate signal
         signal_result = self.signal_generator.generate(prob, current_position=None)
         
-        # Get additional info
         current_price = df['close'].iloc[-1]
         prev_price = df['close'].iloc[-2] if len(df) > 1 else current_price
         change_1d = (current_price - prev_price) / prev_price * 100
         
-        # Get RSI and volatility from features
         rsi = df_features['rsi'].iloc[-1] if 'rsi' in df_features.columns else 50
         volatility = df_features['volatility'].iloc[-1] if 'volatility' in df_features.columns else 0
-        
-        # Get Sentiment
+        sentiment = 0.0
         try:
             sentiment = self.sentiment_analyzer.get_stock_sentiment(symbol)
         except Exception:
-            sentiment = 0.0
+            pass
             
-        # Adjust signal based on sentiment? (Optional logic)
-        # For now just recording it
-        
         return StockSignal(
             symbol=symbol,
             probability=prob,
@@ -304,82 +282,42 @@ class DailyScanner:
 def generate_signal_report(result: DailyScanResult) -> str:
     """
     Generate a formatted text report of scan results.
-    
-    Args:
-        result: DailyScanResult from scanner
-        
-    Returns:
-        Formatted report string
     """
     lines = []
     lines.append("=" * 60)
     lines.append(f"📊 BIST100 GÜNLÜK SİNYAL RAPORU - {result.scan_date}")
     lines.append("=" * 60)
     lines.append("")
-    
-    # Summary
     lines.append(f"📈 Taranan Hisse: {result.total_scanned}")
     lines.append(f"✅ AL Sinyali: {len(result.buy_signals)}")
     lines.append(f"❌ SAT Sinyali: {len(result.sell_signals)}")
     lines.append(f"⏸️ BEKLE: {len(result.hold_signals)}")
     lines.append("")
     
-    # Top buy signals
     if result.buy_signals:
         lines.append("-" * 60)
         lines.append("🟢 EN GÜÇLÜ AL SİNYALLERİ:")
         lines.append("-" * 60)
-        
         for signal in result.get_top_signals(10):
-            if signal.probability > 0.70:
-                emoji = "🔥" 
-                desc = "GÜÇLÜ AL"
-            elif signal.probability > 0.60:
-                emoji = "✅"
-                desc = "AL"
-            else:
-                emoji = "⚠️"
-                desc = "SPEKÜLATİF"
-                
+            emoji = "🔥" if signal.probability > 0.70 else ("✅" if signal.probability > 0.60 else "⚠️")
+            desc = "GÜÇLÜ AL" if signal.probability > 0.70 else ("AL" if signal.probability > 0.60 else "SPEKÜLATİF")
+            
+            target_info = (
+                f"   └─ 🎯 Hedef: {signal.target_price:.2f} TL | "
+                f"⏳ Vade: {signal.horizon_days} Gün | "
+                f"📜 {signal.history_info}"
+            ) if signal.signal.lower() == SignalType.BUY.value else ""
+            
             lines.append(
-                f"{emoji} {signal.symbol:6} | "
-                f"Sinyal: {desc} | "
-                f"Olasılık: {signal.probability:.1%} | "
-                f"Fiyat: {signal.current_price:.2f} TL | "
-                f"Değişim: {signal.change_1d:+.1f}% | "
-                f"RSI: {signal.rsi:.0f} | "
-                f"Vol: {signal.volatility:.1%} | "
-                f"Sent: {signal.sentiment_score:+.2f}"
+                f"{emoji} {signal.symbol:6} | Sinyal: {desc} | "
+                f"Olasılık: {signal.probability:.1%} | Fiyat: {signal.current_price:.2f} TL"
             )
-            # lines.append(f"   └─ {signal.reason}") # Optional to save space
+            if target_info: lines.append(target_info)
         lines.append("")
     
-    # Sell signals
-    if result.sell_signals:
-        lines.append("-" * 60)
-        lines.append("🔴 SAT SİNYALLERİ:")
-        lines.append("-" * 60)
-        
-        for signal in sorted(result.sell_signals, key=lambda x: x.probability)[:5]:
-            lines.append(
-                f"❌ {signal.symbol:6} | "
-                f"Olasılık: {signal.probability:.1%} | "
-                f"Fiyat: {signal.current_price:.2f} TL"
-            )
-        lines.append("")
-    
-    # Errors
-    if result.errors:
-        lines.append("-" * 60)
-        lines.append(f"⚠️ {len(result.errors)} hisse taranamadı")
-        lines.append("-" * 60)
-    
-    lines.append("")
     lines.append("=" * 60)
     lines.append("⚠️ DİKKAT: Bu sinyaller tavsiye niteliğinde değildir.")
-    lines.append("Yatırım kararlarınızı kendi araştırmanıza dayandırın.")
     lines.append("=" * 60)
-    
     return "\n".join(lines)
 
 
@@ -389,43 +327,15 @@ def generate_dashboard_json(result: DailyScanResult, output_path: str = "docs/da
     """
     import json
     
-    # Calculate average volatility
-    all_signals = result.buy_signals + result.sell_signals + result.hold_signals
-    avg_vol = np.mean([s.volatility for s in all_signals]) if all_signals else 0
+    avg_vol = np.mean([s.volatility for s in (result.buy_signals + result.sell_signals + result.hold_signals)]) if (result.buy_signals + result.sell_signals + result.hold_signals) else 0
+    vol_status = "Yüksek ⚠️" if avg_vol > 0.03 else ("Düşük 💤" if avg_vol < 0.01 else "Normal")
     
-    vol_status = "Normal"
-    if avg_vol > 0.03: vol_status = "Yüksek ⚠️"
-    elif avg_vol < 0.01: vol_status = "Düşük 💤"
-    
-    # Mock Portfolio Data (Since we don't have a live broker connection yet)
-    # In a real scenario, this would come from a broker API or a local database
-    portfolio = {
-        "total_equity": 100000.0,
-        "cash": 45000.0,
-        "daily_pnl": 1250.0,
-        "daily_pnl_pct": 1.25,
-        "holdings": [
-            {"symbol": "THYAO", "quantity": 100, "avg_price": 275.0, "current_price": 285.5, "pnl": 1050.0, "pnl_pct": 3.8},
-            {"symbol": "AKBNK", "quantity": 500, "avg_price": 40.0, "current_price": 42.1, "pnl": 1050.0, "pnl_pct": 5.25},
-            {"symbol": "ASELS", "quantity": 200, "avg_price": 55.0, "current_price": 54.5, "pnl": -100.0, "pnl_pct": -0.9},
-        ]
-    }
-    
-    # System Config
     from config import get_config
     conf = get_config()
-    config_data = {
-        "model_type": conf.model.model_type,
-        "entry_threshold": conf.backtest.entry_threshold,
-        "exit_threshold": conf.backtest.exit_threshold,
-        "stop_loss": conf.backtest.stop_loss_pct,
-        "take_profit": conf.backtest.take_profit_pct,
-        "max_risk_per_trade": conf.risk.max_risk_per_trade,
-        "max_drawdown": conf.risk.max_daily_drawdown,
-    }
     
     data = {
         "scan_date": str(result.scan_date),
+        "mode": result.mode,
         "total_scanned": result.total_scanned,
         "buy_count": len(result.buy_signals),
         "sell_count": len(result.sell_signals),
@@ -435,14 +345,19 @@ def generate_dashboard_json(result: DailyScanResult, output_path: str = "docs/da
         "buy_signals": [s.to_dict() for s in result.buy_signals],
         "sell_signals": [s.to_dict() for s in result.sell_signals],
         "hold_signals": [], 
-        "portfolio": portfolio,
-        "config": config_data
+        "portfolio": {
+            "total_equity": 100000.0,
+            "daily_pnl": 1250.0,
+            "daily_pnl_pct": 1.25,
+            "holdings": []
+        },
+        "config": {
+            "entry_threshold": conf.backtest.entry_threshold,
+            "stop_loss": conf.backtest.stop_loss_pct
+        }
     }
     
-    # Ensure directory exists
     Path(output_path).parent.mkdir(exist_ok=True, parents=True)
-    
     with open(output_path, 'w', encoding='utf-8') as f:
         json.dump(data, f, indent=2, ensure_ascii=False)
-    
     logger.info(f"Dashboard data saved to {output_path}")

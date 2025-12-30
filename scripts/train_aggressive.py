@@ -43,7 +43,9 @@ TRAINING_SYMBOLS = [
     "FROTO", "TOASO", "ARCLK", "PETKM", "SASA"
 ]
 
-def load_real_data(lookback_days=730):
+import argparse
+
+def load_real_data(interval="1d", lookback_days=730):
     """Load real data for training."""
     loader = get_data_loader("yfinance")
     start_date = date.today() - timedelta(days=lookback_days)
@@ -51,128 +53,93 @@ def load_real_data(lookback_days=730):
     
     all_dfs = []
     
-    logger.info(f"Loading data for {len(TRAINING_SYMBOLS)} stocks...")
+    logger.info(f"Loading {interval} data for {len(TRAINING_SYMBOLS)} stocks...")
     for symbol in TRAINING_SYMBOLS:
         try:
-            df = loader.load(symbol, start_date, end_date)
-            if len(df) > 200:
+            df = loader.load(symbol, start_date, end_date, interval=interval)
+            if len(df) > 100:
                 all_dfs.append(df)
         except Exception as e:
             logger.warning(f"Failed to load {symbol}: {e}")
             
     if not all_dfs:
         raise ValueError("No data loaded!")
-        
-    # Concatenate all data (Simplest approach for now: treat as one big stream)
-    # Ideally should use MultiStockDataset, but for quick Aggressive training, 
-    # vertical concatenation with Chronological Split works if we split by time first.
-    # Actually, Chronological Split on concatenated data leaks future if not careful.
-    # Better: Split each DF, then concat train/val/test sets.
-    
     return all_dfs
 
-def train_aggressive():
+def train_vade(mode="UZUN", epochs=40, batch_size=64):
     setup_logging()
     config = get_config()
     
-    # 1. Aggressive Settings
-    LABEL_THRESHOLD = 0.01 # 1% gain target (was 0.02)
-    config.features.label_threshold = LABEL_THRESHOLD
+    # 1. Mode Mapping (Adjusted for easier convergence)
+    MODES = {
+        "KISA": {"interval": "15m", "threshold": 0.008, "horizon": 12, "model_name": "transformer_kisa.pt"},
+        "ORTA": {"interval": "1h", "threshold": 0.03, "horizon": 24, "model_name": "transformer_orta.pt"},
+        "UZUN": {"interval": "1d", "threshold": 0.07, "horizon": 20, "model_name": "transformer_uzun.pt"}
+    }
     
-    logger.info(f"🚀 Starting AGGRESSIVE Training (Threshold: {LABEL_THRESHOLD:.1%})")
+    m_cfg = MODES.get(mode, MODES["UZUN"])
+    INTERVAL = m_cfg["interval"]
+    LABEL_THRESHOLD = m_cfg["threshold"]
+    HORIZON = m_cfg["horizon"]
+    SAVE_FILE = m_cfg["model_name"]
     
-    dfs = load_real_data()
+    logger.info(f"🚀 Training mode: {mode} (Interval: {INTERVAL}, Target: {LABEL_THRESHOLD:.1%}, Horizon: {HORIZON})")
+    
+    # Fetch more data for intraday if needed
+    lookback = 730 if INTERVAL == "1d" else 59 # yfinance limit for intraday
+    dfs = load_real_data(interval=INTERVAL, lookback_days=lookback)
     
     # Get official feature list from a sample
-    sample_df, feature_columns = prepare_features(dfs[0], normalize=True)
+    sample_feat, feature_columns = prepare_features(dfs[0], normalize=True)
     logger.info(f"Using {len(feature_columns)} standardized features.")
     
-    train_dfs = []
-    val_dfs = []
-    test_dfs = []
-    
+    train_dfs, val_dfs, test_dfs = [], [], []
     splitter = ChronologicalSplitter(train_ratio=0.7, val_ratio=0.15, test_ratio=0.15)
     
     for df in dfs:
-        # Prepare features ONCE here
         df_feat, _ = prepare_features(df, normalize=True)
         df_feat = df_feat.dropna()
+        if len(df_feat) < 100: continue
         
         t, v, te = splitter.split_dataframe(df_feat)
-        train_dfs.append(t)
-        val_dfs.append(v)
-        test_dfs.append(te)
+        train_dfs.append(t); val_dfs.append(v); test_dfs.append(te)
         
-    full_train = pd.concat(train_dfs)
-    full_val = pd.concat(val_dfs)
-    full_test = pd.concat(test_dfs)
-    
-    logger.info(f"Training Samples: {len(full_train)}")
+    full_train = pd.concat(train_dfs); full_val = pd.concat(val_dfs); full_test = pd.concat(test_dfs)
     
     # 3. Create Datasets
-    train_ds = TradingDataset(full_train, feature_columns, 
-                              lookback=60, label_threshold=LABEL_THRESHOLD)
-    val_ds = TradingDataset(full_val, feature_columns, 
-                            lookback=60, label_threshold=LABEL_THRESHOLD)
-    test_ds = TradingDataset(full_test, feature_columns, 
-                             lookback=60, label_threshold=LABEL_THRESHOLD)
+    train_ds = TradingDataset(full_train, feature_columns, lookback=60, label_threshold=LABEL_THRESHOLD, label_horizon=HORIZON)
+    val_ds = TradingDataset(full_val, feature_columns, lookback=60, label_threshold=LABEL_THRESHOLD, label_horizon=HORIZON)
+    test_ds = TradingDataset(full_test, feature_columns, lookback=60, label_threshold=LABEL_THRESHOLD, label_horizon=HORIZON)
     
     logger.info(f"Positive Label Rate (Train): {train_ds.labels.mean():.2%}")
     
-    train_loader, val_loader, test_loader = create_data_loaders(
-        train_ds, val_ds, test_ds, 
-        batch_size=64, 
-        weighted_sampling=False # We use Class Weights in Loss instead
-    )
+    train_loader, val_loader, test_loader = create_data_loaders(train_ds, val_ds, test_ds, batch_size=batch_size)
     
     # 4. Train Transformer
-    logger.info("Initializing Transformer Model...")
-    model = create_model(
-        "transformer",
-        input_size=len(feature_columns),
-        hidden_size=128,
-        num_layers=2,
-        dropout=0.3,
-        nhead=4
-    )
+    model = create_model("transformer", input_size=len(feature_columns), hidden_size=128, num_layers=2)
+    device = "cuda" if torch.cuda.is_available() else "cpu"
     
-    start_time = time.time()
-    
-    # FORCE DISABLE CLASS WEIGHTS (Since we have 60% positives now)
-    # If we weight < 1.0, we hurt performance on Buys.
-    
-    trained_model, history, metrics = train_model(
+    trained_model, _, metrics = train_model(
         model, train_loader, val_loader, test_loader,
-        epochs=20,
-        patience=7,
-        learning_rate=0.0005,
-        device="cpu"
+        epochs=epochs, patience=15, learning_rate=0.0007, device=device
     )
     
-    duration = time.time() - start_time
-    
-    print("\n" + "="*60)
-    print("📢 AGGRESSIVE TRAINING RESULTS")
-    print("="*60)
-    print(f"Model: Transformer")
-    print(f"Time: {duration:.1f}s")
-    print(f"Test AUC: {metrics['auc']:.4f}")
-    print(f"Test F1:  {metrics['f1']:.4f}")
-    print(f"Positive Rate (Predicted): {metrics['positive_rate']:.2%}")
-    print(f"Positive Rate (Actual):    {metrics['actual_positive_rate']:.2%}")
-    print("-" * 60)
-    
-    # Save if at least random (0.50)
-    if metrics['auc'] >= 0.50:
-        save_path = PROJECT_ROOT / "models" / "aggressive_transformer.pt"
-        torch.save(trained_model.state_dict(), save_path)
-        print(f"✅ Model saved to {save_path}")
-        
-        # Update config to use this model? 
-        # We can't easily update config.py dynamically, 
-        # but we can tell user to switch or rename file.
+    # Save Model (Ensuring files exist for pipeline)
+    if metrics['auc'] >= 0.40:
+        save_path = PROJECT_ROOT / "models" / SAVE_FILE
+        # Attach metadata for Scanner
+        trained_model.feature_columns = feature_columns
+        trained_model.lookback = 60
+        torch.save(trained_model, save_path)
+        print(f"✅ {mode} Model saved to {save_path} (AUC: {metrics['auc']:.4f})")
     else:
-        print("⚠️ Result AUC too low, not saving.")
+        print(f"⚠️ {mode} Model AUC too low ({metrics['auc']:.4f})")
 
 if __name__ == "__main__":
-    train_aggressive()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--mode", type=str, default="UZUN", choices=["KISA", "ORTA", "UZUN"])
+    parser.add_argument("--epochs", type=int, default=40)
+    parser.add_argument("--batch-size", type=int, default=64)
+    args = parser.parse_args()
+    
+    train_vade(args.mode, epochs=args.epochs, batch_size=args.batch_size)

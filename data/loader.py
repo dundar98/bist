@@ -50,7 +50,8 @@ class DataLoader(ABC):
         self,
         symbol: str,
         start_date: date,
-        end_date: date
+        end_date: date,
+        interval: str = "1d"
     ) -> pd.DataFrame:
         """
         Load raw data for a single symbol.
@@ -61,6 +62,7 @@ class DataLoader(ABC):
             symbol: Stock symbol (already validated)
             start_date: Start date
             end_date: End date
+            interval: Data interval (e.g., '15m', '1h', '1d')
             
         Returns:
             DataFrame with OHLCV data
@@ -71,7 +73,8 @@ class DataLoader(ABC):
         self,
         symbol: str,
         start_date: Union[date, str],
-        end_date: Union[date, str]
+        end_date: Union[date, str],
+        interval: str = "1d"
     ) -> pd.DataFrame:
         """
         Load data for a single symbol with validation.
@@ -80,6 +83,7 @@ class DataLoader(ABC):
             symbol: Stock symbol
             start_date: Start date (date object or 'YYYY-MM-DD' string)
             end_date: End date
+            interval: Data interval (e.g., '15m', '1h', '1d')
             
         Returns:
             Standardized DataFrame with columns:
@@ -92,10 +96,10 @@ class DataLoader(ABC):
         start = self._parse_date(start_date)
         end = self._parse_date(end_date)
         
-        logger.info(f"Loading data for {validated_symbol} from {start} to {end}")
+        logger.info(f"Loading {interval} data for {validated_symbol} from {start} to {end}")
         
         # Load raw data
-        df = self._load_raw(validated_symbol, start, end)
+        df = self._load_raw(validated_symbol, start, end, interval=interval)
         
         # Standardize format
         df = self._standardize(df, validated_symbol)
@@ -110,7 +114,8 @@ class DataLoader(ABC):
         self,
         symbols: List[str],
         start_date: Union[date, str],
-        end_date: Union[date, str]
+        end_date: Union[date, str],
+        interval: str = "1d"
     ) -> Dict[str, pd.DataFrame]:
         """
         Load data for multiple symbols.
@@ -119,6 +124,7 @@ class DataLoader(ABC):
             symbols: List of stock symbols
             start_date: Start date
             end_date: End date
+            interval: Data interval
             
         Returns:
             Dictionary mapping symbol to DataFrame
@@ -129,7 +135,7 @@ class DataLoader(ABC):
         results = {}
         for symbol in validated_symbols:
             try:
-                results[symbol] = self.load(symbol, start_date, end_date)
+                results[symbol] = self.load(symbol, start_date, end_date, interval=interval)
             except Exception as e:
                 logger.error(f"Failed to load {symbol}: {e}")
                 # Continue with other symbols
@@ -239,7 +245,8 @@ class YFinanceLoader(DataLoader):
         self,
         symbol: str,
         start_date: date,
-        end_date: date
+        end_date: date,
+        interval: str = "1d"
     ) -> pd.DataFrame:
         """Load data from Yahoo Finance."""
         try:
@@ -252,20 +259,27 @@ class YFinanceLoader(DataLoader):
         # Add suffix for BIST
         ticker_symbol = f"{symbol}{self.suffix}"
         
-        logger.debug(f"Fetching {ticker_symbol} from Yahoo Finance")
+        logger.debug(f"Fetching {ticker_symbol} ({interval}) from Yahoo Finance")
         
         ticker = yf.Ticker(ticker_symbol)
         df = ticker.history(
             start=start_date.isoformat(),
             end=end_date.isoformat(),
+            interval=interval,
             auto_adjust=True
         )
         
         if df.empty:
-            raise DataLoaderError(
-                f"No data returned for {ticker_symbol}. "
-                "Check if the symbol is valid on Yahoo Finance."
-            )
+            # For intraday, sometimes yfinance fails with start/end if range is small
+            # Try period-based fallback for intraday if empty
+            if interval in ['15m', '1h', '5m']:
+                logger.warning(f"Empty data for {ticker_symbol} with dates. Trying period fallback...")
+                df = ticker.history(period="1mo" if interval == '1h' else "1wk", interval=interval, auto_adjust=True)
+            
+            if df.empty:
+                raise DataLoaderError(
+                    f"No data returned for {ticker_symbol} ({interval})."
+                )
         
         return df
 
@@ -300,7 +314,8 @@ class CSVLoader(DataLoader):
         self,
         symbol: str,
         start_date: date,
-        end_date: date
+        end_date: date,
+        interval: str = "1d"
     ) -> pd.DataFrame:
         """Load data from CSV file."""
         # Try common file naming patterns
@@ -362,7 +377,8 @@ class SyntheticDataLoader(DataLoader):
         self,
         symbol: str,
         start_date: date,
-        end_date: date
+        end_date: date,
+        interval: str = "1d"
     ) -> pd.DataFrame:
         """Generate synthetic OHLCV data."""
         # Create reproducible seed based on symbol

@@ -28,8 +28,11 @@ logger = logging.getLogger(__name__)
 def parse_args():
     parser = argparse.ArgumentParser(description="Run daily BIST100 scan")
     
+    # Mode arguments
+    parser.add_argument("--mode", type=str, default="UZUN", choices=["KISA", "ORTA", "UZUN"], help="Scanning mode (KISA/ORTA/UZUN)")
+    
     # Email arguments
-    parser.add_argument("--email", action="store_true", help="Send email report")
+    parser.add_argument("--email", type=str, default="false", help="Send email report (true/false)")
     parser.add_argument("--sender-email", type=str, help="Email sender address")
     parser.add_argument("--sender-password", type=str, help="Email sender password")
     parser.add_argument("--email-to", type=str, help="Email recipient address")
@@ -38,79 +41,64 @@ def parse_args():
     parser.add_argument("--data-source", type=str, default="yfinance", help="Data source (yfinance/synthetic)")
     parser.add_argument("--output-dir", type=str, default="output/scans", help="Output directory")
     parser.add_argument("--lookback", type=int, default=200, help="Lookback days for scan")
+    parser.add_argument("--limit", type=int, default=None, help="Limit number of symbols to scan")
+    parser.add_argument("--symbols", type=str, default=None, help="Comma-separated list of symbols to scan")
     
     return parser.parse_args()
 
 def main():
-    # Fix Windows console encoding for emojis
-    if sys.platform == "win32":
-        import io
-        sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+    # Fix Windows console encoding for emojis (Skipped to avoid hang)
+    pass
         
-    args = parse_args()
+    import pandas as pd
     
-    # Setup
+    args = parse_args()
+    mode = args.mode.upper()
     config = get_config()
-    logging.basicConfig(level=logging.INFO)
     
     # Paths
     output_dir = PROJECT_ROOT / args.output_dir
     output_dir.mkdir(parents=True, exist_ok=True)
     
-    # Use model path from config
-    model_path_str = config.model.checkpoint_path or "models/best_model.pt"
-    model_path = PROJECT_ROOT / model_path_str
+    # Path mapping based on mode
+    model_files = {
+        "KISA": "transformer_kisa.pt",
+        "ORTA": "transformer_orta.pt",
+        "UZUN": "transformer_uzun.pt"
+    }
+    model_name = model_files.get(mode, "transformer_uzun.pt")
+    model_path = PROJECT_ROOT / "models" / model_name
     
     if not model_path.exists():
-        logger.error(f"Model not found at {model_path}. Please check config or train first.")
+        logger.error(f"Model file not found: {model_path}. Please train the {mode} model first.")
         sys.exit(1)
         
-    import pandas as pd
-    from data import prepare_features
+    logger.info(f"Using {mode} model: {model_path}")
     
-    # Dynamically determine feature columns and input size (Must match training!)
-    dummy_data = pd.DataFrame({
-        'open': [10.0] * 100,
-        'high': [11.0] * 100,
-        'low': [9.0] * 100,
-        'close': [10.5] * 100,
-        'volume': [1000] * 100
-    })
-    # This officially returns ONLY the normalized column names (e.g. 47 features)
-    _, feature_columns = prepare_features(dummy_data, normalize=True)
-    input_size = len(feature_columns)
-    logger.info(f"Computed input size: {input_size} (Source: {model_path.name})")
+    # Custom symbols list
+    symbols_to_scan = None
+    if args.symbols:
+        symbols_to_scan = [s.strip() for s in args.symbols.split(",")]
+        logger.info(f"Custom symbols to scan: {symbols_to_scan}")
     
-    # Load Model
-    logger.info("Loading model...")
-    model = create_model(
-        config.model.model_type,
-        input_size=input_size, 
-        hidden_size=config.model.hidden_size,
-        num_layers=config.model.num_layers
-    )
-    
-    import torch
-    # model.load works if implemented, otherwise use torch.load
-    checkpoint = torch.load(str(model_path), map_location='cpu')
-    model.load_state_dict(checkpoint)
-    
-    # Init Scanner
-    scanner = DailyScanner(
-        model=model,
-        feature_columns=feature_columns,
-        lookback=config.features.lookback_window,
-        entry_threshold=config.backtest.entry_threshold,
-        data_source=args.data_source
-    )
-    
-    # RUN SCAN
     try:
-        # Scan ALL available symbols (no limit)
-        result = scanner.scan_all(lookback_days=args.lookback, limit=None)
+        # Initialize Scanner
+        scanner = DailyScanner(
+            model_path=str(model_path),
+            config=config,
+            device=config.training.device
+        )
+    except Exception as e:
+        logger.error(f"Failed to initialize scanner: {e}")
+        sys.exit(1)
+        
+    # Run Scan
+    logger.info(f"Running {mode} scan...")
+    try:
+        # Pass the mode to scan_all
+        result = scanner.scan_all(symbols=symbols_to_scan, lookback_days=args.lookback, limit=args.limit, mode=mode)
     except Exception as e:
         logger.error(f"Scan failed: {e}")
-        # Only exit if critical, but we might want to try reporting error
         sys.exit(1)
         
     # Generate Reports
@@ -127,16 +115,12 @@ def main():
     generate_dashboard_json(result, str(docs_path))
     
     # Send Email
-    should_send_email = args.email
+    should_send_email = args.email.lower() == "true"
     
     # Fallback to env vars if args not provided but env vars exist
     sender_email = args.sender_email or os.getenv("BIST_EMAIL_SENDER")
     sender_password = args.sender_password or os.getenv("BIST_EMAIL_PASSWORD") or os.getenv("EMAIL_PASSWORD")
     recipient = args.email_to or os.getenv("BIST_EMAIL_RECIPIENTS") or os.getenv("EMAIL_RECIPIENT")
-    
-    # Debug logging
-    logger.info(f"Email Request - Flag: {should_send_email}")
-    logger.info(f"Credentials Present - Sender: {bool(sender_email)}, Pass: {bool(sender_password)}, To: {bool(recipient)}")
     
     if should_send_email or (sender_email and sender_password and recipient):
         if sender_email and sender_password and recipient:
@@ -153,8 +137,8 @@ def main():
                 
                 dashboard_link = f"https://{os.getenv('GITHUB_REPOSITORY_OWNER', 'dundar98')}.github.io/bist"
                 
-                # Append dashboard link to report
-                email_body = text_report + f"\n\n📊 Web Dashboard: {dashboard_link}"
+                # Append dashboard link and timeframe to report
+                email_body = f"⏳ Tarama Modu: {mode}\n" + text_report + f"\n\n📊 Web Dashboard: {dashboard_link}"
                 
                 notifier.send_signal_report(
                     report_text=email_body,
