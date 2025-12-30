@@ -198,9 +198,10 @@ class DailyScanner:
             try:
                 signal = self._scan_symbol(symbol, start_date, end_date)
                 
-                if signal.signal == SignalType.BUY.value:
+                signal_type_lower = signal.signal.lower()
+                if signal_type_lower == SignalType.BUY.value:
                     buy_signals.append(signal)
-                elif signal.signal == SignalType.SELL.value:
+                elif signal_type_lower == SignalType.SELL.value:
                     sell_signals.append(signal)
                 else:
                     hold_signals.append(signal)

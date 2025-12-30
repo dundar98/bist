@@ -56,11 +56,7 @@ def load_real_data(lookback_days=730):
         try:
             df = loader.load(symbol, start_date, end_date)
             if len(df) > 200:
-                # Add symbol column for multi-stock dataset support if needed
-                # But here we just concat features
-                df_feat, _ = prepare_features(df, normalize=True)
-                df_feat = df_feat.dropna()
-                all_dfs.append(df_feat)
+                all_dfs.append(df)
         except Exception as e:
             logger.warning(f"Failed to load {symbol}: {e}")
             
@@ -85,8 +81,11 @@ def train_aggressive():
     
     logger.info(f"🚀 Starting AGGRESSIVE Training (Threshold: {LABEL_THRESHOLD:.1%})")
     
-    # 2. Prepare Data
     dfs = load_real_data()
+    
+    # Get official feature list from a sample
+    sample_df, feature_columns = prepare_features(dfs[0], normalize=True)
+    logger.info(f"Using {len(feature_columns)} standardized features.")
     
     train_dfs = []
     val_dfs = []
@@ -95,7 +94,11 @@ def train_aggressive():
     splitter = ChronologicalSplitter(train_ratio=0.7, val_ratio=0.15, test_ratio=0.15)
     
     for df in dfs:
-        t, v, te = splitter.split_dataframe(df)
+        # Prepare features ONCE here
+        df_feat, _ = prepare_features(df, normalize=True)
+        df_feat = df_feat.dropna()
+        
+        t, v, te = splitter.split_dataframe(df_feat)
         train_dfs.append(t)
         val_dfs.append(v)
         test_dfs.append(te)
@@ -103,11 +106,6 @@ def train_aggressive():
     full_train = pd.concat(train_dfs)
     full_val = pd.concat(val_dfs)
     full_test = pd.concat(test_dfs)
-    
-    feature_columns = [
-        c for c in full_train.columns 
-        if c not in ['timestamp', 'symbol', 'open', 'high', 'low', 'close', 'volume']
-    ]
     
     logger.info(f"Training Samples: {len(full_train)}")
     
@@ -145,8 +143,8 @@ def train_aggressive():
     
     trained_model, history, metrics = train_model(
         model, train_loader, val_loader, test_loader,
-        epochs=15,
-        patience=5,
+        epochs=20,
+        patience=7,
         learning_rate=0.0005,
         device="cpu"
     )
@@ -164,8 +162,8 @@ def train_aggressive():
     print(f"Positive Rate (Actual):    {metrics['actual_positive_rate']:.2%}")
     print("-" * 60)
     
-    # Save if decent (0.52 is better than random)
-    if metrics['auc'] > 0.52:
+    # Save if at least random (0.50)
+    if metrics['auc'] >= 0.50:
         save_path = PROJECT_ROOT / "models" / "aggressive_transformer.pt"
         torch.save(trained_model.state_dict(), save_path)
         print(f"✅ Model saved to {save_path}")

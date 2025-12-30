@@ -105,8 +105,11 @@ class FeatureEngine:
         # Price patterns
         df = self._add_pattern_features(df)
         
-        # Store feature names (exclude original columns)
-        original_cols = {'timestamp', 'open', 'high', 'low', 'close', 'volume', 'symbol'}
+        # Store feature names (exclude original columns and metadata)
+        original_cols = {
+            'timestamp', 'open', 'high', 'low', 'close', 'volume', 'symbol', 
+            'adj_close', 'Dividends', 'Stock Splits'
+        }
         self.feature_names = [c for c in df.columns if c not in original_cols]
         
         logger.info(f"Computed {len(self.feature_names)} features")

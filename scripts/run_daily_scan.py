@@ -42,6 +42,11 @@ def parse_args():
     return parser.parse_args()
 
 def main():
+    # Fix Windows console encoding for emojis
+    if sys.platform == "win32":
+        import io
+        sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+        
     args = parse_args()
     
     # Setup
@@ -51,17 +56,19 @@ def main():
     # Paths
     output_dir = PROJECT_ROOT / args.output_dir
     output_dir.mkdir(parents=True, exist_ok=True)
-    model_path = PROJECT_ROOT / "output" / "model.pt"
+    
+    # Use model path from config
+    model_path_str = config.model.checkpoint_path or "models/best_model.pt"
+    model_path = PROJECT_ROOT / model_path_str
     
     if not model_path.exists():
-        logger.error(f"Model not found at {model_path}. Please train first.")
+        logger.error(f"Model not found at {model_path}. Please check config or train first.")
         sys.exit(1)
         
     import pandas as pd
     from data import prepare_features
     
-    # Dynamically determine feature columns and input size
-    # We create a dummy dataframe to see what prepare_features returns
+    # Dynamically determine feature columns and input size (Must match training!)
     dummy_data = pd.DataFrame({
         'open': [10.0] * 100,
         'high': [11.0] * 100,
@@ -69,10 +76,10 @@ def main():
         'close': [10.5] * 100,
         'volume': [1000] * 100
     })
-    dummy_features, _ = prepare_features(dummy_data, normalize=True)
-    feature_columns = dummy_features.columns.tolist() # Use all generated columns
+    # This officially returns ONLY the normalized column names (e.g. 47 features)
+    _, feature_columns = prepare_features(dummy_data, normalize=True)
     input_size = len(feature_columns)
-    logger.info(f"Computed input size: {input_size} (Features: {len(feature_columns)})")
+    logger.info(f"Computed input size: {input_size} (Source: {model_path.name})")
     
     # Load Model
     logger.info("Loading model...")
@@ -84,7 +91,9 @@ def main():
     )
     
     import torch
-    model.load(str(model_path))
+    # model.load works if implemented, otherwise use torch.load
+    checkpoint = torch.load(str(model_path), map_location='cpu')
+    model.load_state_dict(checkpoint)
     
     # Init Scanner
     scanner = DailyScanner(
