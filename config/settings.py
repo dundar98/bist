@@ -71,14 +71,17 @@ class LabelConfig:
 class ModelConfig:
     """Neural network architecture settings."""
     
-    # Model type
-    model_type: str = "multitask"  # "lstm", "gru", "cnn", "transformer", "multitask"
+    # Architecture settings
+    model_type: str = "transformer"  # Using advanced Transformer architecture
     
     # Architecture
     hidden_size: int = 128
     num_layers: int = 2
     dropout: float = 0.3
     bidirectional: bool = False  # Must be False for causal prediction
+    
+    # Checkpoint to load (if any)
+    checkpoint_path: Optional[str] = "models/aggressive_transformer.pt"
     
     # Input/output
     # input_size is computed dynamically based on features
@@ -123,7 +126,7 @@ class BacktestConfig:
     """Backtesting engine settings."""
     
     # Entry/exit rules
-    entry_threshold: float = 0.60  # Probability threshold to enter
+    entry_threshold: float = 0.50  # Lowered for aggressive capture
     exit_threshold: float = 0.35  # Probability threshold to exit (optional)
     
     # Stop loss / take profit
