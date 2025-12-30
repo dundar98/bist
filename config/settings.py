@@ -123,7 +123,7 @@ class BacktestConfig:
     """Backtesting engine settings."""
     
     # Entry/exit rules
-    entry_threshold: float = 0.65  # Probability threshold to enter
+    entry_threshold: float = 0.60  # Probability threshold to enter
     exit_threshold: float = 0.35  # Probability threshold to exit (optional)
     
     # Stop loss / take profit

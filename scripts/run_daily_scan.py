@@ -97,7 +97,8 @@ def main():
     
     # RUN SCAN
     try:
-        result = scanner.scan_all(lookback_days=args.lookback)
+        # Scan full BIST100 (limit=100)
+        result = scanner.scan_all(lookback_days=args.lookback, limit=100)
     except Exception as e:
         logger.error(f"Scan failed: {e}")
         # Only exit if critical, but we might want to try reporting error
