@@ -149,6 +149,7 @@ class DailyScanner:
         self,
         symbols: Optional[List[str]] = None,
         lookback_days: int = 180,  # Increased for more robust data
+        limit: Optional[int] = 30,
     ) -> DailyScanResult:
         """
         Scan all BIST100 stocks.
@@ -156,6 +157,7 @@ class DailyScanner:
         Args:
             symbols: Optional list of symbols (default: all BIST100)
             lookback_days: Days of history to load
+            limit: Max number of stocks to scan (None for all)
             
         Returns:
             DailyScanResult with all signals
@@ -165,15 +167,12 @@ class DailyScanner:
         
         # Get symbols
         if symbols is None:
-            # Use top 30 most liquid BIST100 stocks
-            symbols = [
-                "THYAO", "GARAN", "AKBNK", "EREGL", "KCHOL",
-                "SISE", "TUPRS", "SAHOL", "TCELL", "BIMAS",
-                "ASELS", "YKBNK", "HALKB", "PGSUS", "TAVHL",
-                "FROTO", "TOASO", "ARCLK", "PETKM", "SASA",
-                "KOZAL", "EKGYO", "ISCTR", "VAKBN", "TTKOM",
-                "ENKAI", "KRDMD", "MGROS", "ULKER", "DOHOL",
-            ]
+            # Get all valid BIST100 symbols
+            symbols = self.validator.get_all_symbols()
+            
+            # Apply limit if specified
+            if limit is not None:
+                symbols = symbols[:limit]
         
         # Validate symbols
         symbols = self.validator.filter_valid_symbols(symbols)
@@ -331,14 +330,23 @@ def generate_signal_report(result: DailyScanResult) -> str:
         lines.append("-" * 60)
         
         for signal in result.get_top_signals(10):
-            emoji = "🔥" if signal.probability > 0.75 else "✅"
+            if signal.probability > 0.70:
+                emoji = "🔥" 
+                desc = "GÜÇLÜ AL"
+            elif signal.probability > 0.60:
+                emoji = "✅"
+                desc = "AL"
+            else:
+                emoji = "⚠️"
+                desc = "SPEKÜLATİF"
+                
             lines.append(
                 f"{emoji} {signal.symbol:6} | "
+                f"Sinyal: {desc} | "
                 f"Olasılık: {signal.probability:.1%} | "
-                f"Fiyat: {signal.current_price:.2f} TL | "
-                f"RSI: {signal.rsi:.0f}"
+                f"Fiyat: {signal.current_price:.2f} TL"
             )
-            lines.append(f"   └─ {signal.reason}")
+            # lines.append(f"   └─ {signal.reason}") # Optional to save space
         lines.append("")
     
     # Sell signals
