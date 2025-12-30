@@ -734,5 +734,381 @@
     "price": 3.009999990463257,
     "probability": 0.9702436327934265,
     "timeframe": "KISA"
+  },
+  {
+    "timestamp": "2025-12-30T18:53:55.588504",
+    "symbol": "ALARK",
+    "signal": "BUY",
+    "price": 105.0,
+    "probability": 0.9802643060684204,
+    "timeframe": "ORTA"
+  },
+  {
+    "timestamp": "2025-12-30T18:53:58.309689",
+    "symbol": "ANHYT",
+    "signal": "BUY",
+    "price": 105.69999694824219,
+    "probability": 0.9543547034263611,
+    "timeframe": "ORTA"
+  },
+  {
+    "timestamp": "2025-12-30T18:53:59.750322",
+    "symbol": "ANSGR",
+    "signal": "BUY",
+    "price": 23.040000915527344,
+    "probability": 0.9508834481239319,
+    "timeframe": "ORTA"
+  },
+  {
+    "timestamp": "2025-12-30T18:54:01.106631",
+    "symbol": "ARCLK",
+    "signal": "BUY",
+    "price": 103.0,
+    "probability": 0.998742401599884,
+    "timeframe": "ORTA"
+  },
+  {
+    "timestamp": "2025-12-30T18:54:03.860561",
+    "symbol": "ASELS",
+    "signal": "BUY",
+    "price": 222.10000610351562,
+    "probability": 0.9972048401832581,
+    "timeframe": "ORTA"
+  },
+  {
+    "timestamp": "2025-12-30T18:54:05.641802",
+    "symbol": "AYDEM",
+    "signal": "BUY",
+    "price": 21.079999923706055,
+    "probability": 0.9622448086738586,
+    "timeframe": "ORTA"
+  },
+  {
+    "timestamp": "2025-12-30T18:54:08.043992",
+    "symbol": "BANVT",
+    "signal": "BUY",
+    "price": 159.89999389648438,
+    "probability": 0.8722070455551147,
+    "timeframe": "ORTA"
+  },
+  {
+    "timestamp": "2025-12-30T18:54:11.590148",
+    "symbol": "BIMAS",
+    "signal": "BUY",
+    "price": 533.0,
+    "probability": 0.9878848195075989,
+    "timeframe": "ORTA"
+  },
+  {
+    "timestamp": "2025-12-30T18:54:12.520471",
+    "symbol": "BIOEN",
+    "signal": "BUY",
+    "price": 16.969999313354492,
+    "probability": 0.8256266117095947,
+    "timeframe": "ORTA"
+  },
+  {
+    "timestamp": "2025-12-30T18:54:18.197842",
+    "symbol": "CANTE",
+    "signal": "BUY",
+    "price": 2.0199999809265137,
+    "probability": 0.999376118183136,
+    "timeframe": "ORTA"
+  },
+  {
+    "timestamp": "2025-12-30T18:54:20.548926",
+    "symbol": "CEMTS",
+    "signal": "BUY",
+    "price": 11.109999656677246,
+    "probability": 0.9927311539649963,
+    "timeframe": "ORTA"
+  },
+  {
+    "timestamp": "2025-12-30T18:54:21.454294",
+    "symbol": "CIMSA",
+    "signal": "BUY",
+    "price": 44.81999969482422,
+    "probability": 0.9990516304969788,
+    "timeframe": "ORTA"
+  },
+  {
+    "timestamp": "2025-12-30T18:54:22.410522",
+    "symbol": "CLEBI",
+    "signal": "BUY",
+    "price": 1521.0,
+    "probability": 0.999521017074585,
+    "timeframe": "ORTA"
+  },
+  {
+    "timestamp": "2025-12-30T18:54:26.783291",
+    "symbol": "DOAS",
+    "signal": "BUY",
+    "price": 183.89999389648438,
+    "probability": 0.8851431012153625,
+    "timeframe": "ORTA"
+  },
+  {
+    "timestamp": "2025-12-30T18:54:28.370671",
+    "symbol": "DOHOL",
+    "signal": "BUY",
+    "price": 18.049999237060547,
+    "probability": 0.720971941947937,
+    "timeframe": "ORTA"
+  },
+  {
+    "timestamp": "2025-12-30T18:54:29.328152",
+    "symbol": "EBEBK",
+    "signal": "BUY",
+    "price": 53.29999923706055,
+    "probability": 0.7539451718330383,
+    "timeframe": "ORTA"
+  },
+  {
+    "timestamp": "2025-12-30T18:54:56.694236",
+    "symbol": "ICBCT",
+    "signal": "BUY",
+    "price": 12.890000343322754,
+    "probability": 0.9962717294692993,
+    "timeframe": "ORTA"
+  },
+  {
+    "timestamp": "2025-12-30T18:54:58.535750",
+    "symbol": "INDES",
+    "signal": "BUY",
+    "price": 7.460000038146973,
+    "probability": 0.7540029287338257,
+    "timeframe": "ORTA"
+  },
+  {
+    "timestamp": "2025-12-30T18:55:00.124457",
+    "symbol": "IPEKE",
+    "signal": "BUY",
+    "price": 82.1500015258789,
+    "probability": 0.9976748824119568,
+    "timeframe": "ORTA"
+  },
+  {
+    "timestamp": "2025-12-30T18:55:08.857083",
+    "symbol": "KAREL",
+    "signal": "BUY",
+    "price": 8.34000015258789,
+    "probability": 0.999860405921936,
+    "timeframe": "ORTA"
+  },
+  {
+    "timestamp": "2025-12-30T18:55:10.293558",
+    "symbol": "KARSN",
+    "signal": "BUY",
+    "price": 9.109999656677246,
+    "probability": 0.9958691000938416,
+    "timeframe": "ORTA"
+  },
+  {
+    "timestamp": "2025-12-30T18:55:19.882097",
+    "symbol": "KOZAA",
+    "signal": "BUY",
+    "price": 102.0,
+    "probability": 0.8173125386238098,
+    "timeframe": "ORTA"
+  },
+  {
+    "timestamp": "2025-12-30T18:55:23.739256",
+    "symbol": "KRTEK",
+    "signal": "BUY",
+    "price": 24.0,
+    "probability": 0.9997678399085999,
+    "timeframe": "ORTA"
+  },
+  {
+    "timestamp": "2025-12-30T18:55:28.449761",
+    "symbol": "MAGEN",
+    "signal": "BUY",
+    "price": 39.68000030517578,
+    "probability": 0.9745965600013733,
+    "timeframe": "ORTA"
+  },
+  {
+    "timestamp": "2025-12-30T18:55:29.400456",
+    "symbol": "MAKIM",
+    "signal": "BUY",
+    "price": 15.600000381469727,
+    "probability": 0.9967426657676697,
+    "timeframe": "ORTA"
+  },
+  {
+    "timestamp": "2025-12-30T18:55:33.136342",
+    "symbol": "METRO",
+    "signal": "BUY",
+    "price": 3.9700000286102295,
+    "probability": 0.9979865550994873,
+    "timeframe": "ORTA"
+  },
+  {
+    "timestamp": "2025-12-30T18:55:36.829471",
+    "symbol": "MPARK",
+    "signal": "BUY",
+    "price": 373.25,
+    "probability": 0.9974316954612732,
+    "timeframe": "ORTA"
+  },
+  {
+    "timestamp": "2025-12-30T18:55:37.781178",
+    "symbol": "MRSHL",
+    "signal": "BUY",
+    "price": 1585.0,
+    "probability": 0.9644923806190491,
+    "timeframe": "ORTA"
+  },
+  {
+    "timestamp": "2025-12-30T18:55:38.812090",
+    "symbol": "NETAS",
+    "signal": "BUY",
+    "price": 56.099998474121094,
+    "probability": 0.9951081871986389,
+    "timeframe": "ORTA"
+  },
+  {
+    "timestamp": "2025-12-30T18:55:40.838763",
+    "symbol": "OBASE",
+    "signal": "BUY",
+    "price": 30.860000610351562,
+    "probability": 0.9986826777458191,
+    "timeframe": "ORTA"
+  },
+  {
+    "timestamp": "2025-12-30T18:55:42.699195",
+    "symbol": "OFSYM",
+    "signal": "BUY",
+    "price": 70.0999984741211,
+    "probability": 0.9953675270080566,
+    "timeframe": "ORTA"
+  },
+  {
+    "timestamp": "2025-12-30T18:55:55.048713",
+    "symbol": "POLHO",
+    "signal": "BUY",
+    "price": 16.139999389648438,
+    "probability": 0.9925536513328552,
+    "timeframe": "ORTA"
+  },
+  {
+    "timestamp": "2025-12-30T18:55:59.178389",
+    "symbol": "RGYAS",
+    "signal": "BUY",
+    "price": 135.1999969482422,
+    "probability": 0.9829551577568054,
+    "timeframe": "ORTA"
+  },
+  {
+    "timestamp": "2025-12-30T18:56:07.606042",
+    "symbol": "SASA",
+    "signal": "BUY",
+    "price": 2.7899999618530273,
+    "probability": 0.7184728980064392,
+    "timeframe": "ORTA"
+  },
+  {
+    "timestamp": "2025-12-30T18:56:09.490153",
+    "symbol": "SEKUR",
+    "signal": "BUY",
+    "price": 3.4600000381469727,
+    "probability": 0.9720221161842346,
+    "timeframe": "ORTA"
+  },
+  {
+    "timestamp": "2025-12-30T18:56:13.220052",
+    "symbol": "SKBNK",
+    "signal": "BUY",
+    "price": 7.760000228881836,
+    "probability": 0.9973369240760803,
+    "timeframe": "ORTA"
+  },
+  {
+    "timestamp": "2025-12-30T18:56:15.068248",
+    "symbol": "SMART",
+    "signal": "BUY",
+    "price": 21.979999542236328,
+    "probability": 0.9996607303619385,
+    "timeframe": "ORTA"
+  },
+  {
+    "timestamp": "2025-12-30T18:56:16.898054",
+    "symbol": "SNKRN",
+    "signal": "BUY",
+    "price": 283.0,
+    "probability": 0.9959529638290405,
+    "timeframe": "ORTA"
+  },
+  {
+    "timestamp": "2025-12-30T18:56:21.189252",
+    "symbol": "SRVGY",
+    "signal": "BUY",
+    "price": 3.130000114440918,
+    "probability": 0.7352583408355713,
+    "timeframe": "ORTA"
+  },
+  {
+    "timestamp": "2025-12-30T18:56:22.262269",
+    "symbol": "SURGY",
+    "signal": "BUY",
+    "price": 41.220001220703125,
+    "probability": 0.8099845051765442,
+    "timeframe": "ORTA"
+  },
+  {
+    "timestamp": "2025-12-30T18:56:26.339865",
+    "symbol": "TBORG",
+    "signal": "BUY",
+    "price": 153.0,
+    "probability": 0.8740110993385315,
+    "timeframe": "ORTA"
+  },
+  {
+    "timestamp": "2025-12-30T18:56:27.287043",
+    "symbol": "TCELL",
+    "signal": "BUY",
+    "price": 94.1500015258789,
+    "probability": 0.9666404128074646,
+    "timeframe": "ORTA"
+  },
+  {
+    "timestamp": "2025-12-30T18:56:32.582668",
+    "symbol": "TRGYO",
+    "signal": "BUY",
+    "price": 71.0999984741211,
+    "probability": 0.777672290802002,
+    "timeframe": "ORTA"
+  },
+  {
+    "timestamp": "2025-12-30T18:56:33.626919",
+    "symbol": "TSKB",
+    "signal": "BUY",
+    "price": 12.279999732971191,
+    "probability": 0.9985577464103699,
+    "timeframe": "ORTA"
+  },
+  {
+    "timestamp": "2025-12-30T18:56:38.520067",
+    "symbol": "TUREX",
+    "signal": "BUY",
+    "price": 7.050000190734863,
+    "probability": 0.9987459182739258,
+    "timeframe": "ORTA"
+  },
+  {
+    "timestamp": "2025-12-30T18:56:44.576894",
+    "symbol": "VAKFN",
+    "signal": "BUY",
+    "price": 1.8600000143051147,
+    "probability": 0.8063663840293884,
+    "timeframe": "ORTA"
+  },
+  {
+    "timestamp": "2025-12-30T18:56:46.428438",
+    "symbol": "VERUS",
+    "signal": "BUY",
+    "price": 318.25,
+    "probability": 0.7382376194000244,
+    "timeframe": "ORTA"
   }
 ]
