@@ -196,35 +196,40 @@ class EmailNotifier:
                 in_sell_section = False
                 continue
             
-            if in_buy_section and ('THYAO' in line or 'GARAN' in line or 'AKBNK' in line or 'Olasılık' in line):
-                if '|' in line:
-                    # Parse: 🔥 THYAO  | Olasılık: 78.5% | Fiyat: 245.30 TL | RSI: 42
+            if in_buy_section and '|' in line:
+                    # Parse: emoji symbol | Sinyal | Olasılık | Fiyat | Değişim | RSI | Vol | Sent
                     parts = line.split('|')
-                    if len(parts) >= 3:
-                        symbol = parts[0].replace('🔥', '').replace('✅', '').strip()
-                        prob = parts[1].replace('Olasılık:', '').strip()
-                        price = parts[2].replace('Fiyat:', '').strip()
-                        rsi = parts[3].replace('RSI:', '').strip() if len(parts) > 3 else '-'
+                    if len(parts) >= 8:
+                        symbol = parts[0].replace('🔥', '').replace('✅', '').replace('⚠️', '').strip()
+                        prob = parts[2].replace('Olasılık:', '').strip()
+                        price = parts[3].replace('Fiyat:', '').strip()
+                        change = parts[4].replace('Değişim:', '').strip()
+                        rsi = parts[5].replace('RSI:', '').strip()
+                        vol = parts[6].replace('Vol:', '').strip()
+                        sent = parts[7].replace('Sent:', '').strip()
                         
                         buy_signals_html += f'''
                         <tr>
-                            <td style="padding: 12px; border-bottom: 1px solid #e0e0e0; font-weight: bold; color: #1a73e8;">{symbol}</td>
-                            <td style="padding: 12px; border-bottom: 1px solid #e0e0e0; color: #0d652d; font-weight: bold;">{prob}</td>
-                            <td style="padding: 12px; border-bottom: 1px solid #e0e0e0;">{price}</td>
-                            <td style="padding: 12px; border-bottom: 1px solid #e0e0e0;">{rsi}</td>
+                            <td style="padding: 10px; border-bottom: 1px solid #e0e0e0; font-weight: bold; color: #1a73e8;">{symbol}</td>
+                            <td style="padding: 10px; border-bottom: 1px solid #e0e0e0; color: #0d652d; font-weight: bold;">{prob}</td>
+                            <td style="padding: 10px; border-bottom: 1px solid #e0e0e0;">{price}</td>
+                            <td style="padding: 10px; border-bottom: 1px solid #e0e0e0; color: {'#d32f2f' if '-' in change else '#0d652d'};">{change}</td>
+                            <td style="padding: 10px; border-bottom: 1px solid #e0e0e0;">{rsi}</td>
+                            <td style="padding: 10px; border-bottom: 1px solid #e0e0e0;">{vol}</td>
+                            <td style="padding: 10px; border-bottom: 1px solid #e0e0e0;">{sent}</td>
                         </tr>'''
             
             if in_sell_section and '|' in line:
                 parts = line.split('|')
-                if len(parts) >= 2:
+                if len(parts) >= 3:
                     symbol = parts[0].replace('❌', '').strip()
                     prob = parts[1].replace('Olasılık:', '').strip()
-                    price = parts[2].replace('Fiyat:', '').strip() if len(parts) > 2 else '-'
+                    price = parts[2].replace('Fiyat:', '').strip()
                     
                     sell_signals_html += f'''
                     <tr>
                         <td style="padding: 12px; border-bottom: 1px solid #e0e0e0; font-weight: bold; color: #d32f2f;">{symbol}</td>
-                        <td style="padding: 12px; border-bottom: 1px solid #e0e0e0; color: #d32f2f;">{prob}</td>
+                        <td style="padding: 12px; border-bottom: 1px solid #e0e0e0; color: #d32f2f; font-weight: bold;">{prob}</td>
                         <td style="padding: 12px; border-bottom: 1px solid #e0e0e0;">{price}</td>
                     </tr>'''
         
@@ -234,21 +239,26 @@ class EmailNotifier:
             buy_table = f'''
             <div style="margin: 20px 0;">
                 <h2 style="color: #0d652d; font-size: 18px; margin-bottom: 15px; border-left: 4px solid #0d652d; padding-left: 10px;">
-                    ✅ AL SİNYALLERİ
+                    ✅ AL SİNYALLERİ (DETAYLI)
                 </h2>
-                <table style="width: 100%; border-collapse: collapse; background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
-                    <thead>
-                        <tr style="background: #e8f5e9;">
-                            <th style="padding: 12px; text-align: left; font-weight: 600; color: #333;">Hisse</th>
-                            <th style="padding: 12px; text-align: left; font-weight: 600; color: #333;">Olasılık</th>
-                            <th style="padding: 12px; text-align: left; font-weight: 600; color: #333;">Fiyat</th>
-                            <th style="padding: 12px; text-align: left; font-weight: 600; color: #333;">RSI</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {buy_signals_html}
-                    </tbody>
-                </table>
+                <div style="overflow-x: auto;">
+                    <table style="width: 100%; border-collapse: collapse; background: #fff; border-radius: 8px; font-size: 13px;">
+                        <thead>
+                            <tr style="background: #f1f8e9;">
+                                <th style="padding: 10px; text-align: left; font-weight: 600; color: #333;">Hisse</th>
+                                <th style="padding: 10px; text-align: left; font-weight: 600; color: #333;">Olasılık</th>
+                                <th style="padding: 10px; text-align: left; font-weight: 600; color: #333;">Fiyat</th>
+                                <th style="padding: 10px; text-align: left; font-weight: 600; color: #333;">Değişim</th>
+                                <th style="padding: 10px; text-align: left; font-weight: 600; color: #333;">RSI</th>
+                                <th style="padding: 10px; text-align: left; font-weight: 600; color: #333;">Vol</th>
+                                <th style="padding: 10px; text-align: left; font-weight: 600; color: #333;">Sent</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {buy_signals_html}
+                        </tbody>
+                    </table>
+                </div>
             </div>'''
         
         # Build sell signals table
@@ -259,7 +269,7 @@ class EmailNotifier:
                 <h2 style="color: #d32f2f; font-size: 18px; margin-bottom: 15px; border-left: 4px solid #d32f2f; padding-left: 10px;">
                     ❌ SAT SİNYALLERİ
                 </h2>
-                <table style="width: 100%; border-collapse: collapse; background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                <table style="width: 100%; border-collapse: collapse; background: #fff; border-radius: 8px; font-size: 13px;">
                     <thead>
                         <tr style="background: #ffebee;">
                             <th style="padding: 12px; text-align: left; font-weight: 600; color: #333;">Hisse</th>

@@ -345,7 +345,11 @@ def generate_signal_report(result: DailyScanResult) -> str:
                 f"{emoji} {signal.symbol:6} | "
                 f"Sinyal: {desc} | "
                 f"Olasılık: {signal.probability:.1%} | "
-                f"Fiyat: {signal.current_price:.2f} TL"
+                f"Fiyat: {signal.current_price:.2f} TL | "
+                f"Değişim: {signal.change_1d:+.1f}% | "
+                f"RSI: {signal.rsi:.0f} | "
+                f"Vol: {signal.volatility:.1%} | "
+                f"Sent: {signal.sentiment_score:+.2f}"
             )
             # lines.append(f"   └─ {signal.reason}") # Optional to save space
         lines.append("")
