@@ -1,13 +1,30 @@
 {
   "scan_date": "2025-12-30",
-  "mode": "ORTA",
+  "mode": "KISA",
   "total_scanned": 3,
-  "buy_count": 0,
+  "buy_count": 1,
   "sell_count": 0,
-  "hold_count": 3,
+  "hold_count": 2,
   "error_count": 0,
   "market_volatility": "Yüksek ⚠️",
-  "buy_signals": [],
+  "buy_signals": [
+    {
+      "symbol": "SISE",
+      "probability": 0.9982567429542542,
+      "signal": "BUY",
+      "confidence": 0.9982567429542542,
+      "current_price": 38.279998779296875,
+      "sentiment_score": 0.0,
+      "change_1d": 0.0,
+      "rsi": 47.03132096352807,
+      "volatility": 0.03731701053753019,
+      "target_price": 39.04559875488281,
+      "horizon_days": 2,
+      "history_info": "Önceki AL: 38.28 TL (2025-12-30), Mevcut Getiri: %+0.0",
+      "reason": "Strong bullish signal (99.8%) > 70.0%",
+      "timestamp": "2025-12-30 21:20:35.624093"
+    }
+  ],
   "sell_signals": [],
   "hold_signals": [],
   "portfolio": {

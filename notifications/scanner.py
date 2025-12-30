@@ -162,6 +162,11 @@ class DailyScanner:
         intervals = {"KISA": "15m", "ORTA": "1h", "UZUN": "1d"}
         interval = intervals.get(mode, "1d")
         
+        # Yahoo Finance limit: 15m data is only available for the last 60 days
+        if mode == "KISA" and lookback_days > 59:
+            logger.info(f"Capping {mode} lookback from {lookback_days} to 59 days for Yahoo compatibility.")
+            lookback_days = 59
+        
         if symbols is None:
             symbols = self.validator.get_all_symbols()
             if limit is not None:
@@ -296,9 +301,11 @@ def generate_signal_report(result: DailyScanResult) -> str:
     
     if result.buy_signals:
         lines.append("-" * 60)
-        lines.append("🟢 EN GÜÇLÜ AL SİNYALLERİ:")
         lines.append("-" * 60)
-        for signal in result.get_top_signals(10):
+        lines.append("🟢 TÜM AL SİNYALLERİ:")
+        lines.append("-" * 60)
+        # Sort by probability but show all
+        for signal in sorted(result.buy_signals, key=lambda x: x.probability, reverse=True):
             emoji = "🔥" if signal.probability > 0.70 else ("✅" if signal.probability > 0.60 else "⚠️")
             desc = "GÜÇLÜ AL" if signal.probability > 0.70 else ("AL" if signal.probability > 0.60 else "SPEKÜLATİF")
             

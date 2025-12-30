@@ -35,6 +35,6 @@ jobs:
         run: |
           git config --global user.name 'GitHub Action'
           git config --global user.email 'action@github.com'
-          git add docs/dashboard_data.json output/signal_history.json
+          git add -f docs/dashboard_data.json output/signal_history.json
           git commit -m "Uzun Vade Tarama Sonuçları [skip ci]" || echo "No changes to commit"
           git push
