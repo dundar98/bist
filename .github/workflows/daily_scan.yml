@@ -6,7 +6,9 @@ name: BIST100 Daily Scan
 on:
   # Her gün 06:00 UTC = 09:00 Türkiye saati
   schedule:
-    - cron: '0 6 * * 1-5'  # Pazartesi-Cuma
+    # Run at 10:30, 13:00, 16:00 TRT (UTC+3)
+    # UTC: 07:30, 10:00, 13:00
+    - cron: '30 7,10,13 * * 1-5'
   
   # Manuel çalıştırma için
   workflow_dispatch:
