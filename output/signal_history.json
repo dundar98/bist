@@ -3742,5 +3742,269 @@
     "price": 21.219999313354492,
     "probability": 0.8978924751281738,
     "timeframe": "KISA"
+  },
+  {
+    "timestamp": "2026-04-09T05:19:55.710793",
+    "symbol": "ADEL",
+    "signal": "BUY",
+    "price": 41.540000915527344,
+    "probability": 0.9927177429199219,
+    "timeframe": "ORTA"
+  },
+  {
+    "timestamp": "2026-04-09T05:20:00.611272",
+    "symbol": "AKENR",
+    "signal": "BUY",
+    "price": 9.829999923706055,
+    "probability": 0.9971380233764648,
+    "timeframe": "ORTA"
+  },
+  {
+    "timestamp": "2026-04-09T05:20:01.842520",
+    "symbol": "AKSA",
+    "signal": "BUY",
+    "price": 10.289999961853027,
+    "probability": 0.8511229157447815,
+    "timeframe": "ORTA"
+  },
+  {
+    "timestamp": "2026-04-09T05:20:02.949231",
+    "symbol": "AKSEN",
+    "signal": "BUY",
+    "price": 81.6500015258789,
+    "probability": 0.9943935871124268,
+    "timeframe": "ORTA"
+  },
+  {
+    "timestamp": "2026-04-09T05:20:07.650697",
+    "symbol": "ANSGR",
+    "signal": "BUY",
+    "price": 26.540000915527344,
+    "probability": 0.999347984790802,
+    "timeframe": "ORTA"
+  },
+  {
+    "timestamp": "2026-04-09T05:20:09.946572",
+    "symbol": "ARDYZ",
+    "signal": "BUY",
+    "price": 40.15999984741211,
+    "probability": 0.9858686923980713,
+    "timeframe": "ORTA"
+  },
+  {
+    "timestamp": "2026-04-09T05:20:18.221970",
+    "symbol": "BEYAZ",
+    "signal": "BUY",
+    "price": 29.200000762939453,
+    "probability": 0.7882298231124878,
+    "timeframe": "ORTA"
+  },
+  {
+    "timestamp": "2026-04-09T05:20:22.055274",
+    "symbol": "BRISA",
+    "signal": "BUY",
+    "price": 84.0,
+    "probability": 0.9871652126312256,
+    "timeframe": "ORTA"
+  },
+  {
+    "timestamp": "2026-04-09T05:20:26.061806",
+    "symbol": "CANTE",
+    "signal": "BUY",
+    "price": 1.659999966621399,
+    "probability": 0.7291971445083618,
+    "timeframe": "ORTA"
+  },
+  {
+    "timestamp": "2026-04-09T05:20:52.782631",
+    "symbol": "GESAN",
+    "signal": "BUY",
+    "price": 49.52000045776367,
+    "probability": 0.9048416018486023,
+    "timeframe": "ORTA"
+  },
+  {
+    "timestamp": "2026-04-09T05:21:01.900829",
+    "symbol": "HURGZ",
+    "signal": "BUY",
+    "price": 5.78000020980835,
+    "probability": 0.9110652804374695,
+    "timeframe": "ORTA"
+  },
+  {
+    "timestamp": "2026-04-09T05:21:04.149406",
+    "symbol": "IEYHO",
+    "signal": "BUY",
+    "price": 96.55000305175781,
+    "probability": 0.9214803576469421,
+    "timeframe": "ORTA"
+  },
+  {
+    "timestamp": "2026-04-09T05:21:09.195916",
+    "symbol": "ISMEN",
+    "signal": "BUY",
+    "price": 41.68000030517578,
+    "probability": 0.903285562992096,
+    "timeframe": "ORTA"
+  },
+  {
+    "timestamp": "2026-04-09T05:21:16.339967",
+    "symbol": "KERVN",
+    "signal": "BUY",
+    "price": 4.300000190734863,
+    "probability": 0.994719386100769,
+    "timeframe": "ORTA"
+  },
+  {
+    "timestamp": "2026-04-09T05:21:21.121198",
+    "symbol": "KORDS",
+    "signal": "BUY",
+    "price": 57.70000076293945,
+    "probability": 0.999272882938385,
+    "timeframe": "ORTA"
+  },
+  {
+    "timestamp": "2026-04-09T05:21:22.458179",
+    "symbol": "KRDMD",
+    "signal": "BUY",
+    "price": 34.36000061035156,
+    "probability": 0.9970600008964539,
+    "timeframe": "ORTA"
+  },
+  {
+    "timestamp": "2026-04-09T05:21:28.693953",
+    "symbol": "MAGEN",
+    "signal": "BUY",
+    "price": 58.79999923706055,
+    "probability": 0.995046854019165,
+    "timeframe": "ORTA"
+  },
+  {
+    "timestamp": "2026-04-09T05:21:35.831377",
+    "symbol": "MOBTL",
+    "signal": "BUY",
+    "price": 13.0600004196167,
+    "probability": 0.9996330738067627,
+    "timeframe": "ORTA"
+  },
+  {
+    "timestamp": "2026-04-09T05:21:37.566942",
+    "symbol": "MRSHL",
+    "signal": "BUY",
+    "price": 1452.0,
+    "probability": 0.9526619911193848,
+    "timeframe": "ORTA"
+  },
+  {
+    "timestamp": "2026-04-09T05:21:38.512681",
+    "symbol": "NETAS",
+    "signal": "BUY",
+    "price": 61.650001525878906,
+    "probability": 0.9836922883987427,
+    "timeframe": "ORTA"
+  },
+  {
+    "timestamp": "2026-04-09T05:21:57.678669",
+    "symbol": "RODRG",
+    "signal": "BUY",
+    "price": 19.93000030517578,
+    "probability": 0.9970124959945679,
+    "timeframe": "ORTA"
+  },
+  {
+    "timestamp": "2026-04-09T05:21:58.679733",
+    "symbol": "RUBNS",
+    "signal": "BUY",
+    "price": 42.84000015258789,
+    "probability": 0.9997034668922424,
+    "timeframe": "ORTA"
+  },
+  {
+    "timestamp": "2026-04-09T05:22:02.270436",
+    "symbol": "SAMAT",
+    "signal": "BUY",
+    "price": 5.550000190734863,
+    "probability": 0.8359888195991516,
+    "timeframe": "ORTA"
+  },
+  {
+    "timestamp": "2026-04-09T05:22:06.756042",
+    "symbol": "SEKUR",
+    "signal": "BUY",
+    "price": 7.800000190734863,
+    "probability": 0.9992707371711731,
+    "timeframe": "ORTA"
+  },
+  {
+    "timestamp": "2026-04-09T05:22:08.519355",
+    "symbol": "SILVR",
+    "signal": "BUY",
+    "price": 2.4700000286102295,
+    "probability": 0.9963133931159973,
+    "timeframe": "ORTA"
+  },
+  {
+    "timestamp": "2026-04-09T05:22:10.302394",
+    "symbol": "SKBNK",
+    "signal": "BUY",
+    "price": 12.039999961853027,
+    "probability": 0.9800776243209839,
+    "timeframe": "ORTA"
+  },
+  {
+    "timestamp": "2026-04-09T05:22:12.955811",
+    "symbol": "SMRTG",
+    "signal": "BUY",
+    "price": 6.849999904632568,
+    "probability": 0.9612885117530823,
+    "timeframe": "ORTA"
+  },
+  {
+    "timestamp": "2026-04-09T05:22:23.424321",
+    "symbol": "THYAO",
+    "signal": "BUY",
+    "price": 318.75,
+    "probability": 0.9607791304588318,
+    "timeframe": "ORTA"
+  },
+  {
+    "timestamp": "2026-04-09T05:22:34.824852",
+    "symbol": "ULKER",
+    "signal": "BUY",
+    "price": 117.4000015258789,
+    "probability": 0.9243801832199097,
+    "timeframe": "ORTA"
+  },
+  {
+    "timestamp": "2026-04-09T05:22:35.701372",
+    "symbol": "ULUUN",
+    "signal": "BUY",
+    "price": 8.010000228881836,
+    "probability": 0.9972925782203674,
+    "timeframe": "ORTA"
+  },
+  {
+    "timestamp": "2026-04-09T05:22:40.246256",
+    "symbol": "VERUS",
+    "signal": "BUY",
+    "price": 498.0,
+    "probability": 0.7541553974151611,
+    "timeframe": "ORTA"
+  },
+  {
+    "timestamp": "2026-04-09T05:22:41.132158",
+    "symbol": "VESTL",
+    "signal": "BUY",
+    "price": 28.399999618530273,
+    "probability": 0.9043036103248596,
+    "timeframe": "ORTA"
+  },
+  {
+    "timestamp": "2026-04-09T05:22:44.727353",
+    "symbol": "YYLGD",
+    "signal": "BUY",
+    "price": 11.029999732971191,
+    "probability": 0.9927666187286377,
+    "timeframe": "ORTA"
   }
 ]
