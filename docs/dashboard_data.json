@@ -14,15 +14,15 @@
       "signal": "BUY",
       "confidence": 0.9816188216209412,
       "current_price": 42.2400016784668,
-      "sentiment_score": 0.8482790589332581,
+      "sentiment_score": -0.9673618674278259,
       "change_1d": 0.1897576644787351,
       "rsi": 67.20072817443511,
       "volatility": 0.038865285529272674,
       "target_price": 43.08480171203613,
       "horizon_days": 2,
-      "history_info": "Önceki AL: 41.98 TL (2026-04-17), Mevcut Getiri: %+0.6",
+      "history_info": "Önceki AL: 42.24 TL (2026-04-20), Mevcut Getiri: %+0.0",
       "reason": "Strong bullish signal (98.2%) > 70.0%",
-      "timestamp": "2026-04-20 07:19:34.470542"
+      "timestamp": "2026-04-20 08:33:50.425569"
     },
     {
       "symbol": "AKBNK",
@@ -30,15 +30,15 @@
       "signal": "BUY",
       "confidence": 0.973233699798584,
       "current_price": 83.75,
-      "sentiment_score": 0.8482790589332581,
+      "sentiment_score": -0.9673618674278259,
       "change_1d": 0.6610613845334193,
       "rsi": 82.27423178682523,
       "volatility": 0.14908669901559019,
       "target_price": 85.425,
       "horizon_days": 2,
-      "history_info": "Önceki AL: 78.00 TL (2026-04-17), Mevcut Getiri: %+7.4",
+      "history_info": "Önceki AL: 83.75 TL (2026-04-20), Mevcut Getiri: %+0.0",
       "reason": "Strong bullish signal (97.3%) > 70.0%",
-      "timestamp": "2026-04-20 07:19:39.661112"
+      "timestamp": "2026-04-20 08:33:54.625223"
     },
     {
       "symbol": "AKENR",
@@ -46,15 +46,15 @@
       "signal": "BUY",
       "confidence": 0.9796525239944458,
       "current_price": 10.140000343322754,
-      "sentiment_score": 0.8482790589332581,
+      "sentiment_score": -0.9673618674278259,
       "change_1d": 0.4955420215929253,
       "rsi": 73.19395783922062,
       "volatility": 0.0419822230898409,
       "target_price": 10.34280035018921,
       "horizon_days": 2,
-      "history_info": "Önceki AL: 9.90 TL (2026-04-17), Mevcut Getiri: %+2.4",
+      "history_info": "Önceki AL: 10.14 TL (2026-04-20), Mevcut Getiri: %+0.0",
       "reason": "Strong bullish signal (98.0%) > 70.0%",
-      "timestamp": "2026-04-20 07:19:41.452912"
+      "timestamp": "2026-04-20 08:33:55.776228"
     },
     {
       "symbol": "AKSEN",
@@ -62,15 +62,15 @@
       "signal": "BUY",
       "confidence": 0.9936830997467041,
       "current_price": 80.19999694824219,
-      "sentiment_score": 0.8482790589332581,
+      "sentiment_score": -0.9673618674278259,
       "change_1d": 0.375463600293068,
       "rsi": 42.54842933462849,
       "volatility": 0.16358083704658208,
       "target_price": 81.80399688720703,
       "horizon_days": 2,
-      "history_info": "Önceki AL: 81.45 TL (2026-04-17), Mevcut Getiri: %-1.5",
+      "history_info": "Önceki AL: 80.20 TL (2026-04-20), Mevcut Getiri: %+0.0",
       "reason": "Strong bullish signal (99.4%) > 70.0%",
-      "timestamp": "2026-04-20 07:19:45.766722"
+      "timestamp": "2026-04-20 08:33:58.168195"
     },
     {
       "symbol": "ALARK",
@@ -78,15 +78,15 @@
       "signal": "BUY",
       "confidence": 0.9294629693031311,
       "current_price": 95.9000015258789,
-      "sentiment_score": 0.8482790589332581,
+      "sentiment_score": -0.9673618674278259,
       "change_1d": 0.20899120586690095,
       "rsi": 80.56055535655477,
       "volatility": 0.05596858000028209,
       "target_price": 97.81800155639648,
       "horizon_days": 2,
-      "history_info": "Önceki AL: 92.85 TL (2026-04-17), Mevcut Getiri: %+3.3",
+      "history_info": "Önceki AL: 95.90 TL (2026-04-20), Mevcut Getiri: %+0.0",
       "reason": "Strong bullish signal (92.9%) > 70.0%",
-      "timestamp": "2026-04-20 07:19:47.264864"
+      "timestamp": "2026-04-20 08:33:59.491248"
     },
     {
       "symbol": "ARCLK",
@@ -94,15 +94,15 @@
       "signal": "BUY",
       "confidence": 0.9785093665122986,
       "current_price": 119.0,
-      "sentiment_score": 0.8482790589332581,
+      "sentiment_score": -0.9673618674278259,
       "change_1d": 0.16834759520591466,
       "rsi": 77.72112452178676,
       "volatility": 0.06655106869829508,
       "target_price": 121.38,
       "horizon_days": 2,
-      "history_info": "Önceki AL: 116.10 TL (2026-04-17), Mevcut Getiri: %+2.5",
+      "history_info": "Önceki AL: 119.00 TL (2026-04-20), Mevcut Getiri: %+0.0",
       "reason": "Strong bullish signal (97.9%) > 70.0%",
-      "timestamp": "2026-04-20 07:19:56.878820"
+      "timestamp": "2026-04-20 08:34:03.916662"
     },
     {
       "symbol": "AYDEM",
@@ -110,15 +110,15 @@
       "signal": "BUY",
       "confidence": 0.8173298835754395,
       "current_price": 29.3799991607666,
-      "sentiment_score": 0.8482790589332581,
+      "sentiment_score": -0.9673618674278259,
       "change_1d": 0.2730372893828119,
       "rsi": 77.02511253475221,
       "volatility": 0.054864328869164855,
       "target_price": 29.967599143981936,
       "horizon_days": 2,
-      "history_info": "Önceki AL: 31.28 TL (2026-04-08), Mevcut Getiri: %-6.1",
+      "history_info": "Önceki AL: 29.38 TL (2026-04-20), Mevcut Getiri: %+0.0",
       "reason": "Strong bullish signal (81.7%) > 70.0%",
-      "timestamp": "2026-04-20 07:20:03.094716"
+      "timestamp": "2026-04-20 08:34:08.600295"
     },
     {
       "symbol": "BAGFS",
@@ -126,15 +126,15 @@
       "signal": "BUY",
       "confidence": 0.8342303037643433,
       "current_price": 34.79999923706055,
-      "sentiment_score": 0.8482790589332581,
+      "sentiment_score": -0.9673618674278259,
       "change_1d": 0.5780369125999898,
       "rsi": 64.8132643118401,
       "volatility": 0.03938926405842255,
       "target_price": 35.49599922180176,
       "horizon_days": 2,
-      "history_info": "Önceki AL: 34.80 TL (2026-04-17), Mevcut Getiri: %+0.0",
+      "history_info": "Önceki AL: 34.80 TL (2026-04-20), Mevcut Getiri: %+0.0",
       "reason": "Strong bullish signal (83.4%) > 70.0%",
-      "timestamp": "2026-04-20 07:20:04.635828"
+      "timestamp": "2026-04-20 08:34:09.588430"
     },
     {
       "symbol": "BANVT",
@@ -142,15 +142,15 @@
       "signal": "BUY",
       "confidence": 0.9849249720573425,
       "current_price": 165.1999969482422,
-      "sentiment_score": 0.8482790589332581,
+      "sentiment_score": -0.9673618674278259,
       "change_1d": -0.12091714366528673,
       "rsi": 55.063688460279316,
       "volatility": 0.068342773734032,
       "target_price": 168.50399688720702,
       "horizon_days": 2,
-      "history_info": "Önceki AL: 161.70 TL (2026-04-17), Mevcut Getiri: %+2.2",
+      "history_info": "Önceki AL: 165.20 TL (2026-04-20), Mevcut Getiri: %+0.0",
       "reason": "Strong bullish signal (98.5%) > 70.0%",
-      "timestamp": "2026-04-20 07:20:05.781408"
+      "timestamp": "2026-04-20 08:34:10.482546"
     },
     {
       "symbol": "BEYAZ",
@@ -158,15 +158,15 @@
       "signal": "BUY",
       "confidence": 0.9968430995941162,
       "current_price": 31.239999771118164,
-      "sentiment_score": 0.8482790589332581,
+      "sentiment_score": -0.9673618674278259,
       "change_1d": 0.0,
       "rsi": 61.300657699941915,
       "volatility": 0.06914356680558845,
       "target_price": 31.86479976654053,
       "horizon_days": 2,
-      "history_info": "Önceki AL: 30.28 TL (2026-04-17), Mevcut Getiri: %+3.2",
+      "history_info": "Önceki AL: 31.24 TL (2026-04-20), Mevcut Getiri: %+0.0",
       "reason": "Strong bullish signal (99.7%) > 70.0%",
-      "timestamp": "2026-04-20 07:20:08.614908"
+      "timestamp": "2026-04-20 08:34:12.632356"
     },
     {
       "symbol": "BIOEN",
@@ -174,15 +174,15 @@
       "signal": "BUY",
       "confidence": 0.9993875026702881,
       "current_price": 19.690000534057617,
-      "sentiment_score": 0.8482790589332581,
+      "sentiment_score": -0.9673618674278259,
       "change_1d": -0.4046531201502261,
       "rsi": 29.53072351451563,
       "volatility": 0.052040503507717946,
       "target_price": 20.08380054473877,
       "horizon_days": 2,
-      "history_info": "Önceki AL: 20.16 TL (2026-04-17), Mevcut Getiri: %-2.3",
+      "history_info": "Önceki AL: 19.69 TL (2026-04-20), Mevcut Getiri: %+0.0",
       "reason": "Strong bullish signal (99.9%) > 70.0%",
-      "timestamp": "2026-04-20 07:20:11.271540"
+      "timestamp": "2026-04-20 08:34:14.657295"
     },
     {
       "symbol": "CIMSA",
@@ -190,15 +190,15 @@
       "signal": "BUY",
       "confidence": 0.991692066192627,
       "current_price": 54.29999923706055,
-      "sentiment_score": 0.8482790589332581,
+      "sentiment_score": -0.9673618674278259,
       "change_1d": 0.4625346966306377,
       "rsi": 67.67633655301111,
       "volatility": 0.08549628114822802,
       "target_price": 55.38599922180176,
       "horizon_days": 2,
-      "history_info": "Önceki AL: 52.50 TL (2026-04-17), Mevcut Getiri: %+3.4",
+      "history_info": "Önceki AL: 54.30 TL (2026-04-20), Mevcut Getiri: %+0.0",
       "reason": "Strong bullish signal (99.2%) > 70.0%",
-      "timestamp": "2026-04-20 07:20:23.975258"
+      "timestamp": "2026-04-20 08:34:24.259119"
     },
     {
       "symbol": "DESA",
@@ -206,15 +206,15 @@
       "signal": "BUY",
       "confidence": 0.8632104396820068,
       "current_price": 14.699999809265137,
-      "sentiment_score": 0.8482790589332581,
+      "sentiment_score": -0.9673618674278259,
       "change_1d": -0.1358726725601406,
       "rsi": 45.43800383185299,
       "volatility": 0.07279803228486481,
       "target_price": 14.99399980545044,
       "horizon_days": 2,
-      "history_info": "Önceki AL: 13.32 TL (2026-04-13), Mevcut Getiri: %+10.4",
+      "history_info": "Önceki AL: 14.70 TL (2026-04-20), Mevcut Getiri: %+0.0",
       "reason": "Strong bullish signal (86.3%) > 70.0%",
-      "timestamp": "2026-04-20 07:20:26.563562"
+      "timestamp": "2026-04-20 08:34:26.533054"
     },
     {
       "symbol": "DEVA",
@@ -222,15 +222,15 @@
       "signal": "BUY",
       "confidence": 0.8819077610969543,
       "current_price": 67.9000015258789,
-      "sentiment_score": 0.8482790589332581,
+      "sentiment_score": -0.9673618674278259,
       "change_1d": -0.14705657958984375,
       "rsi": 69.64128008254634,
       "volatility": 0.05017726437107542,
       "target_price": 69.25800155639648,
       "horizon_days": 2,
-      "history_info": "Önceki AL: 67.05 TL (2026-04-17), Mevcut Getiri: %+1.3",
+      "history_info": "Önceki AL: 67.90 TL (2026-04-20), Mevcut Getiri: %+0.0",
       "reason": "Strong bullish signal (88.2%) > 70.0%",
-      "timestamp": "2026-04-20 07:20:27.893090"
+      "timestamp": "2026-04-20 08:34:27.441528"
     },
     {
       "symbol": "DITAS",
@@ -238,15 +238,15 @@
       "signal": "BUY",
       "confidence": 0.9749861359596252,
       "current_price": 33.29999923706055,
-      "sentiment_score": 0.8482790589332581,
+      "sentiment_score": -0.9673618674278259,
       "change_1d": 0.7259463212346511,
       "rsi": 65.58276278799322,
       "volatility": 0.06813546809721654,
       "target_price": 33.96599922180176,
       "horizon_days": 2,
-      "history_info": "Önceki AL: 32.64 TL (2026-04-17), Mevcut Getiri: %+2.0",
+      "history_info": "Önceki AL: 33.30 TL (2026-04-20), Mevcut Getiri: %+0.0",
       "reason": "Strong bullish signal (97.5%) > 70.0%",
-      "timestamp": "2026-04-20 07:20:29.351093"
+      "timestamp": "2026-04-20 08:34:28.867374"
     },
     {
       "symbol": "ECZYT",
@@ -254,15 +254,15 @@
       "signal": "BUY",
       "confidence": 0.9953804016113281,
       "current_price": 357.25,
-      "sentiment_score": 0.8482790589332581,
+      "sentiment_score": -0.9673618674278259,
       "change_1d": 0.35112359550561795,
       "rsi": 50.757126557577905,
       "volatility": 0.041487511017104566,
       "target_price": 364.395,
       "horizon_days": 2,
-      "history_info": "Önceki AL: 361.25 TL (2026-04-17), Mevcut Getiri: %-1.1",
+      "history_info": "Önceki AL: 357.25 TL (2026-04-20), Mevcut Getiri: %+0.0",
       "reason": "Strong bullish signal (99.5%) > 70.0%",
-      "timestamp": "2026-04-20 07:20:35.951150"
+      "timestamp": "2026-04-20 08:34:34.062508"
     },
     {
       "symbol": "EGGUB",
@@ -270,15 +270,15 @@
       "signal": "BUY",
       "confidence": 0.9969059824943542,
       "current_price": 125.4000015258789,
-      "sentiment_score": 0.8482790589332581,
+      "sentiment_score": -0.9673618674278259,
       "change_1d": -0.15923324098080727,
       "rsi": 56.90487759160347,
       "volatility": 0.05040584680715086,
       "target_price": 127.90800155639648,
       "horizon_days": 2,
-      "history_info": "Önceki AL: 128.00 TL (2026-04-17), Mevcut Getiri: %-2.0",
+      "history_info": "Önceki AL: 125.40 TL (2026-04-20), Mevcut Getiri: %+0.0",
       "reason": "Strong bullish signal (99.7%) > 70.0%",
-      "timestamp": "2026-04-20 07:20:38.754905"
+      "timestamp": "2026-04-20 08:34:36.147343"
     },
     {
       "symbol": "ENKAI",
@@ -286,15 +286,15 @@
       "signal": "BUY",
       "confidence": 0.9984834790229797,
       "current_price": 108.0,
-      "sentiment_score": 0.8482790589332581,
+      "sentiment_score": -0.9673618674278259,
       "change_1d": 0.27855437349918044,
       "rsi": 68.45663888757001,
       "volatility": 0.08143013026631965,
       "target_price": 110.16,
       "horizon_days": 2,
-      "history_info": "Önceki AL: 103.80 TL (2026-04-17), Mevcut Getiri: %+4.0",
+      "history_info": "Önceki AL: 108.00 TL (2026-04-20), Mevcut Getiri: %+0.0",
       "reason": "Strong bullish signal (99.8%) > 70.0%",
-      "timestamp": "2026-04-20 07:20:44.237591"
+      "timestamp": "2026-04-20 08:34:39.543650"
     },
     {
       "symbol": "EREGL",
@@ -302,15 +302,15 @@
       "signal": "BUY",
       "confidence": 0.9993263483047485,
       "current_price": 32.15999984741211,
-      "sentiment_score": 0.8482790589332581,
+      "sentiment_score": -0.9673618674278259,
       "change_1d": 0.0,
       "rsi": 66.45789485023666,
       "volatility": 0.06160968762532218,
       "target_price": 32.80319984436035,
       "horizon_days": 2,
-      "history_info": "Önceki AL: 30.92 TL (2026-04-17), Mevcut Getiri: %+4.0",
+      "history_info": "Önceki AL: 32.16 TL (2026-04-20), Mevcut Getiri: %+0.0",
       "reason": "Strong bullish signal (99.9%) > 70.0%",
-      "timestamp": "2026-04-20 07:20:47.013608"
+      "timestamp": "2026-04-20 08:34:41.451009"
     },
     {
       "symbol": "ESCOM",
@@ -318,15 +318,15 @@
       "signal": "BUY",
       "confidence": 0.7406107187271118,
       "current_price": 4.699999809265137,
-      "sentiment_score": 0.8482790589332581,
+      "sentiment_score": -0.9673618674278259,
       "change_1d": -0.4237284282951545,
       "rsi": 71.46532334221158,
       "volatility": 0.09485527448420508,
       "target_price": 4.793999805450439,
       "horizon_days": 2,
-      "history_info": "Önceki AL: 4.26 TL (2026-04-08), Mevcut Getiri: %+10.3",
+      "history_info": "Önceki AL: 4.70 TL (2026-04-20), Mevcut Getiri: %+0.0",
       "reason": "Strong bullish signal (74.1%) > 70.0%",
-      "timestamp": "2026-04-20 07:20:48.361380"
+      "timestamp": "2026-04-20 08:34:42.566980"
     },
     {
       "symbol": "EUPWR",
@@ -334,15 +334,15 @@
       "signal": "BUY",
       "confidence": 0.9982463121414185,
       "current_price": 40.29999923706055,
-      "sentiment_score": 0.8482790589332581,
+      "sentiment_score": -0.9673618674278259,
       "change_1d": 0.2487524184658294,
       "rsi": 66.64496406739826,
       "volatility": 0.052502144299770785,
       "target_price": 41.10599922180176,
       "horizon_days": 2,
-      "history_info": "Önceki AL: 39.36 TL (2026-04-17), Mevcut Getiri: %+2.4",
+      "history_info": "Önceki AL: 40.30 TL (2026-04-20), Mevcut Getiri: %+0.0",
       "reason": "Strong bullish signal (99.8%) > 70.0%",
-      "timestamp": "2026-04-20 07:20:50.771855"
+      "timestamp": "2026-04-20 08:34:44.718500"
     },
     {
       "symbol": "GLYHO",
@@ -350,15 +350,15 @@
       "signal": "BUY",
       "confidence": 0.9963968396186829,
       "current_price": 16.299999237060547,
-      "sentiment_score": 0.8482790589332581,
+      "sentiment_score": -0.9673618674278259,
       "change_1d": 0.5552138042629539,
       "rsi": 69.5072909395734,
       "volatility": 0.06039007482206376,
       "target_price": 16.62599922180176,
       "horizon_days": 2,
-      "history_info": "Önceki AL: 15.96 TL (2026-04-17), Mevcut Getiri: %+2.1",
+      "history_info": "Önceki AL: 16.30 TL (2026-04-20), Mevcut Getiri: %+0.0",
       "reason": "Strong bullish signal (99.6%) > 70.0%",
-      "timestamp": "2026-04-20 07:20:58.492700"
+      "timestamp": "2026-04-20 08:34:51.497490"
     },
     {
       "symbol": "GOLTS",
@@ -366,15 +366,15 @@
       "signal": "BUY",
       "confidence": 0.997718870639801,
       "current_price": 383.0,
-      "sentiment_score": 0.8482790589332581,
+      "sentiment_score": -0.9673618674278259,
       "change_1d": 0.2617801047120419,
       "rsi": 77.41996325147399,
       "volatility": 0.03715149971889784,
       "target_price": 390.66,
       "horizon_days": 2,
-      "history_info": "Önceki AL: 374.00 TL (2026-04-17), Mevcut Getiri: %+2.4",
+      "history_info": "Önceki AL: 383.00 TL (2026-04-20), Mevcut Getiri: %+0.0",
       "reason": "Strong bullish signal (99.8%) > 70.0%",
-      "timestamp": "2026-04-20 07:20:59.730922"
+      "timestamp": "2026-04-20 08:34:52.467814"
     },
     {
       "symbol": "HALKB",
@@ -382,15 +382,15 @@
       "signal": "BUY",
       "confidence": 0.9817855954170227,
       "current_price": 41.08000183105469,
-      "sentiment_score": 0.8482790589332581,
+      "sentiment_score": -0.9673618674278259,
       "change_1d": 0.19512641720655488,
       "rsi": 82.3692588398245,
       "volatility": 0.07730071001743401,
       "target_price": 41.90160186767578,
       "horizon_days": 2,
-      "history_info": "Önceki AL: 39.36 TL (2026-04-17), Mevcut Getiri: %+4.4",
+      "history_info": "Önceki AL: 41.08 TL (2026-04-20), Mevcut Getiri: %+0.0",
       "reason": "Strong bullish signal (98.2%) > 70.0%",
-      "timestamp": "2026-04-20 07:21:05.383085"
+      "timestamp": "2026-04-20 08:34:56.775121"
     },
     {
       "symbol": "HEKTS",
@@ -398,15 +398,15 @@
       "signal": "BUY",
       "confidence": 0.7366160154342651,
       "current_price": 3.3399999141693115,
-      "sentiment_score": 0.8482790589332581,
+      "sentiment_score": -0.9673618674278259,
       "change_1d": 0.0,
       "rsi": 44.444032296317744,
       "volatility": 0.09654210787221593,
       "target_price": 3.4067999124526978,
       "horizon_days": 2,
-      "history_info": "Önceki AL: 3.28 TL (2026-04-17), Mevcut Getiri: %+1.8",
+      "history_info": "Önceki AL: 3.34 TL (2026-04-20), Mevcut Getiri: %+0.0",
       "reason": "Strong bullish signal (73.7%) > 70.0%",
-      "timestamp": "2026-04-20 07:21:06.692870"
+      "timestamp": "2026-04-20 08:34:57.718758"
     },
     {
       "symbol": "HLGYO",
@@ -414,15 +414,15 @@
       "signal": "BUY",
       "confidence": 0.9988734126091003,
       "current_price": 5.840000152587891,
-      "sentiment_score": 0.8482790589332581,
+      "sentiment_score": -0.9673618674278259,
       "change_1d": 0.0,
       "rsi": 77.88574012768929,
       "volatility": 0.06787609203813876,
       "target_price": 5.956800155639648,
       "horizon_days": 2,
-      "history_info": "Önceki AL: 5.74 TL (2026-04-17), Mevcut Getiri: %+1.7",
+      "history_info": "Önceki AL: 5.84 TL (2026-04-20), Mevcut Getiri: %+0.0",
       "reason": "Strong bullish signal (99.9%) > 70.0%",
-      "timestamp": "2026-04-20 07:21:07.921577"
+      "timestamp": "2026-04-20 08:34:58.608616"
     },
     {
       "symbol": "JANTS",
@@ -430,15 +430,15 @@
       "signal": "BUY",
       "confidence": 0.9095606803894043,
       "current_price": 18.389999389648438,
-      "sentiment_score": 0.8482790589332581,
+      "sentiment_score": -0.9673618674278259,
       "change_1d": 0.05440821185227325,
       "rsi": 88.98286819570245,
       "volatility": 0.022866314838971995,
       "target_price": 18.75779937744141,
       "horizon_days": 2,
-      "history_info": "Önceki AL: 17.86 TL (2026-04-17), Mevcut Getiri: %+3.0",
+      "history_info": "Önceki AL: 18.39 TL (2026-04-20), Mevcut Getiri: %+0.0",
       "reason": "Strong bullish signal (91.0%) > 70.0%",
-      "timestamp": "2026-04-20 07:21:20.863520"
+      "timestamp": "2026-04-20 08:35:07.682865"
     },
     {
       "symbol": "KARSN",
@@ -446,15 +446,15 @@
       "signal": "BUY",
       "confidence": 0.8248274326324463,
       "current_price": 10.850000381469727,
-      "sentiment_score": 0.8482790589332581,
+      "sentiment_score": -0.9673618674278259,
       "change_1d": 0.27727067922061716,
       "rsi": 73.88463571314483,
       "volatility": 0.05291860753531623,
       "target_price": 11.067000389099121,
       "horizon_days": 2,
-      "history_info": "Önceki AL: 10.42 TL (2026-04-17), Mevcut Getiri: %+4.1",
+      "history_info": "Önceki AL: 10.85 TL (2026-04-20), Mevcut Getiri: %+0.0",
       "reason": "Strong bullish signal (82.5%) > 70.0%",
-      "timestamp": "2026-04-20 07:21:24.140689"
+      "timestamp": "2026-04-20 08:35:09.476759"
     },
     {
       "symbol": "KCHOL",
@@ -462,15 +462,15 @@
       "signal": "BUY",
       "confidence": 0.9930775165557861,
       "current_price": 212.0,
-      "sentiment_score": 0.8482790589332581,
+      "sentiment_score": -0.9673618674278259,
       "change_1d": 0.33128108761584996,
       "rsi": 78.93261931121361,
       "volatility": 0.08510111321357255,
       "target_price": 216.24,
       "horizon_days": 2,
-      "history_info": "Önceki AL: 203.50 TL (2026-04-17), Mevcut Getiri: %+4.2",
+      "history_info": "Önceki AL: 212.00 TL (2026-04-20), Mevcut Getiri: %+0.0",
       "reason": "Strong bullish signal (99.3%) > 70.0%",
-      "timestamp": "2026-04-20 07:21:28.093032"
+      "timestamp": "2026-04-20 08:35:12.790736"
     },
     {
       "symbol": "KLGYO",
@@ -478,15 +478,15 @@
       "signal": "BUY",
       "confidence": 0.9980570673942566,
       "current_price": 5.440000057220459,
-      "sentiment_score": 0.8482790589332581,
+      "sentiment_score": -0.9673618674278259,
       "change_1d": 0.18416628357234469,
       "rsi": 93.29292336501895,
       "volatility": 0.048198495092342634,
       "target_price": 5.5488000583648684,
       "horizon_days": 2,
-      "history_info": "Önceki AL: 5.21 TL (2026-04-17), Mevcut Getiri: %+4.4",
+      "history_info": "Önceki AL: 5.44 TL (2026-04-20), Mevcut Getiri: %+0.0",
       "reason": "Strong bullish signal (99.8%) > 70.0%",
-      "timestamp": "2026-04-20 07:21:31.351534"
+      "timestamp": "2026-04-20 08:35:14.753220"
     },
     {
       "symbol": "KMPUR",
@@ -494,15 +494,15 @@
       "signal": "BUY",
       "confidence": 0.9717331528663635,
       "current_price": 18.84000015258789,
-      "sentiment_score": 0.8482790589332581,
+      "sentiment_score": -0.9673618674278259,
       "change_1d": 0.7486598071476817,
       "rsi": 83.1728651545379,
       "volatility": 0.04781169362770054,
       "target_price": 19.21680015563965,
       "horizon_days": 2,
-      "history_info": "Önceki AL: 18.49 TL (2026-04-17), Mevcut Getiri: %+1.9",
+      "history_info": "Önceki AL: 18.84 TL (2026-04-20), Mevcut Getiri: %+0.0",
       "reason": "Strong bullish signal (97.2%) > 70.0%",
-      "timestamp": "2026-04-20 07:21:33.912523"
+      "timestamp": "2026-04-20 08:35:17.030278"
     },
     {
       "symbol": "KONTR",
@@ -510,15 +510,15 @@
       "signal": "BUY",
       "confidence": 0.9067682027816772,
       "current_price": 13.119999885559082,
-      "sentiment_score": 0.8482790589332581,
+      "sentiment_score": -0.9673618674278259,
       "change_1d": 0.0,
       "rsi": 72.08833451763297,
       "volatility": 0.1369936489288179,
       "target_price": 13.382399883270264,
       "horizon_days": 2,
-      "history_info": "Önceki AL: 7.78 TL (2026-04-08), Mevcut Getiri: %+68.6",
+      "history_info": "Önceki AL: 13.12 TL (2026-04-20), Mevcut Getiri: %+0.0",
       "reason": "Strong bullish signal (90.7%) > 70.0%",
-      "timestamp": "2026-04-20 07:21:35.183842"
+      "timestamp": "2026-04-20 08:35:17.947777"
     },
     {
       "symbol": "KUTPO",
@@ -526,15 +526,15 @@
       "signal": "BUY",
       "confidence": 0.8087772727012634,
       "current_price": 100.4000015258789,
-      "sentiment_score": 0.8482790589332581,
+      "sentiment_score": -0.9673618674278259,
       "change_1d": -0.2979100610275817,
       "rsi": 61.63976055234274,
       "volatility": 0.04905305627049961,
       "target_price": 102.40800155639648,
       "horizon_days": 2,
-      "history_info": "Önceki AL: 106.10 TL (2026-01-22), Mevcut Getiri: %-5.4",
+      "history_info": "Önceki AL: 100.40 TL (2026-04-20), Mevcut Getiri: %+0.0",
       "reason": "Strong bullish signal (80.9%) > 70.0%",
-      "timestamp": "2026-04-20 07:21:43.814008"
+      "timestamp": "2026-04-20 08:35:23.820260"
     },
     {
       "symbol": "MAKIM",
@@ -542,15 +542,15 @@
       "signal": "BUY",
       "confidence": 0.9994552731513977,
       "current_price": 18.5,
-      "sentiment_score": 0.8482790589332581,
+      "sentiment_score": -0.9673618674278259,
       "change_1d": -0.16190332182302172,
       "rsi": 47.0243566744477,
       "volatility": 0.05071719191307084,
       "target_price": 18.87,
       "horizon_days": 2,
-      "history_info": "Önceki AL: 18.20 TL (2026-04-17), Mevcut Getiri: %+1.6",
+      "history_info": "Önceki AL: 18.50 TL (2026-04-20), Mevcut Getiri: %+0.0",
       "reason": "Strong bullish signal (99.9%) > 70.0%",
-      "timestamp": "2026-04-20 07:21:50.880598"
+      "timestamp": "2026-04-20 08:35:27.770771"
     },
     {
       "symbol": "MERCN",
@@ -558,15 +558,15 @@
       "signal": "BUY",
       "confidence": 0.9190490245819092,
       "current_price": 20.219999313354492,
-      "sentiment_score": 0.8482790589332581,
+      "sentiment_score": -0.9673618674278259,
       "change_1d": 1.2518778597694697,
       "rsi": 46.13657097139906,
       "volatility": 0.1739364102559221,
       "target_price": 20.624399299621583,
       "horizon_days": 2,
-      "history_info": "Önceki AL: 16.23 TL (2026-04-08), Mevcut Getiri: %+24.6",
+      "history_info": "Önceki AL: 20.22 TL (2026-04-20), Mevcut Getiri: %+0.0",
       "reason": "Strong bullish signal (91.9%) > 70.0%",
-      "timestamp": "2026-04-20 07:21:55.093783"
+      "timestamp": "2026-04-20 08:35:30.439127"
     },
     {
       "symbol": "METRO",
@@ -574,15 +574,15 @@
       "signal": "BUY",
       "confidence": 0.9940738081932068,
       "current_price": 6.869999885559082,
-      "sentiment_score": 0.8482790589332581,
+      "sentiment_score": -0.9673618674278259,
       "change_1d": 0.29197052853953964,
       "rsi": 53.10523780716661,
       "volatility": 0.09026039218774243,
       "target_price": 7.0073998832702635,
       "horizon_days": 2,
-      "history_info": "Önceki AL: 6.31 TL (2026-04-13), Mevcut Getiri: %+8.9",
+      "history_info": "Önceki AL: 6.87 TL (2026-04-20), Mevcut Getiri: %+0.0",
       "reason": "Strong bullish signal (99.4%) > 70.0%",
-      "timestamp": "2026-04-20 07:21:57.022787"
+      "timestamp": "2026-04-20 08:35:31.350467"
     },
     {
       "symbol": "MGROS",
@@ -590,15 +590,15 @@
       "signal": "BUY",
       "confidence": 0.9659078121185303,
       "current_price": 673.0,
-      "sentiment_score": 0.8482790589332581,
+      "sentiment_score": -0.9673618674278259,
       "change_1d": -0.1483679525222552,
       "rsi": 78.35864707587164,
       "volatility": 0.05889878612498811,
       "target_price": 686.46,
       "horizon_days": 2,
-      "history_info": "Önceki AL: 658.50 TL (2026-04-17), Mevcut Getiri: %+2.2",
+      "history_info": "Önceki AL: 673.00 TL (2026-04-20), Mevcut Getiri: %+0.0",
       "reason": "Strong bullish signal (96.6%) > 70.0%",
-      "timestamp": "2026-04-20 07:21:58.269836"
+      "timestamp": "2026-04-20 08:35:32.256458"
     },
     {
       "symbol": "MIATK",
@@ -606,15 +606,15 @@
       "signal": "BUY",
       "confidence": 0.9940137267112732,
       "current_price": 40.5,
-      "sentiment_score": 0.8482790589332581,
+      "sentiment_score": -0.9673618674278259,
       "change_1d": 0.2971741671882196,
       "rsi": 70.44411184760119,
       "volatility": 0.03862851860738473,
       "target_price": 41.31,
       "horizon_days": 2,
-      "history_info": "Önceki AL: 39.26 TL (2026-04-17), Mevcut Getiri: %+3.2",
+      "history_info": "Önceki AL: 40.50 TL (2026-04-20), Mevcut Getiri: %+0.0",
       "reason": "Strong bullish signal (99.4%) > 70.0%",
-      "timestamp": "2026-04-20 07:21:59.628873"
+      "timestamp": "2026-04-20 08:35:33.161538"
     },
     {
       "symbol": "MOBTL",
@@ -622,15 +622,15 @@
       "signal": "BUY",
       "confidence": 0.9568211436271667,
       "current_price": 13.770000457763672,
-      "sentiment_score": 0.8482790589332581,
+      "sentiment_score": -0.9673618674278259,
       "change_1d": 0.14545787464488635,
       "rsi": 60.89688351216223,
       "volatility": 0.06217994584448445,
       "target_price": 14.045400466918945,
       "horizon_days": 2,
-      "history_info": "Önceki AL: 13.60 TL (2026-04-17), Mevcut Getiri: %+1.3",
+      "history_info": "Önceki AL: 13.77 TL (2026-04-20), Mevcut Getiri: %+0.0",
       "reason": "Strong bullish signal (95.7%) > 70.0%",
-      "timestamp": "2026-04-20 07:22:01.051539"
+      "timestamp": "2026-04-20 08:35:34.037249"
     },
     {
       "symbol": "NETAS",
@@ -638,15 +638,15 @@
       "signal": "BUY",
       "confidence": 0.9995251893997192,
       "current_price": 64.44999694824219,
-      "sentiment_score": 0.8482790589332581,
+      "sentiment_score": -0.9673618674278259,
       "change_1d": 0.07763264158183408,
       "rsi": 59.4762074638613,
       "volatility": 0.036796519082145866,
       "target_price": 65.73899688720704,
       "horizon_days": 2,
-      "history_info": "Önceki AL: 62.90 TL (2026-04-17), Mevcut Getiri: %+2.5",
+      "history_info": "Önceki AL: 64.45 TL (2026-04-20), Mevcut Getiri: %+0.0",
       "reason": "Strong bullish signal (100.0%) > 70.0%",
-      "timestamp": "2026-04-20 07:22:05.538118"
+      "timestamp": "2026-04-20 08:35:36.745854"
     },
     {
       "symbol": "OBASE",
@@ -654,15 +654,15 @@
       "signal": "BUY",
       "confidence": 0.7211112380027771,
       "current_price": 38.599998474121094,
-      "sentiment_score": 0.8482790589332581,
+      "sentiment_score": -0.9673618674278259,
       "change_1d": 0.4685068031087898,
       "rsi": 64.37433789070433,
       "volatility": 0.08123009831915848,
       "target_price": 39.371998443603516,
       "horizon_days": 2,
-      "history_info": "Önceki AL: 37.94 TL (2026-04-17), Mevcut Getiri: %+1.7",
+      "history_info": "Önceki AL: 38.60 TL (2026-04-20), Mevcut Getiri: %+0.0",
       "reason": "Strong bullish signal (72.1%) > 70.0%",
-      "timestamp": "2026-04-20 07:22:07.883368"
+      "timestamp": "2026-04-20 08:35:38.557535"
     },
     {
       "symbol": "ORGE",
@@ -670,15 +670,15 @@
       "signal": "BUY",
       "confidence": 0.9938222169876099,
       "current_price": 79.0999984741211,
-      "sentiment_score": 0.8482790589332581,
+      "sentiment_score": -0.9673618674278259,
       "change_1d": 0.5082611707621426,
       "rsi": 64.8908675247178,
       "volatility": 0.11939246673803454,
       "target_price": 80.68199844360352,
       "horizon_days": 2,
-      "history_info": "Önceki AL: 77.85 TL (2026-04-13), Mevcut Getiri: %+1.6",
+      "history_info": "Önceki AL: 79.10 TL (2026-04-20), Mevcut Getiri: %+0.0",
       "reason": "Strong bullish signal (99.4%) > 70.0%",
-      "timestamp": "2026-04-20 07:22:11.877574"
+      "timestamp": "2026-04-20 08:35:41.204205"
     },
     {
       "symbol": "OTKAR",
@@ -686,15 +686,15 @@
       "signal": "BUY",
       "confidence": 0.9420709013938904,
       "current_price": 408.75,
-      "sentiment_score": 0.8482790589332581,
+      "sentiment_score": -0.9673618674278259,
       "change_1d": 0.42997542997543,
       "rsi": 64.32842536553005,
       "volatility": 0.03406612931762977,
       "target_price": 416.925,
       "horizon_days": 2,
-      "history_info": "Önceki AL: 395.00 TL (2026-04-13), Mevcut Getiri: %+3.5",
+      "history_info": "Önceki AL: 408.75 TL (2026-04-20), Mevcut Getiri: %+0.0",
       "reason": "Strong bullish signal (94.2%) > 70.0%",
-      "timestamp": "2026-04-20 07:22:15.724731"
+      "timestamp": "2026-04-20 08:35:44.858110"
     },
     {
       "symbol": "PETKM",
@@ -702,15 +702,15 @@
       "signal": "BUY",
       "confidence": 0.7160013914108276,
       "current_price": 21.700000762939453,
-      "sentiment_score": 0.8482790589332581,
+      "sentiment_score": -0.9673618674278259,
       "change_1d": 0.556074326495132,
       "rsi": 41.347216254889254,
       "volatility": 0.15489560159238508,
       "target_price": 22.134000778198242,
       "horizon_days": 2,
-      "history_info": "Önceki AL: 22.60 TL (2026-04-17), Mevcut Getiri: %-4.0",
+      "history_info": "Önceki AL: 21.70 TL (2026-04-20), Mevcut Getiri: %+0.0",
       "reason": "Strong bullish signal (71.6%) > 70.0%",
-      "timestamp": "2026-04-20 07:22:22.037442"
+      "timestamp": "2026-04-20 08:35:50.761501"
     },
     {
       "symbol": "PGSUS",
@@ -718,15 +718,15 @@
       "signal": "BUY",
       "confidence": 0.8951588869094849,
       "current_price": 196.6999969482422,
-      "sentiment_score": 0.8482790589332581,
+      "sentiment_score": -0.9673618674278259,
       "change_1d": 0.20376662774626134,
       "rsi": 78.43942387219931,
       "volatility": 0.15619251762986547,
       "target_price": 200.63399688720705,
       "horizon_days": 2,
-      "history_info": "Önceki AL: 185.80 TL (2026-04-17), Mevcut Getiri: %+5.9",
+      "history_info": "Önceki AL: 196.70 TL (2026-04-20), Mevcut Getiri: %+0.0",
       "reason": "Strong bullish signal (89.5%) > 70.0%",
-      "timestamp": "2026-04-20 07:22:23.227228"
+      "timestamp": "2026-04-20 08:35:51.672002"
     },
     {
       "symbol": "PNLSN",
@@ -734,15 +734,15 @@
       "signal": "BUY",
       "confidence": 0.9961446523666382,
       "current_price": 46.779998779296875,
-      "sentiment_score": 0.8482790589332581,
+      "sentiment_score": -0.9673618674278259,
       "change_1d": 0.04277258015738972,
       "rsi": 81.72460870994007,
       "volatility": 0.04345124311953647,
       "target_price": 47.71559875488281,
       "horizon_days": 2,
-      "history_info": "Önceki AL: 40.86 TL (2026-01-22), Mevcut Getiri: %+14.5",
+      "history_info": "Önceki AL: 46.78 TL (2026-04-20), Mevcut Getiri: %+0.0",
       "reason": "Strong bullish signal (99.6%) > 70.0%",
-      "timestamp": "2026-04-20 07:22:24.490278"
+      "timestamp": "2026-04-20 08:35:52.673255"
     },
     {
       "symbol": "RYSAS",
@@ -750,15 +750,15 @@
       "signal": "BUY",
       "confidence": 0.9888601899147034,
       "current_price": 22.18000030517578,
-      "sentiment_score": 0.8482790589332581,
+      "sentiment_score": -0.9673618674278259,
       "change_1d": 0.543974805705065,
       "rsi": 53.765036431518695,
       "volatility": 0.06837107466337827,
       "target_price": 22.623600311279297,
       "horizon_days": 2,
-      "history_info": "Önceki AL: 22.06 TL (2026-04-17), Mevcut Getiri: %+0.5",
+      "history_info": "Önceki AL: 22.18 TL (2026-04-20), Mevcut Getiri: %+0.0",
       "reason": "Strong bullish signal (98.9%) > 70.0%",
-      "timestamp": "2026-04-20 07:22:36.076142"
+      "timestamp": "2026-04-20 08:36:00.267868"
     },
     {
       "symbol": "SAFKR",
@@ -766,15 +766,15 @@
       "signal": "BUY",
       "confidence": 0.8318418860435486,
       "current_price": 26.34000015258789,
-      "sentiment_score": 0.8482790589332581,
+      "sentiment_score": -0.9673618674278259,
       "change_1d": 0.15209474025754574,
       "rsi": 55.39436235178326,
       "volatility": 0.045389260875722454,
       "target_price": 26.86680015563965,
       "horizon_days": 2,
-      "history_info": "Önceki AL: 26.68 TL (2026-04-17), Mevcut Getiri: %-1.3",
+      "history_info": "Önceki AL: 26.34 TL (2026-04-20), Mevcut Getiri: %+0.0",
       "reason": "Strong bullish signal (83.2%) > 70.0%",
-      "timestamp": "2026-04-20 07:22:37.313950"
+      "timestamp": "2026-04-20 08:36:01.182038"
     },
     {
       "symbol": "SAHOL",
@@ -782,15 +782,15 @@
       "signal": "BUY",
       "confidence": 0.7561923265457153,
       "current_price": 105.80000305175781,
-      "sentiment_score": 0.8482790589332581,
+      "sentiment_score": -0.9673618674278259,
       "change_1d": 0.8579614039918533,
       "rsi": 85.48652995139224,
       "volatility": 0.12225661538744073,
       "target_price": 107.91600311279296,
       "horizon_days": 2,
-      "history_info": "Önceki AL: 99.45 TL (2026-04-17), Mevcut Getiri: %+6.4",
+      "history_info": "Önceki AL: 105.80 TL (2026-04-20), Mevcut Getiri: %+0.0",
       "reason": "Strong bullish signal (75.6%) > 70.0%",
-      "timestamp": "2026-04-20 07:22:38.625874"
+      "timestamp": "2026-04-20 08:36:02.126337"
     },
     {
       "symbol": "SAMAT",
@@ -798,15 +798,15 @@
       "signal": "BUY",
       "confidence": 0.9856452345848083,
       "current_price": 5.449999809265137,
-      "sentiment_score": 0.8482790589332581,
+      "sentiment_score": -0.9673618674278259,
       "change_1d": -1.0889367899150764,
       "rsi": 44.51179579913397,
       "volatility": 0.13567634784803542,
       "target_price": 5.55899980545044,
       "horizon_days": 2,
-      "history_info": "Önceki AL: 5.55 TL (2026-04-09), Mevcut Getiri: %-1.8",
+      "history_info": "Önceki AL: 5.45 TL (2026-04-20), Mevcut Getiri: %+0.0",
       "reason": "Strong bullish signal (98.6%) > 70.0%",
-      "timestamp": "2026-04-20 07:22:39.879400"
+      "timestamp": "2026-04-20 08:36:03.031738"
     },
     {
       "symbol": "SASA",
@@ -814,15 +814,15 @@
       "signal": "BUY",
       "confidence": 0.7695800065994263,
       "current_price": 3.1600000858306885,
-      "sentiment_score": 0.8482790589332581,
+      "sentiment_score": -0.9673618674278259,
       "change_1d": -0.3154571048133175,
       "rsi": 41.02919309496469,
       "volatility": 0.17650739684091069,
       "target_price": 3.223200087547302,
       "horizon_days": 2,
-      "history_info": "Önceki AL: 2.38 TL (2026-01-22), Mevcut Getiri: %+32.8",
+      "history_info": "Önceki AL: 3.16 TL (2026-04-20), Mevcut Getiri: %+0.0",
       "reason": "Strong bullish signal (77.0%) > 70.0%",
-      "timestamp": "2026-04-20 07:22:44.229681"
+      "timestamp": "2026-04-20 08:36:05.771418"
     },
     {
       "symbol": "SKYMD",
@@ -830,15 +830,15 @@
       "signal": "BUY",
       "confidence": 0.7635070085525513,
       "current_price": 13.5,
-      "sentiment_score": 0.8482790589332581,
+      "sentiment_score": -0.9673618674278259,
       "change_1d": 0.1483713534336946,
       "rsi": 69.81293574767898,
       "volatility": 0.07315034157383013,
       "target_price": 13.77,
       "horizon_days": 2,
-      "history_info": "Önceki AL: 12.27 TL (2026-04-08), Mevcut Getiri: %+10.0",
+      "history_info": "Önceki AL: 13.50 TL (2026-04-20), Mevcut Getiri: %+0.0",
       "reason": "Strong bullish signal (76.4%) > 70.0%",
-      "timestamp": "2026-04-20 07:22:54.481645"
+      "timestamp": "2026-04-20 08:36:12.204134"
     },
     {
       "symbol": "SMART",
@@ -846,15 +846,15 @@
       "signal": "BUY",
       "confidence": 0.9994210004806519,
       "current_price": 34.7599983215332,
-      "sentiment_score": 0.8482790589332581,
+      "sentiment_score": -0.9673618674278259,
       "change_1d": 0.05756085808942533,
       "rsi": 39.73871084805105,
       "volatility": 0.042394599135524215,
       "target_price": 35.45519828796387,
       "horizon_days": 2,
-      "history_info": "Önceki AL: 35.86 TL (2026-04-17), Mevcut Getiri: %-3.1",
+      "history_info": "Önceki AL: 34.76 TL (2026-04-20), Mevcut Getiri: %+0.0",
       "reason": "Strong bullish signal (99.9%) > 70.0%",
-      "timestamp": "2026-04-20 07:22:56.238632"
+      "timestamp": "2026-04-20 08:36:13.120099"
     },
     {
       "symbol": "SMRTG",
@@ -862,15 +862,15 @@
       "signal": "BUY",
       "confidence": 0.8608095645904541,
       "current_price": 7.690000057220459,
-      "sentiment_score": 0.8482790589332581,
+      "sentiment_score": -0.9673618674278259,
       "change_1d": 0.6544527697467539,
       "rsi": 79.575063081908,
       "volatility": 0.05235997844994988,
       "target_price": 7.843800058364868,
       "horizon_days": 2,
-      "history_info": "Önceki AL: 7.41 TL (2026-04-17), Mevcut Getiri: %+3.8",
+      "history_info": "Önceki AL: 7.69 TL (2026-04-20), Mevcut Getiri: %+0.0",
       "reason": "Strong bullish signal (86.1%) > 70.0%",
-      "timestamp": "2026-04-20 07:22:57.492316"
+      "timestamp": "2026-04-20 08:36:14.019367"
     },
     {
       "symbol": "SRVGY",
@@ -878,15 +878,15 @@
       "signal": "BUY",
       "confidence": 0.9824792146682739,
       "current_price": 3.309999942779541,
-      "sentiment_score": 0.8482790589332581,
+      "sentiment_score": -0.9673618674278259,
       "change_1d": 0.30303001841675176,
       "rsi": 83.0878055801928,
       "volatility": 0.060012715411199444,
       "target_price": 3.376199941635132,
       "horizon_days": 2,
-      "history_info": "Önceki AL: 3.20 TL (2026-04-17), Mevcut Getiri: %+3.4",
+      "history_info": "Önceki AL: 3.31 TL (2026-04-20), Mevcut Getiri: %+0.0",
       "reason": "Strong bullish signal (98.2%) > 70.0%",
-      "timestamp": "2026-04-20 07:23:03.486052"
+      "timestamp": "2026-04-20 08:36:17.893333"
     },
     {
       "symbol": "SURGY",
@@ -894,15 +894,15 @@
       "signal": "BUY",
       "confidence": 0.9151758551597595,
       "current_price": 69.5,
-      "sentiment_score": 0.8482790589332581,
+      "sentiment_score": -0.9673618674278259,
       "change_1d": -0.2153647129830603,
       "rsi": 49.42952914622176,
       "volatility": 0.09998904018414276,
       "target_price": 70.89,
       "horizon_days": 2,
-      "history_info": "Önceki AL: 69.10 TL (2026-04-17), Mevcut Getiri: %+0.6",
+      "history_info": "Önceki AL: 69.50 TL (2026-04-20), Mevcut Getiri: %+0.0",
       "reason": "Strong bullish signal (91.5%) > 70.0%",
-      "timestamp": "2026-04-20 07:23:04.780808"
+      "timestamp": "2026-04-20 08:36:18.779382"
     },
     {
       "symbol": "TATGD",
@@ -910,15 +910,15 @@
       "signal": "BUY",
       "confidence": 0.8596733212471008,
       "current_price": 16.790000915527344,
-      "sentiment_score": 0.8482790589332581,
+      "sentiment_score": -0.9673618674278259,
       "change_1d": -0.17835184209965296,
       "rsi": 77.36819798407588,
       "volatility": 0.04949939313350691,
       "target_price": 17.12580093383789,
       "horizon_days": 2,
-      "history_info": "Önceki AL: 16.61 TL (2026-04-17), Mevcut Getiri: %+1.1",
+      "history_info": "Önceki AL: 16.79 TL (2026-04-20), Mevcut Getiri: %+0.0",
       "reason": "Strong bullish signal (86.0%) > 70.0%",
-      "timestamp": "2026-04-20 07:23:07.406464"
+      "timestamp": "2026-04-20 08:36:20.560472"
     },
     {
       "symbol": "TKFEN",
@@ -926,15 +926,15 @@
       "signal": "BUY",
       "confidence": 0.9734626412391663,
       "current_price": 120.80000305175781,
-      "sentiment_score": 0.8482790589332581,
+      "sentiment_score": -0.9673618674278259,
       "change_1d": -0.2477253725377956,
       "rsi": 51.26524473499573,
       "volatility": 0.09363739280560365,
       "target_price": 123.21600311279298,
       "horizon_days": 2,
-      "history_info": "Önceki AL: 118.20 TL (2026-04-17), Mevcut Getiri: %+2.2",
+      "history_info": "Önceki AL: 120.80 TL (2026-04-20), Mevcut Getiri: %+0.0",
       "reason": "Strong bullish signal (97.3%) > 70.0%",
-      "timestamp": "2026-04-20 07:23:14.205233"
+      "timestamp": "2026-04-20 08:36:25.575224"
     },
     {
       "symbol": "TMSN",
@@ -942,15 +942,15 @@
       "signal": "BUY",
       "confidence": 0.8046780824661255,
       "current_price": 106.80000305175781,
-      "sentiment_score": 0.0,
+      "sentiment_score": -0.9673618674278259,
       "change_1d": 0.28169300634536387,
       "rsi": 83.11227845096062,
       "volatility": 0.04991789225911783,
       "target_price": 108.93600311279297,
       "horizon_days": 2,
-      "history_info": "Önceki AL: 104.00 TL (2026-04-17), Mevcut Getiri: %+2.7",
+      "history_info": "Önceki AL: 106.80 TL (2026-04-20), Mevcut Getiri: %+0.0",
       "reason": "Strong bullish signal (80.5%) > 70.0%",
-      "timestamp": "2026-04-20 07:23:16.165138"
+      "timestamp": "2026-04-20 08:36:26.736013"
     },
     {
       "symbol": "TUPRS",
@@ -958,15 +958,15 @@
       "signal": "BUY",
       "confidence": 0.9873962998390198,
       "current_price": 253.5,
-      "sentiment_score": 0.0,
+      "sentiment_score": -0.9673618674278259,
       "change_1d": 0.1976284584980237,
       "rsi": 23.70198124625196,
       "volatility": 0.11310941062011592,
       "target_price": 258.57,
       "horizon_days": 2,
-      "history_info": "Önceki AL: 254.50 TL (2026-04-13), Mevcut Getiri: %-0.4",
+      "history_info": "Önceki AL: 253.50 TL (2026-04-20), Mevcut Getiri: %+0.0",
       "reason": "Strong bullish signal (98.7%) > 70.0%",
-      "timestamp": "2026-04-20 07:23:26.165766"
+      "timestamp": "2026-04-20 08:36:33.556149"
     },
     {
       "symbol": "ULKER",
@@ -974,15 +974,15 @@
       "signal": "BUY",
       "confidence": 0.8154993653297424,
       "current_price": 123.9000015258789,
-      "sentiment_score": 0.8482790589332581,
+      "sentiment_score": -0.9673618674278259,
       "change_1d": 0.6498806349912299,
       "rsi": 87.98582973277038,
       "volatility": 0.048831227220001404,
       "target_price": 126.37800155639648,
       "horizon_days": 2,
-      "history_info": "Önceki AL: 119.50 TL (2026-04-17), Mevcut Getiri: %+3.7",
+      "history_info": "Önceki AL: 123.90 TL (2026-04-20), Mevcut Getiri: %+0.0",
       "reason": "Strong bullish signal (81.5%) > 70.0%",
-      "timestamp": "2026-04-20 07:23:31.094465"
+      "timestamp": "2026-04-20 08:36:36.285194"
     },
     {
       "symbol": "VAKFN",
@@ -990,15 +990,15 @@
       "signal": "BUY",
       "confidence": 0.9906994700431824,
       "current_price": 1.9500000476837158,
-      "sentiment_score": 0.8482790589332581,
+      "sentiment_score": -0.9673618674278259,
       "change_1d": 1.0362746465984924,
       "rsi": 77.98351406226335,
       "volatility": 0.08683404540654925,
       "target_price": 1.9890000486373902,
       "horizon_days": 2,
-      "history_info": "Önceki AL: 1.84 TL (2026-04-13), Mevcut Getiri: %+6.0",
+      "history_info": "Önceki AL: 1.95 TL (2026-04-20), Mevcut Getiri: %+0.0",
       "reason": "Strong bullish signal (99.1%) > 70.0%",
-      "timestamp": "2026-04-20 07:23:37.679121"
+      "timestamp": "2026-04-20 08:36:40.103659"
     },
     {
       "symbol": "VAKKO",
@@ -1006,15 +1006,15 @@
       "signal": "BUY",
       "confidence": 0.9417487382888794,
       "current_price": 84.1500015258789,
-      "sentiment_score": 0.8482790589332581,
+      "sentiment_score": -0.9673618674278259,
       "change_1d": 0.4176592617841821,
       "rsi": 71.16057571656091,
       "volatility": 0.07715390141953864,
       "target_price": 85.83300155639648,
       "horizon_days": 2,
-      "history_info": "Önceki AL: 83.65 TL (2026-04-17), Mevcut Getiri: %+0.6",
+      "history_info": "Önceki AL: 84.15 TL (2026-04-20), Mevcut Getiri: %+0.0",
       "reason": "Strong bullish signal (94.2%) > 70.0%",
-      "timestamp": "2026-04-20 07:23:39.200655"
+      "timestamp": "2026-04-20 08:36:41.031306"
     }
   ],
   "sell_signals": [],
