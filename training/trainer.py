@@ -135,7 +135,7 @@ class EarlyStopping:
 
 class Trainer:
     """
-    Model trainer with early stopping and metrics tracking.
+    Model trainer with early stopping, learning rate scheduling, and metrics tracking.
     """
     
     def __init__(
@@ -147,6 +147,9 @@ class Trainer:
         max_grad_norm: float = 1.0,
         use_class_weights: bool = True,
         checkpoint_dir: Optional[str] = None,
+        use_scheduler: bool = True,
+        scheduler_patience: int = 5,
+        scheduler_factor: float = 0.5,
     ):
         """
         Initialize trainer.
@@ -159,6 +162,9 @@ class Trainer:
             max_grad_norm: Gradient clipping threshold
             use_class_weights: Whether to use class weights for imbalanced data
             checkpoint_dir: Directory to save checkpoints
+            use_scheduler: Whether to use ReduceLROnPlateau learning rate scheduler
+            scheduler_patience: Number of epochs with no improvement before reducing LR
+            scheduler_factor: Factor to multiply LR by on plateau (e.g. 0.5 = halve it)
         """
         self.model = model.to(device)
         self.device = device
@@ -166,6 +172,9 @@ class Trainer:
         self.weight_decay = weight_decay
         self.max_grad_norm = max_grad_norm
         self.use_class_weights = use_class_weights
+        self.use_scheduler = use_scheduler
+        self.scheduler_patience = scheduler_patience
+        self.scheduler_factor = scheduler_factor
         
         if checkpoint_dir:
             self.checkpoint_dir = Path(checkpoint_dir)
@@ -182,6 +191,9 @@ class Trainer:
         
         # Loss function (will be configured with class weights if needed)
         self.criterion = nn.BCELoss()
+        
+        # Scheduler (created in train() once loss configuration is complete)
+        self.scheduler: Optional[torch.optim.lr_scheduler.ReduceLROnPlateau] = None
         
         # Training state
         self.history = TrainingHistory()
@@ -227,6 +239,20 @@ class Trainer:
         # Early stopping
         early_stopping = EarlyStopping(patience=patience)
         
+        # Learning rate scheduler
+        if self.use_scheduler:
+            self.scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
+                self.optimizer,
+                mode='min',
+                factor=self.scheduler_factor,
+                patience=self.scheduler_patience,
+                min_lr=1e-7,
+                verbose=False,
+            )
+            logger.info(
+                f"LR scheduler enabled: ReduceLROnPlateau(factor={self.scheduler_factor}, patience={self.scheduler_patience})"
+            )
+        
         # Best model state
         best_state = None
         
@@ -258,12 +284,14 @@ class Trainer:
                     self._save_checkpoint(f'best_model.pt')
             
             # Logging
+            current_lr = self.optimizer.param_groups[0]['lr']
             logger.info(
                 f"Epoch {epoch:3d} | "
                 f"Train Loss: {train_loss:.4f} | "
                 f"Val Loss: {val_loss:.4f} | "
                 f"AUC: {metrics.auc:.4f} | "
-                f"F1: {metrics.f1:.4f}"
+                f"F1: {metrics.f1:.4f} | "
+                f"LR: {current_lr:.2e}"
                 + (" *" if is_best else "")
             )
             
@@ -275,6 +303,10 @@ class Trainer:
             if early_stopping(val_loss):
                 logger.info(f"Early stopping at epoch {epoch}")
                 break
+            
+            # Learning rate scheduler step (after early stopping check)
+            if self.scheduler is not None:
+                self.scheduler.step(val_loss)
         
         # Restore best model
         if best_state:
@@ -414,12 +446,14 @@ class Trainer:
             return
         
         path = self.checkpoint_dir / filename
-        torch.save({
+        checkpoint = {
             'epoch': self.current_epoch,
             'model_state_dict': self.model.state_dict(),
             'optimizer_state_dict': self.optimizer.state_dict(),
+            'scheduler_state_dict': self.scheduler.state_dict() if self.scheduler else None,
             'history': self.history,
-        }, path)
+        }
+        torch.save(checkpoint, path)
         logger.debug(f"Saved checkpoint to {path}")
     
     def evaluate(

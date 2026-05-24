@@ -41,6 +41,9 @@ env/
 .coverage
 htmlcov/
 
+# Frontend
+node_modules/
+
 # OS
 .DS_Store
 Thumbs.db
@@ -48,11 +51,14 @@ Thumbs.db
 # Project specific
 output/*
 !output/model.pt
+bist.db
 *.log
 logs/
 
 # Secrets - NEVER commit these!
 .env
 *.env
+!.env.example
+!.env.production.example
 secrets.json
 credentials.json

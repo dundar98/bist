@@ -17,6 +17,7 @@ import numpy as np
 from .bist100_validator import BIST100Validator, get_validator, BIST100ValidationError
 
 logger = logging.getLogger(__name__)
+PROJECT_ROOT = Path(__file__).parent.parent
 
 
 class DataLoaderError(Exception):
@@ -255,6 +256,11 @@ class YFinanceLoader(DataLoader):
             raise DataLoaderError(
                 "yfinance not installed. Run: pip install yfinance"
             )
+
+        cache_dir = PROJECT_ROOT / "output" / "yfinance_cache"
+        cache_dir.mkdir(parents=True, exist_ok=True)
+        if hasattr(yf, "set_tz_cache_location"):
+            yf.set_tz_cache_location(str(cache_dir))
         
         # Add suffix for BIST
         ticker_symbol = f"{symbol}{self.suffix}"

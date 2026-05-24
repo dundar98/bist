@@ -1,0 +1,80 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-bist}
+      POSTGRES_USER: ${POSTGRES_USER:-bist}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-bist}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U bist -d bist"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    environment:
+      BIST_APP_NAME: "BIST Signal Platform"
+      BIST_ENVIRONMENT: production
+      BIST_DATABASE_URL: ${BIST_CONTAINER_DATABASE_URL:-postgresql+psycopg://bist:bist@postgres:5432/bist}
+      BIST_SECRET_KEY: ${BIST_SECRET_KEY:-change-me-before-production}
+      BIST_ACCESS_TOKEN_EXPIRE_MINUTES: 60
+      BIST_CORS_ORIGINS: ${BIST_CORS_ORIGINS:-http://localhost:3000,http://127.0.0.1:3000,http://localhost}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "8000:8000"
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        VITE_API_BASE_URL: /api
+    depends_on:
+      - backend
+    ports:
+      - "3000:80"
+
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    command: ["python", "scripts/run_worker.py", "--interval-hours", "24"]
+    environment:
+      BIST_APP_NAME: "BIST Signal Platform"
+      BIST_ENVIRONMENT: production
+      BIST_DATABASE_URL: ${BIST_CONTAINER_DATABASE_URL:-postgresql+psycopg://bist:bist@postgres:5432/bist}
+      BIST_SECRET_KEY: ${BIST_SECRET_KEY:-change-me-before-production}
+      BIST_CORS_ORIGINS: ${BIST_CORS_ORIGINS:-http://localhost:3000,http://127.0.0.1:3000,http://localhost}
+      BIST_ALERT_WEBHOOK_URL: ${BIST_ALERT_WEBHOOK_URL:-}
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  proxy:
+    image: caddy:2-alpine
+    environment:
+      APP_DOMAIN: ${APP_DOMAIN:-localhost}
+      ACME_EMAIL: ${ACME_EMAIL:-admin@example.com}
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - frontend
+      - backend
+
+volumes:
+  postgres_data:
+  caddy_data:
+  caddy_config:

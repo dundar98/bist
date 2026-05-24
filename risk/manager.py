@@ -7,8 +7,10 @@ daily drawdown limits, and circuit breakers.
 
 import logging
 from dataclasses import dataclass, field
-from datetime import date, datetime
-from typing import Dict, List, Optional
+from datetime import date, datetime, timezone
+from typing import Dict, List, Optional, Sequence
+
+import numpy as np
 
 logger = logging.getLogger(__name__)
 
@@ -49,6 +51,7 @@ class RiskManager:
     2. Daily drawdown limits
     3. Portfolio-level limits
     4. Circuit breaker
+    5. Correlation-based diversification check
     """
     
     def __init__(
@@ -102,6 +105,9 @@ class RiskManager:
         stop_loss_pct: float,
         capital: float,
         current_date: Optional[date] = None,
+        *,
+        candidate_returns: Optional[Sequence[float]] = None,
+        existing_positions_returns: Optional[Dict[str, Sequence[float]]] = None,
     ) -> RiskCheckResult:
         """
         Check if a new trade is allowed under risk rules.
@@ -112,6 +118,8 @@ class RiskManager:
             stop_loss_pct: Stop loss percentage
             capital: Current capital
             current_date: Current date for daily tracking
+            candidate_returns: Historical returns of the candidate symbol (for correlation check)
+            existing_positions_returns: Dict of symbol -> historical returns for open positions
             
         Returns:
             RiskCheckResult indicating if trade is allowed
@@ -182,6 +190,14 @@ class RiskManager:
                 reason=f"Position size {position_pct:.2%} > max {self.max_position_pct:.2%}",
                 risk_level="medium"
             )
+        
+        # Check correlation with existing positions
+        if candidate_returns is not None and existing_positions_returns:
+            correlation_check = self.check_correlation_allowed(
+                candidate_returns, existing_positions_returns
+            )
+            if not correlation_check.allowed:
+                return correlation_check
         
         # Determine risk level
         if risk_pct > self.max_risk_per_trade * 0.8:
@@ -284,6 +300,56 @@ class RiskManager:
         
         return min(max_shares_risk, max_shares_position)
     
+    def check_correlation_allowed(
+        self,
+        candidate_returns: Sequence[float],
+        existing_positions_returns: Dict[str, Sequence[float]],
+    ) -> RiskCheckResult:
+        """
+        Check if the candidate symbol's returns are too correlated with existing positions.
+        
+        Args:
+            candidate_returns: Historical returns for the candidate symbol
+            existing_positions_returns: Dict mapping position symbols to their historical returns
+            
+        Returns:
+            RiskCheckResult indicating if the correlation is acceptable
+        """
+        if not existing_positions_returns:
+            return RiskCheckResult(allowed=True, reason="No existing positions to check correlation", risk_level="low")
+        
+        candidate = np.asarray(candidate_returns, dtype=float)
+        if len(candidate) < 5:
+            return RiskCheckResult(allowed=True, reason="Insufficient history for correlation check", risk_level="low")
+        
+        max_observed = 0.0
+        max_symbol = ""
+        for symbol, returns in existing_positions_returns.items():
+            existing = np.asarray(returns, dtype=float)
+            min_len = min(len(candidate), len(existing))
+            if min_len < 5:
+                continue
+            corr = np.corrcoef(candidate[-min_len:], existing[-min_len:])[0, 1]
+            if np.isnan(corr):
+                continue
+            abs_corr = abs(corr)
+            if abs_corr > max_observed:
+                max_observed = abs_corr
+                max_symbol = symbol
+        
+        if max_observed > self.max_correlation:
+            return RiskCheckResult(
+                allowed=False,
+                reason=f"Correlation too high with {max_symbol}: {max_observed:.2%} > {self.max_correlation:.2%}",
+                risk_level="high",
+            )
+        
+        return RiskCheckResult(
+            allowed=True,
+            reason=f"Correlation check passed (max={max_observed:.2%} with {max_symbol or 'N/A'})",
+            risk_level="low",
+        )
+
     def _on_new_day(self, new_date: date) -> None:
         """Handle transition to new trading day."""
         logger.debug(f"New trading day: {new_date}")
@@ -295,7 +361,7 @@ class RiskManager:
         self.state.circuit_breaker_triggered = True
         self.state.circuit_breaker_reason = reason
         self.state.cooldown_remaining = self.cooldown_periods
-        self.state.violations.append(f"{datetime.now()}: {reason}")
+        self.state.violations.append(f"{datetime.now(timezone.utc)}: {reason}")
         
         logger.warning(f"CIRCUIT BREAKER TRIGGERED: {reason}")
     

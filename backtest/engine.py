@@ -200,8 +200,8 @@ class BacktestEngine:
             for pos in self.state.positions.values():
                 pos.update_bars(high, low)
             
-            # 5. Update equity
-            self._update_equity(data.iloc[:i+1])
+            # 5. Update equity (single-symbol: use current close for all positions)
+            self._update_equity(close)
             
             # 6. Record equity curve
             self.state.equity_curve.append(self.state.equity)
@@ -423,13 +423,16 @@ class BacktestEngine:
             if high >= tp_price:
                 self._close_position(sym, timestamp, tp_price, "take_profit")
     
-    def _update_equity(self, data: pd.DataFrame) -> None:
-        """Update current equity value."""
+    def _update_equity(self, current_price: float) -> None:
+        """
+        Update current equity from a single price point.
+        
+        Used in single-symbol backtests where all open positions
+        are valued at the same current price.
+        """
         positions_value = 0.0
         
         for symbol, position in self.state.positions.items():
-            # Use latest close price
-            current_price = data.iloc[-1]['close']
             positions_value += position.size * current_price
         
         self.state.equity = self.state.cash + positions_value

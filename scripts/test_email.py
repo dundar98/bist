@@ -22,7 +22,7 @@ from email.mime.multipart import MIMEMultipart
 from datetime import datetime
 
 
-def test_email(
+def send_test_email(
     sender_email: str,
     sender_password: str,
     recipient_email: str,
@@ -193,7 +193,7 @@ Gmail App Password oluşturma:
     
     args = parser.parse_args()
     
-    success = test_email(
+    success = send_test_email(
         sender_email=args.sender,
         sender_password=args.password,
         recipient_email=args.recipient,

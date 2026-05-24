@@ -220,13 +220,13 @@ class TestMetrics:
         assert metrics.winning_trades == 1
         assert metrics.losing_trades == 1
         assert metrics.win_rate == 0.5
-        assert metrics.profit_factor == 100 / 50  # 2.0
+        assert metrics.profit_factor == pytest.approx(100 / 50)  # 2.0
 
 
 class TestNoLookahead:
     """Tests to ensure no future data leakage."""
     
-    def test_predictions_used_sequentially(self, sample_data):
+    def test_predictions_used_sequentially(self):
         """Test that predictions are used in correct order."""
         sample_data = pd.DataFrame({
             'timestamp': pd.date_range('2020-01-01', periods=50, freq='D'),
