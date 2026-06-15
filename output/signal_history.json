@@ -24406,5 +24406,389 @@
     "price": 2.8499999046325684,
     "probability": 0.9976020455360413,
     "timeframe": "ORTA"
+  },
+  {
+    "timestamp": "2026-06-15T10:45:07.110135",
+    "symbol": "AEFES",
+    "signal": "BUY",
+    "price": 20.520000457763672,
+    "probability": 0.8325057625770569,
+    "timeframe": "KISA"
+  },
+  {
+    "timestamp": "2026-06-15T10:45:10.779186",
+    "symbol": "AKENR",
+    "signal": "BUY",
+    "price": 13.029999732971191,
+    "probability": 0.838201642036438,
+    "timeframe": "KISA"
+  },
+  {
+    "timestamp": "2026-06-15T10:45:12.954367",
+    "symbol": "AKSEN",
+    "signal": "BUY",
+    "price": 79.80000305175781,
+    "probability": 0.747896671295166,
+    "timeframe": "KISA"
+  },
+  {
+    "timestamp": "2026-06-15T10:45:20.168297",
+    "symbol": "ARDYZ",
+    "signal": "BUY",
+    "price": 58.150001525878906,
+    "probability": 0.9446529746055603,
+    "timeframe": "KISA"
+  },
+  {
+    "timestamp": "2026-06-15T10:45:22.337005",
+    "symbol": "AYCES",
+    "signal": "BUY",
+    "price": 612.0,
+    "probability": 0.9983780384063721,
+    "timeframe": "KISA"
+  },
+  {
+    "timestamp": "2026-06-15T10:45:23.315836",
+    "symbol": "AYDEM",
+    "signal": "BUY",
+    "price": 25.079999923706055,
+    "probability": 0.9592291712760925,
+    "timeframe": "KISA"
+  },
+  {
+    "timestamp": "2026-06-15T10:45:27.461940",
+    "symbol": "BEYAZ",
+    "signal": "BUY",
+    "price": 26.860000610351562,
+    "probability": 0.830767810344696,
+    "timeframe": "KISA"
+  },
+  {
+    "timestamp": "2026-06-15T10:45:28.809167",
+    "symbol": "BIMAS",
+    "signal": "BUY",
+    "price": 379.75,
+    "probability": 0.920304536819458,
+    "timeframe": "KISA"
+  },
+  {
+    "timestamp": "2026-06-15T10:45:31.076376",
+    "symbol": "BIZIM",
+    "signal": "BUY",
+    "price": 26.940000534057617,
+    "probability": 0.7002451419830322,
+    "timeframe": "KISA"
+  },
+  {
+    "timestamp": "2026-06-15T10:45:33.353612",
+    "symbol": "BRYAT",
+    "signal": "BUY",
+    "price": 1988.0,
+    "probability": 0.7989576458930969,
+    "timeframe": "KISA"
+  },
+  {
+    "timestamp": "2026-06-15T10:45:39.455486",
+    "symbol": "CIMSA",
+    "signal": "BUY",
+    "price": 50.150001525878906,
+    "probability": 0.7527127265930176,
+    "timeframe": "KISA"
+  },
+  {
+    "timestamp": "2026-06-15T10:45:43.428772",
+    "symbol": "DITAS",
+    "signal": "BUY",
+    "price": 42.15999984741211,
+    "probability": 0.7440100908279419,
+    "timeframe": "KISA"
+  },
+  {
+    "timestamp": "2026-06-15T10:45:47.698421",
+    "symbol": "ECILC",
+    "signal": "BUY",
+    "price": 80.0,
+    "probability": 0.8163918256759644,
+    "timeframe": "KISA"
+  },
+  {
+    "timestamp": "2026-06-15T10:45:49.498677",
+    "symbol": "EGEEN",
+    "signal": "BUY",
+    "price": 5635.0,
+    "probability": 0.9961574673652649,
+    "timeframe": "KISA"
+  },
+  {
+    "timestamp": "2026-06-15T10:45:50.418997",
+    "symbol": "EGGUB",
+    "signal": "BUY",
+    "price": 107.4000015258789,
+    "probability": 0.9771537780761719,
+    "timeframe": "KISA"
+  },
+  {
+    "timestamp": "2026-06-15T10:45:52.707901",
+    "symbol": "ENJSA",
+    "signal": "BUY",
+    "price": 105.5,
+    "probability": 0.9222020506858826,
+    "timeframe": "KISA"
+  },
+  {
+    "timestamp": "2026-06-15T10:45:56.711564",
+    "symbol": "ESCOM",
+    "signal": "BUY",
+    "price": 5.679999828338623,
+    "probability": 0.972005307674408,
+    "timeframe": "KISA"
+  },
+  {
+    "timestamp": "2026-06-15T10:46:07.309304",
+    "symbol": "GUBRF",
+    "signal": "BUY",
+    "price": 478.0,
+    "probability": 0.7901791930198669,
+    "timeframe": "KISA"
+  },
+  {
+    "timestamp": "2026-06-15T10:46:09.096677",
+    "symbol": "HEKTS",
+    "signal": "BUY",
+    "price": 3.9000000953674316,
+    "probability": 0.8170843720436096,
+    "timeframe": "KISA"
+  },
+  {
+    "timestamp": "2026-06-15T10:46:25.716906",
+    "symbol": "KLMSN",
+    "signal": "BUY",
+    "price": 31.940000534057617,
+    "probability": 0.9298967719078064,
+    "timeframe": "KISA"
+  },
+  {
+    "timestamp": "2026-06-15T10:46:31.794126",
+    "symbol": "KRTEK",
+    "signal": "BUY",
+    "price": 23.299999237060547,
+    "probability": 0.8874696493148804,
+    "timeframe": "KISA"
+  },
+  {
+    "timestamp": "2026-06-15T10:46:37.953376",
+    "symbol": "MAVI",
+    "signal": "BUY",
+    "price": 42.08000183105469,
+    "probability": 0.9992590546607971,
+    "timeframe": "KISA"
+  },
+  {
+    "timestamp": "2026-06-15T10:46:44.549525",
+    "symbol": "MRSHL",
+    "signal": "BUY",
+    "price": 1517.0,
+    "probability": 0.9318770170211792,
+    "timeframe": "KISA"
+  },
+  {
+    "timestamp": "2026-06-15T10:46:45.705274",
+    "symbol": "NETAS",
+    "signal": "BUY",
+    "price": 64.30000305175781,
+    "probability": 0.8963848352432251,
+    "timeframe": "KISA"
+  },
+  {
+    "timestamp": "2026-06-15T10:46:46.784501",
+    "symbol": "NUGYO",
+    "signal": "BUY",
+    "price": 10.1899995803833,
+    "probability": 0.9746679067611694,
+    "timeframe": "KISA"
+  },
+  {
+    "timestamp": "2026-06-15T10:46:51.630233",
+    "symbol": "OSMEN",
+    "signal": "BUY",
+    "price": 7.289999961853027,
+    "probability": 0.7536467909812927,
+    "timeframe": "KISA"
+  },
+  {
+    "timestamp": "2026-06-15T10:46:54.792539",
+    "symbol": "OYAKC",
+    "signal": "BUY",
+    "price": 21.31999969482422,
+    "probability": 0.8745861649513245,
+    "timeframe": "KISA"
+  },
+  {
+    "timestamp": "2026-06-15T10:46:58.341450",
+    "symbol": "PENGD",
+    "signal": "BUY",
+    "price": 12.149999618530273,
+    "probability": 0.995471715927124,
+    "timeframe": "KISA"
+  },
+  {
+    "timestamp": "2026-06-15T10:46:59.352434",
+    "symbol": "PETKM",
+    "signal": "BUY",
+    "price": 19.350000381469727,
+    "probability": 0.9975020289421082,
+    "timeframe": "KISA"
+  },
+  {
+    "timestamp": "2026-06-15T10:47:01.653809",
+    "symbol": "PNLSN",
+    "signal": "BUY",
+    "price": 45.91999816894531,
+    "probability": 0.999147891998291,
+    "timeframe": "KISA"
+  },
+  {
+    "timestamp": "2026-06-15T10:47:02.671795",
+    "symbol": "POLHO",
+    "signal": "BUY",
+    "price": 20.3799991607666,
+    "probability": 0.7815195322036743,
+    "timeframe": "KISA"
+  },
+  {
+    "timestamp": "2026-06-15T10:47:05.057298",
+    "symbol": "PSDTC",
+    "signal": "BUY",
+    "price": 119.4000015258789,
+    "probability": 0.8697081208229065,
+    "timeframe": "KISA"
+  },
+  {
+    "timestamp": "2026-06-15T10:47:06.145238",
+    "symbol": "QUAGR",
+    "signal": "BUY",
+    "price": 3.9600000381469727,
+    "probability": 0.7610503435134888,
+    "timeframe": "KISA"
+  },
+  {
+    "timestamp": "2026-06-15T10:47:09.806699",
+    "symbol": "RUBNS",
+    "signal": "BUY",
+    "price": 27.540000915527344,
+    "probability": 0.9287623167037964,
+    "timeframe": "KISA"
+  },
+  {
+    "timestamp": "2026-06-15T10:47:13.838530",
+    "symbol": "SAMAT",
+    "signal": "BUY",
+    "price": 6.369999885559082,
+    "probability": 0.9985575079917908,
+    "timeframe": "KISA"
+  },
+  {
+    "timestamp": "2026-06-15T10:47:20.998911",
+    "symbol": "SILVR",
+    "signal": "BUY",
+    "price": 2.5899999141693115,
+    "probability": 0.9984318614006042,
+    "timeframe": "KISA"
+  },
+  {
+    "timestamp": "2026-06-15T10:47:23.328674",
+    "symbol": "SKBNK",
+    "signal": "BUY",
+    "price": 13.9399995803833,
+    "probability": 0.9877665042877197,
+    "timeframe": "KISA"
+  },
+  {
+    "timestamp": "2026-06-15T10:47:25.082821",
+    "symbol": "SMART",
+    "signal": "BUY",
+    "price": 33.47999954223633,
+    "probability": 0.9878930449485779,
+    "timeframe": "KISA"
+  },
+  {
+    "timestamp": "2026-06-15T10:47:30.780156",
+    "symbol": "SURGY",
+    "signal": "BUY",
+    "price": 74.8499984741211,
+    "probability": 0.7560866475105286,
+    "timeframe": "KISA"
+  },
+  {
+    "timestamp": "2026-06-15T10:47:37.161047",
+    "symbol": "TKFEN",
+    "signal": "BUY",
+    "price": 139.39999389648438,
+    "probability": 0.993855893611908,
+    "timeframe": "KISA"
+  },
+  {
+    "timestamp": "2026-06-15T10:47:38.418953",
+    "symbol": "TMSN",
+    "signal": "BUY",
+    "price": 90.0,
+    "probability": 0.9658843278884888,
+    "timeframe": "KISA"
+  },
+  {
+    "timestamp": "2026-06-15T10:48:10.268154",
+    "symbol": "TUKAS",
+    "signal": "BUY",
+    "price": 2.380000114440918,
+    "probability": 0.9849505424499512,
+    "timeframe": "KISA"
+  },
+  {
+    "timestamp": "2026-06-15T10:48:11.201612",
+    "symbol": "TUPRS",
+    "signal": "BUY",
+    "price": 233.8000030517578,
+    "probability": 0.9883560538291931,
+    "timeframe": "KISA"
+  },
+  {
+    "timestamp": "2026-06-15T10:48:15.259452",
+    "symbol": "TURSG",
+    "signal": "BUY",
+    "price": 6.425000190734863,
+    "probability": 0.744057834148407,
+    "timeframe": "KISA"
+  },
+  {
+    "timestamp": "2026-06-15T10:48:16.183360",
+    "symbol": "ULKER",
+    "signal": "BUY",
+    "price": 112.30000305175781,
+    "probability": 0.7335574626922607,
+    "timeframe": "KISA"
+  },
+  {
+    "timestamp": "2026-06-15T10:48:17.080728",
+    "symbol": "ULUUN",
+    "signal": "BUY",
+    "price": 8.279999732971191,
+    "probability": 0.7470824718475342,
+    "timeframe": "KISA"
+  },
+  {
+    "timestamp": "2026-06-15T10:48:17.951251",
+    "symbol": "USAK",
+    "signal": "BUY",
+    "price": 1.5099999904632568,
+    "probability": 0.8361912369728088,
+    "timeframe": "KISA"
+  },
+  {
+    "timestamp": "2026-06-15T10:48:25.123121",
+    "symbol": "YEOTK",
+    "signal": "BUY",
+    "price": 106.0,
+    "probability": 0.999219536781311,
+    "timeframe": "KISA"
   }
 ]
